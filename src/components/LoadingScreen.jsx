@@ -26,7 +26,7 @@ export const LoadingScreen = ({ onComplete }) => {
                     if (maintenanceMode) {
                         // Maintenance mode is active - stop loading
                         setStatus('High Server Traffic: Unable to establish connection');
-                        setProgress(100); // Keep progress bar visible
+                        // Keep progress stuck at 5% (where it got stuck)
                         return; // Don't proceed with initialization
                     }
                 }
