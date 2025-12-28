@@ -138,13 +138,21 @@ export const Search = () => {
                     style={{ flex: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
                     onClick={() => handleSort('name')}
                 >
-                    Name <ArrowUpDown size={14} style={{ marginLeft: 4, opacity: sortConfig.key === 'name' ? 1 : 0.3 }} />
+                    Name <ArrowUpDown size={14} style={{
+                        marginLeft: 4,
+                        opacity: sortConfig.key === 'name' ? 1 : 0.3,
+                        color: sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
+                    }} />
                 </div>
                 <div
                     style={{ width: 60, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', cursor: 'pointer' }}
                     onClick={() => handleSort('rapid')}
                 >
-                    Score <ArrowUpDown size={14} style={{ marginLeft: 4, opacity: sortConfig.key === 'rapid' ? 1 : 0.3 }} />
+                    Score <ArrowUpDown size={14} style={{
+                        marginLeft: 4,
+                        opacity: sortConfig.key === 'rapid' ? 1 : 0.3,
+                        color: sortConfig.key === 'rapid' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
+                    }} />
                 </div>
             </div>
 
