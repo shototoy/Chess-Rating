@@ -92,7 +92,15 @@ export const Dashboard = () => {
 
     if (!isAuthenticated) {
         return (
-            <div className="container" style={{ height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div style={{
+                height: 'calc(100vh - 60px - 60px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 16,
+                background: 'var(--bg-color)'
+            }}>
                 <div className="card" style={{ textAlign: 'center', padding: '40px 20px' }}>
                     <div style={{ background: '#eef2f7', width: 80, height: 80, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
                         <LogIn size={40} color="var(--primary-color)" />

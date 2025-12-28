@@ -37,7 +37,7 @@ export const Home = () => {
                 overflowX: 'auto',
                 gap: 16,
                 paddingBottom: 16,
-                marginBottom: 20,
+                marginBottom: 5,
                 scrollSnapType: 'x mandatory'
             }}>
                 {newsList.map(news => (
@@ -48,7 +48,7 @@ export const Home = () => {
                         style={{
                             minWidth: '280px',
                             margin: 0,
-                            height: '160px',
+                            height: '200px',
                             background: news.gradient,
                             color: 'white',
                             display: 'flex',
