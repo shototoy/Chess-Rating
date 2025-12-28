@@ -143,6 +143,7 @@ export const LoadingScreen = ({ onComplete }) => {
             </div>
 
 
+
             {/* Progress Bar - Bigger */}
             <div style={{
                 width: 280,
@@ -155,7 +156,7 @@ export const LoadingScreen = ({ onComplete }) => {
                 <div style={{
                     width: `${progress}%`,
                     height: '100%',
-                    background: 'white',
+                    background: status.includes('High Server Traffic') ? '#ef4444' : 'white', // Red for error
                     transition: 'width 0.3s ease',
                     borderRadius: 3
                 }} />
@@ -165,8 +166,8 @@ export const LoadingScreen = ({ onComplete }) => {
             <p style={{
                 fontSize: '0.9rem',
                 margin: '0 0 12px 0',
-                opacity: 0.9,
-                fontWeight: 500,
+                opacity: 1,
+                fontWeight: status.includes('High Server Traffic') ? 700 : 500, // Bold for error
                 color: status.includes('High Server Traffic') ? '#ef4444' : 'white' // Red for error
             }}>
                 {status}
