@@ -58,12 +58,14 @@ export const getPlayers = async ({ page = 1, limit = 50, sortBy = 'rapid_rating'
     }
 };
 
-export const searchPlayers = async (query, page = 1, limit = 50) => {
+export const searchPlayers = async (query, page = 1, limit = 50, sortBy = 'rapid_rating', order = 'desc') => {
     try {
         const params = new URLSearchParams({
             q: query,
             page,
-            limit
+            limit,
+            sortBy,
+            order
         });
         const response = await fetch(`${API_URL}/players/search?${params}`, { headers: getHeaders() });
         const list = await handleResponse(response);

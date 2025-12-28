@@ -68,7 +68,7 @@ export const PlayerProvider = ({ children }) => {
 
             if (query) {
                 // Search Mode (RAM only, Limit 15 enforced by UI or logic, here we fetch what is asked)
-                newData = await searchPlayers(query, pageNum, 50);
+                newData = await searchPlayers(query, pageNum, 50, sortBy, sortConfig.direction);
             } else {
                 // Default Mode
                 newData = await getPlayers({
@@ -126,10 +126,12 @@ export const PlayerProvider = ({ children }) => {
         try {
             // Search logic handled in loadPlayers via state, but we need to trigger it manually here effectively
             // because state updates are async.
-            // Actually, clearer to direct call here:
+            let sortBy = 'rapid_rating';
+            if (sortConfig.key === 'name') sortBy = 'name';
+
             const data = newQuery
-                ? await searchPlayers(newQuery, 1, 50)
-                : await getPlayers({ page: 1, limit: 50 });
+                ? await searchPlayers(newQuery, 1, 50, sortBy, sortConfig.direction)
+                : await getPlayers({ page: 1, limit: 50, sortBy, order: sortConfig.direction });
 
             setPlayers(data);
             setHasMore(data.length === 50);
@@ -156,14 +158,23 @@ export const PlayerProvider = ({ children }) => {
         (async () => {
             try {
                 let sortBy = 'rapid_rating';
-                if (key === 'name') sortBy = 'last_name';
+                if (key === 'name') sortBy = 'name'; // Matches backend expectation validation logic
+                else if (key === 'rapid') sortBy = 'rapid_rating';
 
-                const data = await getPlayers({
-                    page: 1,
-                    limit: 50,
-                    sortBy,
-                    order: direction
-                });
+                let data = [];
+                if (query) {
+                    // If searching, use searchPlayers with sort params
+                    data = await searchPlayers(query, 1, 50, sortBy, direction);
+                } else {
+                    // Default list
+                    data = await getPlayers({
+                        page: 1,
+                        limit: 50,
+                        sortBy,
+                        order: direction
+                    });
+                }
+
                 setPlayers(data);
                 setHasMore(data.length === 50);
             } finally {
