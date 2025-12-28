@@ -12,6 +12,25 @@ export const LoadingScreen = ({ onComplete }) => {
 
         const initialize = async () => {
             try {
+                // Step 0: Check maintenance mode first
+                setStatus('Checking server status...');
+                setProgress(5);
+
+                const statusCheck = await fetch(`${API_URL}/status`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (statusCheck.ok) {
+                    const { maintenanceMode } = await statusCheck.json();
+                    if (maintenanceMode) {
+                        // Maintenance mode is active - stop loading
+                        setStatus('High Server Traffic: Unable to establish connection');
+                        setProgress(100); // Keep progress bar visible
+                        return; // Don't proceed with initialization
+                    }
+                }
+
                 // Step 1: Wake up backend (30%)
                 setStatus('Connecting to server...');
                 setProgress(10);
@@ -147,7 +166,8 @@ export const LoadingScreen = ({ onComplete }) => {
                 fontSize: '0.9rem',
                 margin: '0 0 12px 0',
                 opacity: 0.9,
-                fontWeight: 500
+                fontWeight: 500,
+                color: status.includes('High Server Traffic') ? '#ef4444' : 'white' // Red for error
             }}>
                 {status}
             </p>
