@@ -33,7 +33,8 @@ export const Dashboard = () => {
         const val = e.target.value;
         setSearchQuery(val);
         if (val.length > 0) {
-            const results = await searchPlayers(val);
+            // Limit dashboard search dropdown to 15 items for performance
+            const results = await searchPlayers(val, 1, 15);
             setDropdownResults(results);
         } else {
             setDropdownResults([]);
