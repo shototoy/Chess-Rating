@@ -37,7 +37,7 @@ function App() {
 
     return (
         <div className="app-shell">
-            <header className="app-header">
+            <header className="app-header" style={{ paddingTop: '1.5rem' }}>
                 Biyaherong Arbiter
             </header>
 
@@ -45,7 +45,7 @@ function App() {
                 {renderContent()}
             </main>
 
-            <BottomNav currentTab={currentTab} onTabChange={handleTabChange} />
+            <BottomNav currentTab={currentTab} onTabChange={handleTabChange} style={{ paddingBottom: '1.5rem' }} />
         </div>
     );
 }

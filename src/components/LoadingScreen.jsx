@@ -14,7 +14,7 @@ export const LoadingScreen = ({ onComplete }) => {
             try {
                 // Step 0: Check maintenance mode first
                 setStatus('Checking server status...');
-                setProgress(5);
+                setProgress(30); // Stuck at 30% if maintenance mode
 
                 const statusCheck = await fetch(`${API_URL}/status`, {
                     method: 'GET',
@@ -26,7 +26,7 @@ export const LoadingScreen = ({ onComplete }) => {
                     if (maintenanceMode) {
                         // Maintenance mode is active - stop loading
                         setStatus('High Server Traffic: Unable to establish connection');
-                        // Keep progress stuck at 5% (where it got stuck)
+                        // Keep progress stuck at 30% (where it got stuck)
                         return; // Don't proceed with initialization
                     }
                 }
