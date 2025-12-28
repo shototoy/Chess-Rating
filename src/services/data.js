@@ -41,9 +41,15 @@ const mapPlayerPayload = (p) => ({
 
 // --- Players ---
 
-export const getPlayers = async () => {
+export const getPlayers = async ({ page = 1, limit = 50, sortBy = 'rapid_rating', order = 'desc' } = {}) => {
     try {
-        const response = await fetch(`${API_URL}/players`, { headers: getHeaders() });
+        const params = new URLSearchParams({
+            page,
+            limit,
+            sortBy,
+            order
+        });
+        const response = await fetch(`${API_URL}/players?${params}`, { headers: getHeaders() });
         const list = await handleResponse(response);
         return list.map(mapPlayer);
     } catch (error) {
@@ -52,9 +58,14 @@ export const getPlayers = async () => {
     }
 };
 
-export const searchPlayers = async (query) => {
+export const searchPlayers = async (query, page = 1, limit = 50) => {
     try {
-        const response = await fetch(`${API_URL}/players/search?q=${encodeURIComponent(query)}`, { headers: getHeaders() });
+        const params = new URLSearchParams({
+            q: query,
+            page,
+            limit
+        });
+        const response = await fetch(`${API_URL}/players/search?${params}`, { headers: getHeaders() });
         const list = await handleResponse(response);
         return list.map(mapPlayer);
     } catch (error) {
