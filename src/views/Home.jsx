@@ -9,14 +9,52 @@ export const Home = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // 1. Fetch Players & Sort
-            const players = await getPlayers();
-            const sorted = [...players].sort((a, b) => b.rapid - a.rapid).slice(0, 3);
-            setTopPlayers(sorted);
+            // 1. News Config (Prioritized)
+            const NEWS_CACHE_KEY = 'news_cache';
 
-            // 2. Fetch News from Service
-            const news = await getNews();
-            setNewsList(news);
+            // Try loading from cache immediately
+            try {
+                const cachedNews = localStorage.getItem(NEWS_CACHE_KEY);
+                if (cachedNews) {
+                    setNewsList(JSON.parse(cachedNews));
+                }
+            } catch (e) {
+                console.warn('News cache error:', e);
+            }
+
+            // Fetch Fresh News & Update Cache
+            try {
+                const news = await getNews();
+                setNewsList(news);
+                localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify(news));
+            } catch (e) {
+                console.error('Failed to fetch news:', e);
+            }
+
+            // 2. Fetch Players (Secondary)
+            // 2. Fetch Players (Secondary)
+            const PLAYERS_CACHE_KEY = 'top_players_cache';
+
+            // Try cache first
+            try {
+                const cachedPlayers = localStorage.getItem(PLAYERS_CACHE_KEY);
+                if (cachedPlayers) {
+                    setTopPlayers(JSON.parse(cachedPlayers));
+                }
+            } catch (e) {
+                console.warn('Players cache error:', e);
+            }
+
+            // Fetch & Update Cache
+            try {
+                // If we have cache, we still fetch to be consistent, but user won't see loading
+                const players = await getPlayers();
+                const sorted = [...players].sort((a, b) => b.rapid - a.rapid).slice(0, 3);
+                setTopPlayers(sorted);
+                localStorage.setItem(PLAYERS_CACHE_KEY, JSON.stringify(sorted));
+            } catch (e) {
+                console.error('Failed to fetch players:', e);
+            }
         };
 
         fetchData();

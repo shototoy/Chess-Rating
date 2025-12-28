@@ -27,6 +27,33 @@ export const Dashboard = () => {
         }
     }, [newsData.body]);
 
+    const [activeFormats, setActiveFormats] = useState([]);
+    const [isBodyExpanded, setIsBodyExpanded] = useState(false);
+
+    const checkFormats = () => {
+        const formats = [];
+        if (document.queryCommandState('bold')) formats.push('bold');
+        if (document.queryCommandState('italic')) formats.push('italic');
+
+        const blockValue = document.queryCommandValue('formatBlock');
+        if (blockValue && blockValue.toLowerCase() === 'h3') formats.push('H3');
+
+        // fontSize '1' is the value for size=1 (<font size="1">)
+        const sizeValue = document.queryCommandValue('fontSize');
+        if (sizeValue === '1') formats.push('small');
+
+        // 'div' is our 'normal' usually, or lack of others
+        if (!blockValue || blockValue.toLowerCase() === 'div') formats.push('normal');
+
+        setActiveFormats(formats);
+    };
+
+    const handleCommand = (e, command, value = null) => {
+        e.preventDefault();
+        document.execCommand(command, false, value);
+        checkFormats(); // Update state immediately after command
+    };
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -227,32 +254,7 @@ export const Dashboard = () => {
         );
     }
 
-    const [activeFormats, setActiveFormats] = useState([]);
-    const [isBodyExpanded, setIsBodyExpanded] = useState(false);
 
-    const checkFormats = () => {
-        const formats = [];
-        if (document.queryCommandState('bold')) formats.push('bold');
-        if (document.queryCommandState('italic')) formats.push('italic');
-
-        const blockValue = document.queryCommandValue('formatBlock');
-        if (blockValue && blockValue.toLowerCase() === 'h3') formats.push('H3');
-
-        // fontSize '1' is the value for size=1 (<font size="1">)
-        const sizeValue = document.queryCommandValue('fontSize');
-        if (sizeValue === '1') formats.push('small');
-
-        // 'div' is our 'normal' usually, or lack of others
-        if (!blockValue || blockValue.toLowerCase() === 'div') formats.push('normal');
-
-        setActiveFormats(formats);
-    };
-
-    const handleCommand = (e, command, value = null) => {
-        e.preventDefault();
-        document.execCommand(command, false, value);
-        checkFormats(); // Update state immediately after command
-    };
 
     if (activeModal === 'addNews') {
         return (
