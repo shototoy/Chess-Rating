@@ -8,14 +8,18 @@ export const Home = () => {
     const [selectedNews, setSelectedNews] = useState(null);
 
     useEffect(() => {
-        // 1. Fetch Players & Sort
-        const players = getPlayers();
-        const sorted = [...players].sort((a, b) => b.rapid - a.rapid).slice(0, 3);
-        setTopPlayers(sorted);
+        const fetchData = async () => {
+            // 1. Fetch Players & Sort
+            const players = await getPlayers();
+            const sorted = [...players].sort((a, b) => b.rapid - a.rapid).slice(0, 3);
+            setTopPlayers(sorted);
 
-        // 2. Fetch News from Service
-        const news = getNews();
-        setNewsList(news);
+            // 2. Fetch News from Service
+            const news = await getNews();
+            setNewsList(news);
+        };
+
+        fetchData();
     }, []);
 
     const openNews = (news) => {
