@@ -9,14 +9,18 @@ export const Search = () => {
     const [sortConfig, setSortConfig] = useState({ key: 'rapid', direction: 'desc' });
 
     useEffect(() => {
-        setResults(getPlayers());
+        const fetchInitial = async () => {
+            const data = await getPlayers();
+            setResults(data);
+        };
+        fetchInitial();
     }, []);
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         const val = e.target.value;
         setQuery(val);
         // Reset to all players if empty, or search
-        let data = !val ? getPlayers() : searchPlayers(val);
+        const data = await (!val ? getPlayers() : searchPlayers(val));
         setResults(data);
     };
 
