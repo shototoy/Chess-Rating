@@ -34,3 +34,6 @@ dist-ssr
 # System
 .DS_Store
 Thumbs.db
+
+# Server (separate repository)
+/server
