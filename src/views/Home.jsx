@@ -1,64 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { getPlayers } from '../services/data';
+import { getPlayers, getNews } from '../services/data';
 import { Trophy, TrendingUp, Newspaper, X, Clock, ChevronRight } from 'lucide-react';
-
-const MOCK_NEWS = [
-    {
-        id: 1,
-        title: "Grand Prix 2025: Round 1 Results",
-        subtitle: "Unexpected upsets define the opening round as underdogs shine.",
-        date: "Oct 24, 2025 • 2:30 PM",
-        category: "Tournament Update",
-        gradient: "linear-gradient(135deg, #007bff, #0056b3)",
-        body: `The opening round of the 2025 Chess Grand Prix commenced with high tension and even higher stakes. Several top-seeded grandmasters found themselves in difficult positions against prepared challengers.
-
-    Magnus Carlsen managed to secure a win in a grinding endgame, demonstrating his trademark precision. However, other favorites weren't as lucky. 
-    
-    The local favorite, Ding Liren, held a draw against a fierce attack, proving that his defensive skills remain top-tier. Expect more action as we head into Round 2 tomorrow.`
-    },
-    {
-        id: 2,
-        title: "New Rating Regulations",
-        subtitle: "FIDE announces changes effective from next quarter.",
-        date: "Oct 20, 2025 • 9:00 AM",
-        category: "FIDE News",
-        gradient: "linear-gradient(135deg, #6610f2, #4a00e0)",
-        body: `FIDE has released an official statement regarding the calculation of Rapid and Blitz ratings. The new K-factor adjustments aim to combat rating inflation and provide a more accurate reflection of current form for active players.
-
-    These changes will be implemented starting November 1st. Players are advised to review the official handbook for detailed mathematical breakdowns.`
-    },
-    {
-        id: 3,
-        title: "Local Club Championship",
-        subtitle: "Registration is now open for the city-wide classic.",
-        date: "Oct 18, 2025 • 4:15 PM",
-        category: "Community",
-        gradient: "linear-gradient(135deg, #198754, #146c43)",
-        body: `The annual City Chess Club Championship is back! This year features a larger prize pool and three distinct categories: Open, U2000, and Junior.
-
-    Venue: Community Hall
-    Dates: Nov 15 - Nov 20
-    Entry Fee: $50
-    
-    Sign up before the end of the month to receive an early-bird discount.`
-    }
-];
 
 export const Home = () => {
     const [topPlayers, setTopPlayers] = useState([]);
+    const [newsList, setNewsList] = useState([]);
     const [selectedNews, setSelectedNews] = useState(null);
 
     useEffect(() => {
+        // 1. Fetch Players & Sort
         const players = getPlayers();
-        // Sort by rating desc and take top 3
         const sorted = [...players].sort((a, b) => b.rapid - a.rapid).slice(0, 3);
         setTopPlayers(sorted);
+
+        // 2. Fetch News from Service
+        const news = getNews();
+        setNewsList(news);
     }, []);
 
     const openNews = (news) => {
         setSelectedNews(news);
-        // Disable scrolling on body when overlay is open if desired, 
-        // but for simple mobile views, just covering is enough.
     };
 
     const closeNews = () => {
@@ -79,7 +40,7 @@ export const Home = () => {
                 marginBottom: 20,
                 scrollSnapType: 'x mandatory'
             }}>
-                {MOCK_NEWS.map(news => (
+                {newsList.map(news => (
                     <div
                         key={news.id}
                         className="card"

@@ -1,13 +1,14 @@
 :root {
-  --primary-color: #007bff; /* GCash Blue-ish */
+  --primary-color: #007bff;
+  /* GCash Blue-ish */
   --primary-dark: #0056b3;
   --bg-color: #f7f9fc;
   --surface-color: #ffffff;
   --text-primary: #333333;
   --text-secondary: #666666;
   --border-radius: 12px;
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
   --header-height: 60px;
   --nav-height: 60px;
 }
@@ -28,7 +29,8 @@ body {
 .container {
   padding: 16px;
   padding-bottom: calc(var(--nav-height) + 20px);
-  max-width: 600px; /* Mobile focused */
+  max-width: 600px;
+  /* Mobile focused */
   margin: 0 auto;
 }
 
@@ -40,7 +42,8 @@ body {
   margin-bottom: 16px;
 }
 
-.btn {
+.btn,
+.btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -55,9 +58,12 @@ body {
   transition: background 0.2s;
   width: 100%;
 }
-.btn:hover {
+
+.btn:hover,
+.btn-primary:hover {
   background-color: var(--primary-dark);
 }
+
 .btn-secondary {
   background-color: #e0e6ed;
   color: var(--text-primary);
@@ -66,12 +72,14 @@ body {
 .input-group {
   margin-bottom: 16px;
 }
+
 .input-label {
   display: block;
   margin-bottom: 8px;
   font-size: 0.9rem;
   color: var(--text-secondary);
 }
+
 .input-field {
   width: 100%;
   padding: 12px;
@@ -81,6 +89,7 @@ body {
   outline: none;
   transition: border 0.2s;
 }
+
 .input-field:focus {
   border-color: var(--primary-color);
 }
@@ -112,9 +121,10 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   z-index: 10;
 }
+
 .nav-item {
   display: flex;
   flex-direction: column;
@@ -126,9 +136,11 @@ body {
   flex: 1;
   height: 100%;
 }
+
 .nav-item.active {
   color: var(--primary-color);
 }
+
 .nav-icon {
   font-size: 1.5rem;
   margin-bottom: 4px;
@@ -143,17 +155,21 @@ body {
   border-bottom: 1px solid #eee;
   cursor: pointer;
 }
+
 .player-item:last-child {
   border-bottom: none;
 }
+
 .player-info h3 {
   margin: 0 0 4px 0;
   font-size: 1rem;
 }
+
 .player-meta {
   font-size: 0.85rem;
   color: var(--text-secondary);
 }
+
 .rating-badge {
   background: #eef2f7;
   color: var(--primary-color);
