@@ -29,7 +29,7 @@ export const Home = () => {
     return (
         <div className="container" style={{ position: 'relative' }}>
             {/* News Carousel */}
-            <h3 style={{ margin: '10px 0', display: 'flex', alignItems: 'center', gap: 8, color: 'var(--primary-color)' }}>
+            <h3 style={{ margin: '0px 0px 10px 0px', display: 'flex', alignItems: 'center', gap: 8, color: 'var(--primary-color)' }}>
                 <Newspaper size={20} /> Latest News
             </h3>
             <div style={{
@@ -37,51 +37,65 @@ export const Home = () => {
                 overflowX: 'auto',
                 gap: 16,
                 paddingBottom: 16,
-                marginBottom: 5,
-                scrollSnapType: 'x mandatory'
+                marginBottom: 30,
+                scrollSnapType: 'x mandatory',
+                WebkitOverflowScrolling: 'touch',
+                touchAction: 'pan-x'
             }}>
-                {newsList.map(news => (
-                    <div
-                        key={news.id}
-                        className="card"
-                        onClick={() => openNews(news)}
-                        style={{
-                            minWidth: '280px',
-                            margin: 0,
-                            height: '200px',
-                            background: news.gradient,
-                            color: 'white',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'flex-end',
-                            scrollSnapAlign: 'start',
-                            cursor: 'pointer',
-                            position: 'relative',
-                            overflow: 'hidden'
-                        }}
-                    >
-                        {/* Decorative Shine */}
-                        <div style={{
-                            position: 'absolute', top: -50, right: -50, width: 100, height: 100, background: 'rgba(255,255,255,0.1)', borderRadius: '50%'
-                        }} />
+                {newsList.map(news => {
+                    // Generate gradient based on category
+                    let gradient;
+                    if (news.category === 'Tournament') {
+                        gradient = 'linear-gradient(135deg, #007bff, #0056b3)'; // Blue
+                    } else if (news.category === 'App Changelog') {
+                        gradient = 'linear-gradient(135deg, #6c757d, #495057)'; // Grey
+                    } else { // Community
+                        gradient = 'linear-gradient(135deg, #28a745, #1e7e34)'; // Green
+                    }
 
-                        <div style={{ padding: 12, position: 'relative', zIndex: 1 }}>
-                            <span style={{
-                                fontSize: '0.7rem',
-                                background: 'rgba(0,0,0,0.3)',
-                                padding: '4px 8px',
-                                borderRadius: 12,
-                                display: 'inline-block',
-                                marginBottom: 8
-                            }}>
-                                {news.category}
-                            </span>
-                            <h4 style={{ margin: '0', fontSize: '1.1rem', lineHeight: '1.3', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
-                                {news.title}
-                            </h4>
+                    return (
+                        <div
+                            key={news.id}
+                            className="card"
+                            onClick={() => openNews(news)}
+                            style={{
+                                minWidth: '280px',
+                                margin: 0,
+                                height: '200px',
+                                background: gradient,
+                                color: 'white',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-end',
+                                scrollSnapAlign: 'start',
+                                cursor: 'pointer',
+                                position: 'relative',
+                                overflow: 'hidden'
+                            }}
+                        >
+                            {/* Decorative Shine */}
+                            <div style={{
+                                position: 'absolute', top: -50, right: -50, width: 100, height: 100, background: 'rgba(255,255,255,0.1)', borderRadius: '50%'
+                            }} />
+
+                            <div style={{ padding: 12, position: 'relative', zIndex: 1 }}>
+                                <span style={{
+                                    fontSize: '0.7rem',
+                                    background: 'rgba(0,0,0,0.3)',
+                                    padding: '4px 8px',
+                                    borderRadius: 12,
+                                    display: 'inline-block',
+                                    marginBottom: 8
+                                }}>
+                                    {news.category}
+                                </span>
+                                <h4 style={{ margin: '0', fontSize: '1.1rem', lineHeight: '1.3', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
+                                    {news.title}
+                                </h4>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             {/* Leaderboard */}
@@ -90,28 +104,66 @@ export const Home = () => {
             </h3>
             <div className="card" style={{ padding: 0 }}>
                 {topPlayers.map((player, index) => (
-                    <div key={player.id} className="player-item" style={{ padding: '12px 16px' }}>
+                    <div key={player.id} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '12px 16px',
+                        borderBottom: index < topPlayers.length - 1 ? '1px solid #f0f0f0' : 'none'
+                    }}>
+                        {/* Rank Badge */}
                         <div style={{
-                            width: 24,
-                            height: 24,
+                            width: 32,
+                            height: 32,
                             borderRadius: '50%',
-                            background: index === 0 ? '#ffd700' : index === 1 ? '#c0c0c0' : index === 2 ? '#cd7f32' : '#eee',
+                            background: index === 0 ? '#ffd700' : index === 1 ? '#c0c0c0' : '#cd7f32',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginRight: 12,
                             fontWeight: 'bold',
-                            fontSize: '0.8rem',
-                            color: index < 3 ? 'white' : '#666'
+                            fontSize: '0.9rem',
+                            color: 'white',
+                            flexShrink: 0
                         }}>
                             {index + 1}
                         </div>
-                        <div className="player-info">
-                            <h3>{player.lastName}, {player.firstName}</h3>
-                            <div className="player-meta">{player.title}</div>
+
+                        {/* Player Info */}
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{
+                                fontWeight: 600,
+                                fontSize: '0.95rem',
+                                color: '#333',
+                                marginBottom: 2,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
+                            }}>
+                                {player.lastName}, {player.firstName}
+                            </div>
+                            <div style={{
+                                fontSize: '0.75rem',
+                                color: '#999',
+                                fontWeight: 500
+                            }}>
+                                {player.title}
+                            </div>
                         </div>
-                        <div className="rating-badge">
-                            <Trophy size={12} style={{ marginRight: 4 }} />
+
+                        {/* Rating Badge */}
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            background: '#e8f4fd',
+                            padding: '6px 12px',
+                            borderRadius: 20,
+                            color: 'var(--primary-color)',
+                            fontWeight: 700,
+                            fontSize: '0.9rem',
+                            flexShrink: 0
+                        }}>
+                            <Trophy size={14} />
                             {player.rapid}
                         </div>
                     </div>
@@ -119,93 +171,105 @@ export const Home = () => {
             </div>
 
             {/* News Details Overlay */}
-            {selectedNews && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    zIndex: 1000,
-                    background: '#fff',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    animation: 'slideUp 0.3s ease-out'
-                }}>
-                    {/* Overlay Header / Banner */}
+            {selectedNews && (() => {
+                // Generate gradient based on category
+                let gradient;
+                if (selectedNews.category === 'Tournament') {
+                    gradient = 'linear-gradient(135deg, #007bff, #0056b3)'; // Blue
+                } else if (selectedNews.category === 'App Changelog') {
+                    gradient = 'linear-gradient(135deg, #6c757d, #495057)'; // Grey
+                } else { // Community
+                    gradient = 'linear-gradient(135deg, #28a745, #1e7e34)'; // Green
+                }
+
+                return (
                     <div style={{
-                        height: '240px',
-                        background: selectedNews.gradient,
-                        color: 'white',
-                        position: 'relative',
+                        position: 'fixed',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        zIndex: 1000,
+                        background: '#fff',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'flex-end',
-                        padding: 20
+                        animation: 'slideUp 0.3s ease-out'
                     }}>
-                        <button
-                            onClick={closeNews}
-                            style={{
-                                position: 'absolute', top: 16, right: 16,
-                                background: 'rgba(0,0,0,0.3)',
-                                border: 'none',
-                                color: 'white',
-                                borderRadius: '50%',
-                                width: 36, height: 36,
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                cursor: 'pointer',
-                                backdropFilter: 'blur(4px)'
-                            }}
-                        >
-                            <X size={20} />
-                        </button>
-
-                        <span style={{
-                            fontSize: '0.8rem',
-                            background: 'rgba(255,255,255,0.2)',
-                            padding: '4px 10px',
-                            borderRadius: 20,
-                            alignSelf: 'flex-start',
-                            marginBottom: 10,
-                            backdropFilter: 'blur(4px)'
-                        }}>
-                            {selectedNews.category}
-                        </span>
-                        <h1 style={{ margin: 0, fontSize: '1.8rem', lineHeight: 1.2, textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
-                            {selectedNews.title}
-                        </h1>
-                    </div>
-
-                    {/* Content Body */}
-                    <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+                        {/* Overlay Header / Banner */}
                         <div style={{
+                            height: '240px',
+                            background: gradient,
+                            color: 'white',
+                            position: 'relative',
                             display: 'flex',
-                            alignItems: 'center',
-                            gap: 8,
-                            color: '#666',
-                            fontSize: '0.9rem',
-                            marginBottom: 16,
-                            borderBottom: '1px solid #eee',
-                            paddingBottom: 16
+                            flexDirection: 'column',
+                            justifyContent: 'flex-end',
+                            padding: 20
                         }}>
-                            <Clock size={16} />
-                            <span>{selectedNews.date}</span>
+                            <button
+                                onClick={closeNews}
+                                style={{
+                                    position: 'absolute', top: 16, right: 16,
+                                    background: 'rgba(0,0,0,0.3)',
+                                    border: 'none',
+                                    color: 'white',
+                                    borderRadius: '50%',
+                                    width: 36, height: 36,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    backdropFilter: 'blur(4px)'
+                                }}
+                            >
+                                <X size={20} />
+                            </button>
+
+                            <span style={{
+                                fontSize: '0.8rem',
+                                background: 'rgba(255,255,255,0.2)',
+                                padding: '4px 10px',
+                                borderRadius: 20,
+                                alignSelf: 'flex-start',
+                                marginBottom: 10,
+                                backdropFilter: 'blur(4px)'
+                            }}>
+                                {selectedNews.category}
+                            </span>
+                            <h1 style={{ margin: 0, fontSize: '1.8rem', lineHeight: 1.2, textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
+                                {selectedNews.title}
+                            </h1>
                         </div>
 
-                        <h3 style={{ margin: '0 0 16px', fontWeight: 500, color: '#444' }}>
-                            {selectedNews.subtitle}
-                        </h3>
+                        {/* Content Body */}
+                        <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 8,
+                                color: '#666',
+                                fontSize: '0.9rem',
+                                marginBottom: 16,
+                                borderBottom: '1px solid #eee',
+                                paddingBottom: 16
+                            }}>
+                                <Clock size={16} />
+                                <span>{selectedNews.date}</span>
+                            </div>
 
-                        <div style={{ lineHeight: 1.6, color: '#333', whiteSpace: 'pre-line' }}>
-                            {selectedNews.body}
+                            <h3 style={{ margin: '0 0 16px', fontWeight: 500, color: '#444' }}>
+                                {selectedNews.subtitle}
+                            </h3>
+
+                            <div style={{ lineHeight: 1.6, color: '#333', whiteSpace: 'pre-line' }}>
+                                {selectedNews.body}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                );
+            })()}
 
-            <style>{`
+            < style > {`
         @keyframes slideUp {
           from { transform: translateY(100%); }
           to { transform: translateY(0); }
         }
       `}</style>
-        </div>
+        </div >
     );
 };

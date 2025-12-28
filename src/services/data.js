@@ -16,42 +16,51 @@ const INITIAL_PLAYERS = [
 const INITIAL_NEWS = [
     {
         id: 1,
-        title: "Grand Prix 2025: Round 1 Results",
-        subtitle: "Unexpected upsets define the opening round as underdogs shine.",
-        date: "Oct 24, 2025 • 2:30 PM",
-        category: "Tournament Update",
-        gradient: "linear-gradient(135deg, #007bff, #0056b3)",
-        body: `The opening round of the 2025 Chess Grand Prix commenced with high tension and even higher stakes. Several top-seeded grandmasters found themselves in difficult positions against prepared challengers.
+        title: "Kape Probinsya Hosted Annual Isulan Tournament",
+        subtitle: "Local coffee shop becomes the heart of competitive chess in Sultan Kudarat.",
+        date: "Dec 15, 2024 • 10:00 AM",
+        category: "Tournament",
+        body: `Kape Probinsya, a beloved local coffee establishment in Isulan, Sultan Kudarat, proudly hosted the Annual Isulan Chess Tournament this year. The event brought together chess enthusiasts from across the region for an exciting day of strategic battles.
 
-      Magnus Carlsen managed to secure a win in a grinding endgame, demonstrating his trademark precision. However, other favorites weren't as lucky. 
-      
-      The local favorite, Ding Liren, held a draw against a fierce attack, proving that his defensive skills remain top-tier. Expect more action as we head into Round 2 tomorrow.`
+The tournament featured multiple categories including Open, Intermediate, and Junior divisions. Players enjoyed the cozy ambiance of Kape Probinsya while competing for prizes and recognition.
+
+Special thanks to the owners and staff of Kape Probinsya for providing an excellent venue, complete with refreshments and a welcoming atmosphere that made this tournament truly memorable.
+
+Winners will be announced at the closing ceremony. Stay tuned for more chess events at Kape Probinsya!`
     },
     {
         id: 2,
-        title: "New Rating Regulations",
-        subtitle: "FIDE announces changes effective from next quarter.",
-        date: "Oct 20, 2025 • 9:00 AM",
-        category: "FIDE News",
-        gradient: "linear-gradient(135deg, #6610f2, #4a00e0)",
-        body: `FIDE has released an official statement regarding the calculation of Rapid and Blitz ratings. The new K-factor adjustments aim to combat rating inflation and provide a more accurate reflection of current form for active players.
+        title: "Biyaherong Arbiter Chess Clinic",
+        subtitle: "Free chess training session held at Kape Probinsya Tacurong Branch.",
+        date: "Dec 10, 2024 • 2:00 PM",
+        category: "Community",
+        body: `The Biyaherong Arbiter initiative brought a special chess clinic to Kape Probinsya's Tacurong Branch, offering free training to aspiring players of all skill levels.
 
-      These changes will be implemented starting November 1st. Players are advised to review the official handbook for detailed mathematical breakdowns.`
+Led by certified arbiters and experienced coaches, the clinic covered fundamental tactics, opening principles, and endgame techniques. Participants ranged from complete beginners to intermediate players looking to sharpen their skills.
+
+The event was well-attended, with over 30 participants enjoying the interactive sessions. Kape Probinsya Tacurong provided the perfect setting with comfortable seating and complimentary refreshments.
+
+This community outreach program aims to promote chess education and make the game more accessible to everyone. Watch for future clinics coming to your area!`
     },
     {
         id: 3,
-        title: "Local Club Championship",
-        subtitle: "Registration is now open for the city-wide classic.",
-        date: "Oct 18, 2025 • 4:15 PM",
-        category: "Community",
-        gradient: "linear-gradient(135deg, #198754, #146c43)",
-        body: `The annual City Chess Club Championship is back! This year features a larger prize pool and three distinct categories: Open, U2000, and Junior.
+        title: "App Version 1.0 Released",
+        subtitle: "Chess Ratings app now available with player management and news features.",
+        date: "Dec 28, 2024 • 11:30 PM",
+        category: "App Changelog",
+        body: `We're excited to announce the initial release of the Chess Ratings application!
 
-      Venue: Community Hall
-      Dates: Nov 15 - Nov 20
-      Entry Fee: $50
-      
-      Sign up before the end of the month to receive an early-bird discount.`
+Features in v1.0:
+• Player database management with rapid ratings
+• Search and filter functionality
+• Admin dashboard for adding/editing players
+• News and announcements system
+• Responsive mobile-first design
+• Local data persistence
+
+This app was built to help chess communities track player ratings and stay updated with local chess news and events.
+
+Future updates will include tournament management, advanced statistics, and more. Thank you for your support!`
     }
 ];
 
@@ -119,4 +128,14 @@ export const addNews = (newsItem) => {
     news.unshift(newsItem);
     saveNews(news);
     return news;
+};
+
+// Reset data (clears localStorage and reloads initial data)
+export const resetData = () => {
+    localStorage.removeItem('chess_players');
+    localStorage.removeItem('chess_news');
+    return {
+        players: loadPlayers(),
+        news: loadNews()
+    };
 };
