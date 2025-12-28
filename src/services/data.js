@@ -165,11 +165,11 @@ export const getLogs = async () => {
 };
 
 // --- Auth Helper for Login form ---
-export const loginUser = async (username, password) => {
+export const loginUser = async (password) => {
     const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ password })
     });
     const data = await response.json();
     if (!response.ok) {

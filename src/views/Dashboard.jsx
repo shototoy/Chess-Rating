@@ -22,7 +22,7 @@ export const Dashboard = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const data = await loginUser('admin', password); // Hardcoding username as 'admin' for now or add input
+            const data = await loginUser(password);
             login(data.admin, data.token);
         } catch (error) {
             alert('Login failed: ' + error.message);

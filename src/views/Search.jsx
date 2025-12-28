@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePlayerContext } from '../context/PlayerContext';
 import { User, Search as SearchIcon, ArrowUpDown } from 'lucide-react';
 
@@ -14,6 +14,7 @@ export const Search = () => {
         loadMore
     } = usePlayerContext();
 
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
     const observer = useRef();
     const lastPlayerElementRef = useRef();
 
@@ -33,7 +34,7 @@ export const Search = () => {
     }, [loading, hasMore]);
 
     const handlePlayerClick = (player) => {
-        // setSelectedPlayer(player); // Logic for selecting player reserved for dashboard or detailed view
+        setSelectedPlayer(player);
     };
 
     return (
@@ -45,8 +46,60 @@ export const Search = () => {
             background: '#f7f9fc'
         }}>
 
-            {/* Top Section: Search Input */}
+            {/* Top Section: Search Input + Details */}
             <div style={{ padding: 16, paddingBottom: 0, flexShrink: 0 }}>
+                {/* Details Container */}
+                <div className="card" style={{
+                    background: 'white',
+                    minHeight: 160,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    border: '1px solid #eee',
+                    marginBottom: 16
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                        <div style={{
+                            width: 60, height: 60,
+                            background: '#eef2f7',
+                            borderRadius: '50%',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            flexShrink: 0
+                        }}>
+                            <User size={30} color={selectedPlayer ? "var(--primary-color)" : "#ccc"} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <h2 style={{ margin: 0, fontSize: '1.2rem', color: selectedPlayer ? '#333' : '#ccc' }}>
+                                {selectedPlayer ? `${selectedPlayer.firstName} ${selectedPlayer.lastName}` : 'Select Player'}
+                            </h2>
+                            <div style={{ color: selectedPlayer ? 'var(--text-secondary)' : '#eee', marginTop: 4 }}>
+                                {selectedPlayer ? selectedPlayer.title : 'Details will appear here'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginTop: 16 }}>
+                        <div style={{ background: '#f8f9fa', padding: 8, borderRadius: 6 }}>
+                            <small style={{ color: '#999', fontSize: '0.65rem', display: 'block' }}>FIDE ID</small>
+                            <div style={{ fontWeight: 600, color: selectedPlayer ? '#333' : '#e0e0e0' }}>
+                                {selectedPlayer ? selectedPlayer.id : '----'}
+                            </div>
+                        </div>
+                        <div style={{ background: '#f8f9fa', padding: 8, borderRadius: 6 }}>
+                            <small style={{ color: '#999', fontSize: '0.65rem', display: 'block' }}>Rapid</small>
+                            <div style={{ fontWeight: 600, color: selectedPlayer ? 'var(--primary-color)' : '#e0e0e0' }}>
+                                {selectedPlayer ? selectedPlayer.rapid : '----'}
+                            </div>
+                        </div>
+                        <div style={{ background: '#f8f9fa', padding: 8, borderRadius: 6 }}>
+                            <small style={{ color: '#999', fontSize: '0.65rem', display: 'block' }}>Born</small>
+                            <div style={{ fontWeight: 600, color: selectedPlayer ? '#333' : '#e0e0e0' }}>
+                                {selectedPlayer ? selectedPlayer.bYear : '----'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="input-group" style={{ position: 'relative', marginBottom: 12 }}>
                     <SearchIcon style={{ position: 'absolute', left: 12, top: 12, color: '#999' }} size={20} />
                     <input
@@ -113,6 +166,7 @@ export const Search = () => {
                                     <div
                                         ref={lastPlayerElementRef}
                                         key={player.id}
+                                        onClick={() => handlePlayerClick(player)}
                                         style={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
@@ -141,6 +195,7 @@ export const Search = () => {
                                 return (
                                     <div
                                         key={player.id}
+                                        onClick={() => handlePlayerClick(player)}
                                         style={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
