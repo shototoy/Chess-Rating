@@ -1,15 +1,15 @@
 import React from 'react';
 import { Search, LayoutDashboard, Home } from 'lucide-react';
 
-export const BottomNav = ({ currentTab, onTabChange }) => {
+export const BottomNav = ({ currentTab, onTabChange, style }) => {
     return (
-        <nav className="bottom-nav">
+        <nav className="bottom-nav" style={{ ...style, paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}>
             <div
                 className={`nav-item ${currentTab === 'search' ? 'active' : ''}`}
                 onClick={() => onTabChange('search')}
             >
                 <Search className="nav-icon" size={24} />
-                <span>Search</span>
+                <span style={{ fontSize: '0.75rem' }}>Search</span>
             </div>
 
             <div
@@ -27,7 +27,7 @@ export const BottomNav = ({ currentTab, onTabChange }) => {
                 }}>
                     <Home className="nav-icon" size={24} color={currentTab === 'home' ? 'white' : '#666'} style={{ marginBottom: 0 }} />
                 </div>
-                <span style={{ marginTop: 4 }}>Home</span>
+                <span style={{ marginTop: 4, fontSize: '0.75rem' }}>Home</span>
             </div>
 
             <div
@@ -35,8 +35,9 @@ export const BottomNav = ({ currentTab, onTabChange }) => {
                 onClick={() => onTabChange('dashboard')}
             >
                 <LayoutDashboard className="nav-icon" size={24} />
-                <span>Dashboard</span>
+                <span style={{ fontSize: '0.75rem' }}>Dashboard</span>
             </div>
         </nav>
     );
 };
+
