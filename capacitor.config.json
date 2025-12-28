@@ -1,0 +1,8 @@
+{
+    "appId": "com.example.chessratingapp",
+    "appName": "ChessRatingApp",
+    "webDir": "dist",
+    "server": {
+        "androidScheme": "https"
+    }
+}
