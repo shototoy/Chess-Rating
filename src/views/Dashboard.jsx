@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { LogIn, Plus, TrendingUp, Search as SearchIcon, Save, X, Megaphone, UserPlus, User } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { LogIn, Plus, TrendingUp, Search as SearchIcon, Save, X, Megaphone, UserPlus, User, Bold, Italic, Heading, Type, Eraser, CaseLower } from 'lucide-react';
 import { searchPlayers, updatePlayer, addPlayer, addNews, loginUser } from '../services/data';
 import { useAuth } from '../context/AuthContext';
 
@@ -18,6 +18,15 @@ export const Dashboard = () => {
     const [formData, setFormData] = useState({});
     const [focusedField, setFocusedField] = useState(null);
     const [newsData, setNewsData] = useState({ title: '', subtitle: '', category: 'Tournament', body: '' });
+    const editorRef = useRef(null);
+
+    // Sync editor content when newsData.body changes externally (not by user typing)
+    useEffect(() => {
+        if (editorRef.current && document.activeElement !== editorRef.current) {
+            editorRef.current.innerHTML = newsData.body;
+        }
+    }, [newsData.body]);
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -218,6 +227,33 @@ export const Dashboard = () => {
         );
     }
 
+    const [activeFormats, setActiveFormats] = useState([]);
+    const [isBodyExpanded, setIsBodyExpanded] = useState(false);
+
+    const checkFormats = () => {
+        const formats = [];
+        if (document.queryCommandState('bold')) formats.push('bold');
+        if (document.queryCommandState('italic')) formats.push('italic');
+
+        const blockValue = document.queryCommandValue('formatBlock');
+        if (blockValue && blockValue.toLowerCase() === 'h3') formats.push('H3');
+
+        // fontSize '1' is the value for size=1 (<font size="1">)
+        const sizeValue = document.queryCommandValue('fontSize');
+        if (sizeValue === '1') formats.push('small');
+
+        // 'div' is our 'normal' usually, or lack of others
+        if (!blockValue || blockValue.toLowerCase() === 'div') formats.push('normal');
+
+        setActiveFormats(formats);
+    };
+
+    const handleCommand = (e, command, value = null) => {
+        e.preventDefault();
+        document.execCommand(command, false, value);
+        checkFormats(); // Update state immediately after command
+    };
+
     if (activeModal === 'addNews') {
         return (
             <div style={{
@@ -275,9 +311,139 @@ export const Dashboard = () => {
                                     <option>Community</option>
                                 </select>
                             </div>
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                                <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>BODY TEXT</label>
-                                <textarea className="input-field" placeholder="Enter announcement details..." value={newsData.body} onChange={e => setNewsData({ ...newsData, body: e.target.value })} required style={{ flex: 1, resize: 'none', padding: '8px' }} />
+
+                            {/* Expandable WYSIWYG Editor */}
+                            <div style={{
+                                flex: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                minHeight: 0,
+                                position: isBodyExpanded ? 'fixed' : 'relative',
+                                top: isBodyExpanded ? 0 : 'auto',
+                                left: isBodyExpanded ? 0 : 'auto',
+                                right: isBodyExpanded ? 0 : 'auto',
+                                bottom: isBodyExpanded ? 0 : 'auto',
+                                zIndex: isBodyExpanded ? 1000 : 1,
+                                background: 'white',
+                                padding: isBodyExpanded ? 24 : 0,
+                                margin: isBodyExpanded ? 0 : 0
+                            }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                                    <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600 }}>BODY TEXT</label>
+                                    {isBodyExpanded && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsBodyExpanded(false)}
+                                            style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontWeight: 600 }}
+                                        >
+                                            Done
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Toolbar */}
+                                <div style={{
+                                    display: 'flex',
+                                    gap: 4, // More compact gap
+                                    marginBottom: 8, // Less margin
+                                    background: '#f8fafc',
+                                    padding: '4px', // Compact padding
+                                    borderRadius: 8,
+                                    border: '1px solid #e2e8f0',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap'
+                                }}>
+                                    <button
+                                        type="button"
+                                        onMouseDown={(e) => handleCommand(e, 'bold')}
+                                        className={`rich-text-btn ${activeFormats.includes('bold') ? 'active' : ''}`}
+                                        title="Bold"
+                                    >
+                                        <Bold size={16} />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onMouseDown={(e) => handleCommand(e, 'italic')}
+                                        className={`rich-text-btn ${activeFormats.includes('italic') ? 'active' : ''}`}
+                                        title="Italic"
+                                    >
+                                        <Italic size={16} />
+                                    </button>
+
+                                    {/* Size Options (No Separator) */}
+                                    <button
+                                        type="button"
+                                        onMouseDown={(e) => handleCommand(e, 'formatBlock', 'H3')}
+                                        className={`rich-text-btn ${activeFormats.includes('H3') ? 'active' : ''}`}
+                                        title="Header"
+                                    >
+                                        <Heading size={16} />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onMouseDown={(e) => {
+                                            handleCommand(e, 'removeFormat');
+                                            handleCommand(e, 'formatBlock', 'div');
+                                        }}
+                                        className="rich-text-btn" // 'Normal' doesn't usually stay active in the same way, or implies default
+                                        title="Normal Text"
+                                    >
+                                        <Type size={16} />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onMouseDown={(e) => handleCommand(e, 'fontSize', '1')}
+                                        className={`rich-text-btn ${activeFormats.includes('small') ? 'active' : ''}`}
+                                        title="Small Text"
+                                    >
+                                        <CaseLower size={16} />
+                                    </button>
+
+                                    <div style={{ flex: 1 }}></div>
+                                    <button type="button" onMouseDown={(e) => handleCommand(e, 'removeFormat')} className="rich-text-btn danger" title="Clear Formatting">
+                                        <Eraser size={16} />
+                                    </button>
+                                </div>
+
+                                {/* Editor Container (Relative for placeholder) */}
+                                <div style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <div
+                                        className="input-field"
+                                        contentEditable
+                                        ref={editorRef}
+                                        suppressContentEditableWarning
+                                        onFocus={() => setIsBodyExpanded(true)}
+                                        onInput={(e) => {
+                                            setNewsData({ ...newsData, body: e.currentTarget.innerHTML });
+                                            checkFormats();
+                                        }}
+                                        onKeyUp={checkFormats}
+                                        onMouseUp={checkFormats}
+                                        style={{
+                                            flex: 1,
+                                            resize: 'none',
+                                            padding: '12px',
+                                            overflowY: 'auto',
+                                            minHeight: isBodyExpanded ? 'auto' : '100px',
+                                            fontFamily: 'inherit',
+                                            lineHeight: 1.6,
+                                            outline: 'none'
+                                        }}
+                                    />
+                                    {!newsData.body && (
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            padding: '12px',
+                                            color: '#ccc',
+                                            pointerEvents: 'none',
+                                            fontStyle: 'italic'
+                                        }}>
+                                            Enter announcement details...
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <button type="submit" className="btn-primary" style={{ marginTop: 16, padding: 14, fontSize: '1rem', flexShrink: 0 }}>Post Announcement</button>
@@ -623,3 +789,60 @@ export const Dashboard = () => {
         </div>
     );
 };
+
+// Add Dashboard specific styles
+const style = document.createElement('style');
+style.textContent = `
+    .rich-text-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: 1px solid #e2e8f0;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #64748b;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .rich-text-btn:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        color: var(--primary-color);
+    }
+
+    .rich-text-btn.active {
+        background: #eff6ff;
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        transform: translateY(0);
+    }
+
+    .rich-text-btn:active {
+        transform: translateY(0);
+        box-shadow: none;
+        background: #e2e8f0;
+    }
+
+    .rich-text-btn.danger {
+        width: auto;
+        width: 32px;
+        padding: 0;
+        color: #ef4444;
+        border-color: #fecaca;
+        background: #fef2f2;
+    }
+
+    .rich-text-btn.danger:hover {
+        background: #fee2e2;
+        border-color: #fca5a5;
+        color: #dc2626;
+    }
+`;
+document.head.appendChild(style);

@@ -238,31 +238,31 @@ export const Home = () => {
                             <h1 style={{ margin: 0, fontSize: '1.8rem', lineHeight: 1.2, textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
                                 {selectedNews.title}
                             </h1>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 6,
+                                color: 'rgba(255,255,255,0.8)',
+                                fontSize: '0.85rem',
+                                marginTop: 8
+                            }}>
+                                <Clock size={14} />
+                                <span>{selectedNews.date}</span>
+                            </div>
                         </div>
 
                         {/* Content Body */}
                         <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 8,
-                                color: '#666',
-                                fontSize: '0.9rem',
-                                marginBottom: 16,
-                                borderBottom: '1px solid #eee',
-                                paddingBottom: 16
-                            }}>
-                                <Clock size={16} />
-                                <span>{selectedNews.date}</span>
-                            </div>
+
 
                             <h3 style={{ margin: '0 0 16px', fontWeight: 500, color: '#444' }}>
                                 {selectedNews.subtitle}
                             </h3>
 
-                            <div style={{ lineHeight: 1.6, color: '#333', whiteSpace: 'pre-line' }}>
-                                {selectedNews.body}
-                            </div>
+                            <div
+                                style={{ lineHeight: 1.6, color: '#333' }}
+                                dangerouslySetInnerHTML={{ __html: selectedNews.body }}
+                            />
                         </div>
                     </div>
                 );
