@@ -11,8 +11,9 @@ export const Home = () => {
         const fetchData = async () => {
             // 1. News Config (Prioritized)
             const NEWS_CACHE_KEY = 'news_cache';
+            const PLAYERS_CACHE_KEY = 'top_players_cache';
 
-            // Try loading from cache immediately
+            // Load from cache immediately (synchronous)
             try {
                 const cachedNews = localStorage.getItem(NEWS_CACHE_KEY);
                 if (cachedNews) {
@@ -22,20 +23,6 @@ export const Home = () => {
                 console.warn('News cache error:', e);
             }
 
-            // Fetch Fresh News & Update Cache
-            try {
-                const news = await getNews();
-                setNewsList(news);
-                localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify(news));
-            } catch (e) {
-                console.error('Failed to fetch news:', e);
-            }
-
-            // 2. Fetch Players (Secondary)
-            // 2. Fetch Players (Secondary)
-            const PLAYERS_CACHE_KEY = 'top_players_cache';
-
-            // Try cache first
             try {
                 const cachedPlayers = localStorage.getItem(PLAYERS_CACHE_KEY);
                 if (cachedPlayers) {
@@ -45,13 +32,30 @@ export const Home = () => {
                 console.warn('Players cache error:', e);
             }
 
-            // Fetch & Update Cache
+            // Fetch fresh data in background and only update if changed
             try {
-                // If we have cache, we still fetch to be consistent, but user won't see loading
+                const news = await getNews();
+                const newsString = JSON.stringify(news);
+                const cachedNewsString = localStorage.getItem(NEWS_CACHE_KEY);
+
+                if (newsString !== cachedNewsString) {
+                    setNewsList(news);
+                    localStorage.setItem(NEWS_CACHE_KEY, newsString);
+                }
+            } catch (e) {
+                console.error('Failed to fetch news:', e);
+            }
+
+            try {
                 const players = await getPlayers();
                 const sorted = [...players].sort((a, b) => b.rapid - a.rapid).slice(0, 3);
-                setTopPlayers(sorted);
-                localStorage.setItem(PLAYERS_CACHE_KEY, JSON.stringify(sorted));
+                const playersString = JSON.stringify(sorted);
+                const cachedPlayersString = localStorage.getItem(PLAYERS_CACHE_KEY);
+
+                if (playersString !== cachedPlayersString) {
+                    setTopPlayers(sorted);
+                    localStorage.setItem(PLAYERS_CACHE_KEY, playersString);
+                }
             } catch (e) {
                 console.error('Failed to fetch players:', e);
             }

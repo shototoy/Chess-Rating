@@ -42,8 +42,7 @@ export const Search = () => {
             height: 'calc(100vh - 60px - 60px)', // Minus header and nav height
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'hidden',
-            background: '#f7f9fc'
+            overflow: 'hidden'
         }}>
 
             {/* Top Section: Search Input + Details */}

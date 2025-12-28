@@ -142,8 +142,7 @@ export const Dashboard = () => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: 16,
-                background: 'var(--bg-color)'
+                padding: 16
             }}>
                 <div className="card" style={{ textAlign: 'center', padding: '40px 20px' }}>
                     <div style={{ background: '#eef2f7', width: 80, height: 80, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
@@ -177,7 +176,6 @@ export const Dashboard = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 padding: 16,
-                background: 'var(--bg-color)',
                 overflow: 'hidden'
             }}>
                 <div className="card" style={{
@@ -263,7 +261,6 @@ export const Dashboard = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 padding: 16,
-                background: 'var(--bg-color)',
                 overflow: 'hidden'
             }}>
                 <div className="card" style={{
@@ -462,8 +459,7 @@ export const Dashboard = () => {
             display: 'flex',
             flexDirection: 'column',
             padding: 16,
-            overflow: 'hidden', // Prevent page scroll
-            background: 'var(--bg-color)'
+            overflow: 'hidden' // Prevent page scroll
         }}>
 
             {/* Top 30%: Action Buttons */}

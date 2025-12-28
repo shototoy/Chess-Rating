@@ -1,0 +1,128 @@
+<svg width="375" height="667" viewBox="0 0 375 667" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Hexagonal geometric pattern -->
+    <pattern id="hex-pattern" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+      <path d="M30 0 L45 13 L45 39 L30 52 L15 39 L15 13 Z" 
+            fill="none" 
+            stroke="#3b82f6" 
+            stroke-width="0.5" 
+            stroke-opacity="0.15"/>
+    </pattern>
+    
+    <!-- Gradient overlay -->
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f7f9fc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8f0fe;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Base gradient background -->
+  <rect width="375" height="667" fill="url(#bg-gradient)"/>
+  
+  <!-- Hexagonal pattern overlay -->
+  <rect width="375" height="667" fill="url(#hex-pattern)"/>
+  
+  <!-- Dense chess piece watermarks -->
+  <g fill="#3b82f6" fill-opacity="0.08">
+    <!-- Row 1 -->
+    <g transform="translate(40, 60) scale(0.9)">
+      <circle cx="15" cy="6" r="4"/>
+      <rect x="12" y="11" width="6" height="8"/>
+      <path d="M8 20 L22 20 L24 24 L24 50 L6 50 L6 24 Z"/>
+      <rect x="4" y="50" width="24" height="5"/>
+    </g>
+    
+    <g transform="translate(160, 80) scale(1.0)">
+      <circle cx="12" cy="12" r="6"/>
+      <path d="M8 20 L16 20 L18 50 L6 50 Z"/>
+      <rect x="5" y="50" width="14" height="5"/>
+    </g>
+    
+    <g transform="translate(280, 50) scale(0.85)">
+      <rect x="8" y="8" width="5" height="5"/>
+      <rect x="16" y="8" width="5" height="5"/>
+      <rect x="24" y="8" width="5" height="5"/>
+      <rect x="8" y="13" width="21" height="37"/>
+      <rect x="6" y="50" width="25" height="5"/>
+    </g>
+    
+    <!-- Row 2 -->
+    <g transform="translate(100, 180) scale(1.1)">
+      <path d="M16 8 L24 4 L30 8 L30 16 L26 20 L20 20 L20 28 L30 40 L10 40 L10 28 L14 24 L14 16 Z"/>
+      <rect x="8" y="40" width="24" height="4"/>
+    </g>
+    
+    <g transform="translate(260, 200) scale(0.95)">
+      <circle cx="10" cy="8" r="3"/>
+      <path d="M7 13 L13 13 L15 45 L5 45 Z"/>
+      <rect x="4" y="45" width="12" height="4"/>
+    </g>
+    
+    <g transform="translate(20, 220) scale(0.8)">
+      <circle cx="15" cy="6" r="4"/>
+      <rect x="12" y="11" width="6" height="8"/>
+      <path d="M8 20 L22 20 L24 24 L24 50 L6 50 L6 24 Z"/>
+      <rect x="4" y="50" width="24" height="5"/>
+    </g>
+    
+    <!-- Row 3 (center) -->
+    <g transform="translate(180, 320) scale(1.2)">
+      <circle cx="12" cy="12" r="6"/>
+      <path d="M8 20 L16 20 L18 50 L6 50 Z"/>
+      <rect x="5" y="50" width="14" height="5"/>
+    </g>
+    
+    <g transform="translate(50, 340) scale(0.9)">
+      <rect x="8" y="8" width="5" height="5"/>
+      <rect x="16" y="8" width="5" height="5"/>
+      <rect x="24" y="8" width="5" height="5"/>
+      <rect x="8" y="13" width="21" height="37"/>
+      <rect x="6" y="50" width="25" height="5"/>
+    </g>
+    
+    <g transform="translate(310, 350) scale(0.85)">
+      <path d="M16 8 L24 4 L30 8 L30 16 L26 20 L20 20 L20 28 L30 40 L10 40 L10 28 L14 24 L14 16 Z"/>
+      <rect x="8" y="40" width="24" height="4"/>
+    </g>
+    
+    <!-- Row 4 -->
+    <g transform="translate(140, 460) scale(1.0)">
+      <circle cx="10" cy="8" r="3"/>
+      <path d="M7 13 L13 13 L15 45 L5 45 Z"/>
+      <rect x="4" y="45" width="12" height="4"/>
+    </g>
+    
+    <g transform="translate(270, 480) scale(0.95)">
+      <circle cx="15" cy="6" r="4"/>
+      <rect x="12" y="11" width="6" height="8"/>
+      <path d="M8 20 L22 20 L24 24 L24 50 L6 50 L6 24 Z"/>
+      <rect x="4" y="50" width="24" height="5"/>
+    </g>
+    
+    <g transform="translate(30, 500) scale(0.8)">
+      <circle cx="12" cy="12" r="6"/>
+      <path d="M8 20 L16 20 L18 50 L6 50 Z"/>
+      <rect x="5" y="50" width="14" height="5"/>
+    </g>
+    
+    <!-- Row 5 (bottom) -->
+    <g transform="translate(100, 580) scale(1.1)">
+      <rect x="8" y="8" width="5" height="5"/>
+      <rect x="16" y="8" width="5" height="5"/>
+      <rect x="24" y="8" width="5" height="5"/>
+      <rect x="8" y="13" width="21" height="37"/>
+      <rect x="6" y="50" width="25" height="5"/>
+    </g>
+    
+    <g transform="translate(240, 600) scale(0.9)">
+      <path d="M16 8 L24 4 L30 8 L30 16 L26 20 L20 20 L20 28 L30 40 L10 40 L10 28 L14 24 L14 16 Z"/>
+      <rect x="8" y="40" width="24" height="4"/>
+    </g>
+    
+    <g transform="translate(20, 620) scale(0.85)">
+      <circle cx="10" cy="8" r="3"/>
+      <path d="M7 13 L13 13 L15 45 L5 45 Z"/>
+      <rect x="4" y="45" width="12" height="4"/>
+    </g>
+  </g>
+</svg>
