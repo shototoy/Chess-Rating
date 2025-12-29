@@ -64,6 +64,15 @@ export const Home = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        // Test Redis connection on load
+        import('../services/data').then(({ testRedis }) => {
+            testRedis().then(result => {
+                console.log('Redis test result:', result);
+            });
+        });
+    }, []);
+
     const openNews = (news) => {
         setSelectedNews(news);
     };

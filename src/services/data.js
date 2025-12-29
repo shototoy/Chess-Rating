@@ -1,4 +1,3 @@
-
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 const getHeaders = () => {
@@ -169,4 +168,15 @@ export const loginUser = async (password) => {
         throw new Error(data.error || 'Login failed');
     }
     return data;
+};
+
+export const testRedis = async () => {
+    try {
+        const response = await fetch(`${API_URL}/status/redis-test`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('testRedis error:', error);
+        return { success: false, error: error.message };
+    }
 };
