@@ -1,3 +1,4 @@
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 const getHeaders = () => {
@@ -16,7 +17,6 @@ const handleResponse = async (response) => {
     return data.data;
 };
 
-// Helper to map DB player to Frontend player
 const mapPlayer = (p) => ({
     id: p.id,
     firstName: p.first_name,
@@ -26,10 +26,6 @@ const mapPlayer = (p) => ({
     bYear: p.birth_year
 });
 
-// Helper to map Frontend player to DB payload (for API)
-// The API expects camelCase but somewhat matches what we send, 
-// checking playersController.js: it expects firstName, lastName, rapidRating, bYear.
-// But frontend uses 'rapid' instead of 'rapidRating'.
 const mapPlayerPayload = (p) => ({
     id: p.id,
     firstName: p.firstName,
@@ -39,7 +35,6 @@ const mapPlayerPayload = (p) => ({
     bYear: p.bYear
 });
 
-// --- Players ---
 
 export const getPlayers = async ({ page = 1, limit = 50, sortBy = 'rapid_rating', order = 'desc' } = {}) => {
     try {
@@ -105,7 +100,7 @@ export const deletePlayer = async (id) => {
     return getPlayers();
 };
 
-// Helper to map DB news to Frontend news
+
 const mapNews = (n) => ({
     id: n.id,
     title: n.title,
@@ -122,7 +117,6 @@ const mapNews = (n) => ({
     })
 });
 
-// --- News ---
 
 export const getNews = async () => {
     try {
@@ -154,8 +148,6 @@ export const deleteNews = async (id) => {
     return getNews();
 };
 
-// --- Logs ---
-
 export const getLogs = async () => {
     try {
         const response = await fetch(`${API_URL}/logs`, { headers: getHeaders() });
@@ -166,7 +158,6 @@ export const getLogs = async () => {
     }
 };
 
-// --- Auth Helper for Login form ---
 export const loginUser = async (password) => {
     const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',

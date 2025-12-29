@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Verify token on mount
         const verifyToken = async () => {
             if (!token) {
                 setLoading(false);

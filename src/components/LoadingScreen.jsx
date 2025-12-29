@@ -8,13 +8,12 @@ export const LoadingScreen = ({ onComplete }) => {
 
     useEffect(() => {
         const startTime = Date.now();
-        const MIN_LOADING_TIME = 2000; // 2 seconds minimum
+        const MIN_LOADING_TIME = 2000;
 
         const initialize = async () => {
             try {
-                // Step 0: Check maintenance mode first
                 setStatus('Checking server status...');
-                setProgress(30); // Stuck at 30% if maintenance mode
+                setProgress(10);
 
                 const statusCheck = await fetch(`${API_URL}/status`, {
                     method: 'GET',
@@ -24,16 +23,13 @@ export const LoadingScreen = ({ onComplete }) => {
                 if (statusCheck.ok) {
                     const { maintenanceMode } = await statusCheck.json();
                     if (maintenanceMode) {
-                        // Maintenance mode is active - stop loading
+                        setProgress(30);
                         setStatus('High Server Traffic: Unable to establish connection');
-                        // Keep progress stuck at 30% (where it got stuck)
-                        return; // Don't proceed with initialization
+                        return; 
                     }
                 }
-
-                // Step 1: Wake up backend (30%)
                 setStatus('Connecting to server...');
-                setProgress(10);
+                setProgress(30);
 
                 const healthCheck = await fetch(API_URL.replace('/api', ''), {
                     method: 'GET',
@@ -46,7 +42,6 @@ export const LoadingScreen = ({ onComplete }) => {
 
                 setProgress(30);
 
-                // Step 2: Pre-cache news (60%)
                 setStatus('Loading announcements...');
                 const newsResponse = await fetch(`${API_URL}/news`);
                 if (newsResponse.ok) {
@@ -55,17 +50,13 @@ export const LoadingScreen = ({ onComplete }) => {
                 }
                 setProgress(60);
 
-                // Step 3: Pre-cache top players (90%)
                 setStatus('Loading leaderboard...');
                 const playersResponse = await fetch(`${API_URL}/players?limit=50&sortBy=rapid_rating&order=desc`);
                 if (playersResponse.ok) {
                     const playersData = await playersResponse.json();
                     const players = playersData.data || [];
 
-                    // Cache full leaderboard
                     localStorage.setItem('leaderboard_cache', JSON.stringify(players));
-
-                    // Cache top 3 for Home
                     const top3 = players.slice(0, 3).map(p => ({
                         id: p.id,
                         firstName: p.first_name,
@@ -77,12 +68,8 @@ export const LoadingScreen = ({ onComplete }) => {
                     localStorage.setItem('top_players_cache', JSON.stringify(top3));
                 }
                 setProgress(90);
-
-                // Step 4: Complete
                 setStatus('Ready!');
                 setProgress(100);
-
-                // Ensure minimum loading time
                 const elapsed = Date.now() - startTime;
                 const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsed);
 
@@ -93,8 +80,6 @@ export const LoadingScreen = ({ onComplete }) => {
             } catch (error) {
                 console.error('Initialization error:', error);
                 setStatus('Connection failed. Retrying...');
-
-                // Retry after 2 seconds
                 setTimeout(() => {
                     initialize();
                 }, 2000);
@@ -119,7 +104,6 @@ export const LoadingScreen = ({ onComplete }) => {
             zIndex: 9999,
             color: 'white'
         }}>
-            {/* Logo */}
             <div style={{
                 width: 420,
                 height: 420,
@@ -142,9 +126,6 @@ export const LoadingScreen = ({ onComplete }) => {
                 />
             </div>
 
-
-
-            {/* Progress Bar - Bigger */}
             <div style={{
                 width: 280,
                 height: 6,
@@ -162,7 +143,6 @@ export const LoadingScreen = ({ onComplete }) => {
                 }} />
             </div>
 
-            {/* Status Text */}
             <p style={{
                 fontSize: '0.9rem',
                 margin: '0 0 12px 0',
@@ -173,7 +153,6 @@ export const LoadingScreen = ({ onComplete }) => {
                 {status}
             </p>
 
-            {/* Developer Credit - Smaller */}
             <p style={{
                 fontSize: '0.65rem',
                 margin: 0,

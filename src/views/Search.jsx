@@ -39,15 +39,13 @@ export const Search = () => {
 
     return (
         <div style={{
-            height: 'calc(100vh - 60px - 60px)', // Minus header and nav height
+            height: 'calc(100vh - 60px - 60px)',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden'
         }}>
 
-            {/* Top Section: Search Input + Details */}
             <div style={{ padding: 16, paddingBottom: 0, flexShrink: 0 }}>
-                {/* Details Container */}
                 <div className="card" style={{
                     background: 'white',
                     minHeight: 160,
@@ -112,7 +110,7 @@ export const Search = () => {
                 </div>
             </div>
 
-            {/* Results Table Header */}
+                
             <div style={{
                 display: 'flex',
                 padding: '8px 32px',
@@ -144,7 +142,7 @@ export const Search = () => {
                 </div>
             </div>
 
-            {/* Scrollable List */}
+            
             <div className="card" style={{
                 flex: 1,
                 overflowY: 'auto',

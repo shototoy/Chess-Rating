@@ -9,11 +9,11 @@ export const Home = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // 1. News Config (Prioritized)
+            
             const NEWS_CACHE_KEY = 'news_cache';
             const PLAYERS_CACHE_KEY = 'top_players_cache';
 
-            // Load from cache immediately (synchronous)
+            
             try {
                 const cachedNews = localStorage.getItem(NEWS_CACHE_KEY);
                 if (cachedNews) {
@@ -32,7 +32,7 @@ export const Home = () => {
                 console.warn('Players cache error:', e);
             }
 
-            // Fetch fresh data in background and only update if changed
+            
             try {
                 const news = await getNews();
                 const newsString = JSON.stringify(news);
@@ -74,7 +74,7 @@ export const Home = () => {
 
     return (
         <div className="container" style={{ position: 'relative' }}>
-            {/* News Carousel */}
+            
             <h3 style={{ margin: '0px 0px 10px 0px', display: 'flex', alignItems: 'center', gap: 8, color: 'var(--primary-color)' }}>
                 <Newspaper size={20} /> Latest News
             </h3>
@@ -89,14 +89,14 @@ export const Home = () => {
                 touchAction: 'pan-x'
             }}>
                 {newsList.map(news => {
-                    // Generate gradient based on category
+                    
                     let gradient;
                     if (news.category === 'Tournament') {
-                        gradient = 'linear-gradient(135deg, #007bff, #0056b3)'; // Blue
+                        gradient = 'linear-gradient(135deg, #007bff, #0056b3)';
                     } else if (news.category === 'App Changelog') {
-                        gradient = 'linear-gradient(135deg, #6c757d, #495057)'; // Grey
-                    } else { // Community
-                        gradient = 'linear-gradient(135deg, #28a745, #1e7e34)'; // Green
+                        gradient = 'linear-gradient(135deg, #6c757d, #495057)';
+                    } else {
+                        gradient = 'linear-gradient(135deg, #28a745, #1e7e34)';
                     }
 
                     return (
@@ -119,7 +119,7 @@ export const Home = () => {
                                 overflow: 'hidden'
                             }}
                         >
-                            {/* Decorative Shine */}
+            
                             <div style={{
                                 position: 'absolute', top: -50, right: -50, width: 100, height: 100, background: 'rgba(255,255,255,0.1)', borderRadius: '50%'
                             }} />
@@ -144,7 +144,7 @@ export const Home = () => {
                 })}
             </div>
 
-            {/* Leaderboard */}
+            
             <h3 style={{ margin: '0 0 10px', display: 'flex', alignItems: 'center', gap: 8, color: 'var(--primary-color)' }}>
                 <TrendingUp size={20} /> Top Rated Players
             </h3>
@@ -156,7 +156,7 @@ export const Home = () => {
                         padding: '12px 16px',
                         borderBottom: index < topPlayers.length - 1 ? '1px solid #f0f0f0' : 'none'
                     }}>
-                        {/* Rank Badge */}
+                        
                         <div style={{
                             width: 32,
                             height: 32,
@@ -174,7 +174,7 @@ export const Home = () => {
                             {index + 1}
                         </div>
 
-                        {/* Player Info */}
+                        
                         <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{
                                 fontWeight: 600,
@@ -196,7 +196,7 @@ export const Home = () => {
                             </div>
                         </div>
 
-                        {/* Rating Badge */}
+                        
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
@@ -216,16 +216,16 @@ export const Home = () => {
                 ))}
             </div>
 
-            {/* News Details Overlay */}
+            
             {selectedNews && (() => {
-                // Generate gradient based on category
+                
                 let gradient;
                 if (selectedNews.category === 'Tournament') {
-                    gradient = 'linear-gradient(135deg, #007bff, #0056b3)'; // Blue
+                    gradient = 'linear-gradient(135deg, #007bff, #0056b3)';
                 } else if (selectedNews.category === 'App Changelog') {
-                    gradient = 'linear-gradient(135deg, #6c757d, #495057)'; // Grey
-                } else { // Community
-                    gradient = 'linear-gradient(135deg, #28a745, #1e7e34)'; // Green
+                    gradient = 'linear-gradient(135deg, #6c757d, #495057)';
+                } else {
+                    gradient = 'linear-gradient(135deg, #28a745, #1e7e34)';
                 }
 
                 return (
@@ -238,7 +238,7 @@ export const Home = () => {
                         flexDirection: 'column',
                         animation: 'slideUp 0.3s ease-out'
                     }}>
-                        {/* Overlay Header / Banner */}
+                        
                         <div style={{
                             height: '240px',
                             background: gradient,
@@ -293,7 +293,7 @@ export const Home = () => {
                             </div>
                         </div>
 
-                        {/* Content Body */}
+                        
                         <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
 
 

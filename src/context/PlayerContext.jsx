@@ -13,13 +13,10 @@ export const PlayerProvider = ({ children }) => {
     const [query, setQuery] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: 'rapid', direction: 'desc' });
 
-    // Cache key for localStorage
     const CACHE_KEY = 'leaderboard_cache';
-    const CACHE_LIMIT_BYTES = 4500000; // Safety margin for 5MB limit
+    const CACHE_LIMIT_BYTES = 4500000;
 
-    // Initial Load: Check Cache then Revalidate
     useEffect(() => {
-        // 1. Try to load from cache immediately (Instant UI)
         try {
             const cached = localStorage.getItem(CACHE_KEY);
             if (cached) {
@@ -27,19 +24,18 @@ export const PlayerProvider = ({ children }) => {
                 if (Array.isArray(parsed) && parsed.length > 0) {
                     console.log('Using cached leaderboard:', parsed.length, 'items');
                     setPlayers(parsed);
-                    // Assume if we have cache, we might have more. 
-                    // But to be safe, we'll start Revalidation from Page 1 anyway.
+                    
                 }
             }
         } catch (e) {
             console.error('Cache load failed:', e);
         }
 
-        // 2. Revalidate (Fetch fresh data in background)
+        
         loadPlayers(1, true);
     }, []);
 
-    // Save to Cache whenever players update (ONLY if showing default view: no query, default sort)
+    
     useEffect(() => {
         if (!query && sortConfig.key === 'rapid' && sortConfig.direction === 'desc' && players.length > 0) {
             try {
@@ -83,14 +79,14 @@ export const PlayerProvider = ({ children }) => {
                 setPlayers(newData);
             } else {
                 setPlayers(prev => {
-                    // Avoid duplicates if any overlap
+                    
                     const existingIds = new Set(prev.map(p => p.id));
                     const uniqueNew = newData.filter(p => !existingIds.has(p.id));
                     return [...prev, ...uniqueNew];
                 });
             }
 
-            // If we got fewer than requested, we reached the end
+            
             setHasMore(newData.length === 50);
             setPage(pageNum);
         } catch (error) {
@@ -104,28 +100,25 @@ export const PlayerProvider = ({ children }) => {
         setQuery(newQuery);
         setPage(1);
         setHasMore(true);
-        // If clearing search, revert to cache immediately if possible, or fetch
+        
         if (!newQuery) {
-            // Re-load default view
+            
             try {
                 const cached = localStorage.getItem(CACHE_KEY);
                 if (cached) {
                     setPlayers(JSON.parse(cached));
-                    // Revalidate silently? Or just trust cache for now? 
-                    // Let's revalidate page 1 to be sure
+                    
                     loadPlayers(1, true);
                     return;
                 }
             } catch (e) { }
         }
 
-        // If searching or no cache, fetch fresh
-        // For search, we replace list
+        
         setPlayers([]);
         setLoading(true);
         try {
-            // Search logic handled in loadPlayers via state, but we need to trigger it manually here effectively
-            // because state updates are async.
+            
             let sortBy = 'rapid_rating';
             if (sortConfig.key === 'name') sortBy = 'name';
 
@@ -148,25 +141,25 @@ export const PlayerProvider = ({ children }) => {
         const newConfig = { key, direction };
         setSortConfig(newConfig);
 
-        // Clear and Reload
+        
         setPage(1);
         setPlayers([]);
         setHasMore(true);
 
-        // Trigger fetch (params need to be passed explicitly because state won't update in this closure yet)
+        
         setLoading(true);
         (async () => {
             try {
                 let sortBy = 'rapid_rating';
-                if (key === 'name') sortBy = 'name'; // Matches backend expectation validation logic
+                if (key === 'name') sortBy = 'name';
                 else if (key === 'rapid') sortBy = 'rapid_rating';
 
                 let data = [];
                 if (query) {
-                    // If searching, use searchPlayers with sort params
+                    
                     data = await searchPlayers(query, 1, 50, sortBy, direction);
                 } else {
-                    // Default list
+                    
                     data = await getPlayers({
                         page: 1,
                         limit: 50,
