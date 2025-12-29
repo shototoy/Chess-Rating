@@ -5,6 +5,8 @@ import App from './App'
 import { AuthProvider } from './context/AuthContext'
 import { PlayerProvider } from './context/PlayerContext'
 
+// Always clear admin token on app start (cache bust)
+localStorage.removeItem('token');
 
 console.log('Backend URL:', import.meta.env.VITE_API_URL);
 

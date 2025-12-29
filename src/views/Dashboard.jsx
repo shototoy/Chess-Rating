@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Toast } from '../components/Toast';
 import { LogIn, Plus, TrendingUp, Search as SearchIcon, Save, X, Megaphone, UserPlus, User, Bold, Italic, Heading, Type, Eraser, CaseLower } from 'lucide-react';
 import { searchPlayers, updatePlayer, addPlayer, addNews, loginUser } from '../services/data';
 import { useAuth } from '../context/AuthContext';
 
 export const Dashboard = () => {
+        const [toast, setToast] = useState({ show: false, message: '', color: undefined });
     const { user, login, isAuthenticated } = useAuth();
     
     const [password, setPassword] = useState('');
@@ -97,14 +99,14 @@ export const Dashboard = () => {
             bYear: parseInt(formData.bYear)
         };
         await updatePlayer(updated);
-        setSelectedPlayer(updated);
-        alert('Player updated successfully!');
+        setSelectedPlayer(null); // Reset profile editor
+        setFormData({});
+        setToast({ show: true, message: 'Player updated successfully!', color: 'var(--primary-color)' });
     };
 
     const submitNewPlayer = async (e) => {
         e.preventDefault();
         const newPlayer = {
-            
             lastName: formData.lastName,
             firstName: formData.firstName,
             title: formData.title,
@@ -114,15 +116,12 @@ export const Dashboard = () => {
         await addPlayer(newPlayer);
         setActiveModal(null);
         setFormData({});
-        alert('Player added!');
+        setToast({ show: true, message: 'Player added!', color: 'var(--primary-color)' });
     };
 
     const submitNews = async (e) => {
         e.preventDefault();
-
-        
         const newItem = {
-            
             title: newsData.title,
             subtitle: newsData.subtitle,
             category: newsData.category,
@@ -131,7 +130,7 @@ export const Dashboard = () => {
         await addNews(newItem);
         setActiveModal(null);
         setNewsData({ title: '', subtitle: '', category: 'Tournament', body: '' });
-        alert('Announcement posted!');
+        setToast({ show: true, message: 'Announcement posted!', color: '#6610f2' });
     };
 
     if (!isAuthenticated) {
@@ -453,14 +452,21 @@ export const Dashboard = () => {
     }
 
     return (
-        <div style={{
-            height: 'calc(100vh - 60px - 60px)',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            padding: 16,
-            overflow: 'hidden'
-        }}>
+        <>
+            <Toast
+                message={toast.message}
+                show={toast.show}
+                color={toast.color}
+                onClose={() => setToast(t => ({ ...t, show: false }))}
+            />
+            <div style={{
+                height: 'calc(100vh - 60px - 60px)',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                padding: 16,
+                overflow: 'hidden'
+            }}>
 
             
             <div style={{
@@ -784,7 +790,8 @@ export const Dashboard = () => {
                     </div>
                 )}
             </div>
-        </div>
+            </div>
+        </>
     );
 };
 

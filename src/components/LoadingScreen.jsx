@@ -137,31 +137,40 @@ export const LoadingScreen = ({ onComplete }) => {
                 <div style={{
                     width: `${progress}%`,
                     height: '100%',
-                    background: status.includes('High Server Traffic') ? '#ef4444' : 'white', // Red for error
+                    background: status.includes('High Server Traffic') ? '#ef4444' : 'white',
                     transition: 'width 0.3s ease',
                     borderRadius: 3
                 }} />
             </div>
 
+
             <p style={{
-                fontSize: '0.9rem',
-                margin: '0 0 12px 0',
+                fontSize: '1.3rem',
+                margin: '0 0 8px 0',
+                fontWeight: status.includes('High Server Traffic') ? 700 : 500,
+                color: status.includes('High Server Traffic') ? '#ef4444' : 'white',
                 opacity: 1,
-                fontWeight: status.includes('High Server Traffic') ? 700 : 500, // Bold for error
-                color: status.includes('High Server Traffic') ? '#ef4444' : 'white' // Red for error
+                letterSpacing: 1,
+                textAlign: 'center'
             }}>
                 {status}
             </p>
-
             <p style={{
-                fontSize: '0.65rem',
-                margin: 0,
-                color: '#4ade80',
-                fontWeight: 600,
-                opacity: 0.8
+                fontSize: '0.95rem',
+                margin: '0 0 2px 0',
+                color: 'white',
+                opacity: 0.85,
+                textAlign: 'center',
+                fontWeight: 600
             }}>
-                Developed By: NaN Coda
+                Powered By: Biyaherong Arbiter
             </p>
+
+            <div style={{ position: 'absolute', bottom: 18, left: 0, right: 0, textAlign: 'center' }}>
+                <span style={{ fontSize: '0.75rem', color: '#4ade80', fontWeight: 600, opacity: 0.8 }}>
+                    Developed By: NaN Coda
+                </span>
+            </div>
         </div>
     );
 };

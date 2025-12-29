@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Toast } from './components/Toast';
 import './index.css';
 import { Home } from './views/Home';
 import { Search } from './views/Search';
@@ -9,6 +10,7 @@ import { LoadingScreen } from './components/LoadingScreen';
 function App() {
     const [currentTab, setCurrentTab] = useState('home');
     const [isLoading, setIsLoading] = useState(true);
+    const [toast, setToast] = useState({ show: false, message: '', color: undefined });
 
     const handleTabChange = (tab) => {
         setCurrentTab(tab);
@@ -24,7 +26,7 @@ function App() {
         }
 
         if (currentTab === 'dashboard') {
-            return <Dashboard />;
+            return <Dashboard setToast={setToast} />;
         }
 
         // Default to home
@@ -37,8 +39,14 @@ function App() {
 
     return (
         <div className="app-shell">
+            <Toast
+                message={toast.message}
+                show={toast.show}
+                color={toast.color}
+                onClose={() => setToast(t => ({ ...t, show: false }))}
+            />
             <header className="app-header" style={{ paddingTop: '1.5rem' }}>
-                Biyaherong Arbiter
+                Philippines Chess Rating
             </header>
 
             <main style={{ paddingBottom: 80 }}>
