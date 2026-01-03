@@ -47,18 +47,19 @@ export const Search = () => {
 
             <div style={{ padding: 16, paddingBottom: 0, flexShrink: 0 }}>
                 <div className="card" style={{
-                    background: 'white',
+                    background: 'var(--surface-color)',
                     minHeight: 160,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    border: '1px solid #eee',
-                    marginBottom: 16
+                    border: '1px solid var(--border-color)',
+                    marginBottom: 16,
+                    boxShadow: 'var(--shadow-md)'
                 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                         <div style={{
                             width: 60, height: 60,
-                            background: '#eef2f7',
+                            background: '#eff6ff',
                             borderRadius: '50%',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             flexShrink: 0
@@ -66,7 +67,7 @@ export const Search = () => {
                             <User size={30} color={selectedPlayer ? "var(--primary-color)" : "#ccc"} />
                         </div>
                         <div style={{ flex: 1 }}>
-                            <h2 style={{ margin: 0, fontSize: '1.2rem', color: selectedPlayer ? '#333' : '#ccc' }}>
+                            <h2 style={{ margin: 0, fontSize: '1.2rem', color: selectedPlayer ? 'var(--text-primary)' : '#ccc' }}>
                                 {selectedPlayer ? `${selectedPlayer.firstName} ${selectedPlayer.lastName}` : 'Select Player'}
                             </h2>
                             <div style={{ color: selectedPlayer ? 'var(--text-secondary)' : '#eee', marginTop: 4 }}>
@@ -76,21 +77,21 @@ export const Search = () => {
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginTop: 16 }}>
-                        <div style={{ background: '#f8f9fa', padding: 8, borderRadius: 6 }}>
-                            <small style={{ color: '#999', fontSize: '0.65rem', display: 'block' }}>FIDE ID</small>
-                            <div style={{ fontWeight: 600, color: selectedPlayer ? '#333' : '#e0e0e0' }}>
+                        <div style={{ background: 'var(--bg-color)', padding: 8, borderRadius: 6 }}>
+                            <small style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', display: 'block' }}>FIDE ID</small>
+                            <div style={{ fontWeight: 600, color: selectedPlayer ? 'var(--text-primary)' : '#e0e0e0' }}>
                                 {selectedPlayer ? selectedPlayer.id : '----'}
                             </div>
                         </div>
-                        <div style={{ background: '#f8f9fa', padding: 8, borderRadius: 6 }}>
-                            <small style={{ color: '#999', fontSize: '0.65rem', display: 'block' }}>Rapid</small>
+                        <div style={{ background: 'var(--bg-color)', padding: 8, borderRadius: 6 }}>
+                            <small style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', display: 'block' }}>Rapid</small>
                             <div style={{ fontWeight: 600, color: selectedPlayer ? 'var(--primary-color)' : '#e0e0e0' }}>
                                 {selectedPlayer ? selectedPlayer.rapid : '----'}
                             </div>
                         </div>
-                        <div style={{ background: '#f8f9fa', padding: 8, borderRadius: 6 }}>
-                            <small style={{ color: '#999', fontSize: '0.65rem', display: 'block' }}>Born</small>
-                            <div style={{ fontWeight: 600, color: selectedPlayer ? '#333' : '#e0e0e0' }}>
+                        <div style={{ background: 'var(--bg-color)', padding: 8, borderRadius: 6 }}>
+                            <small style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', display: 'block' }}>Born</small>
+                            <div style={{ fontWeight: 600, color: selectedPlayer ? 'var(--text-primary)' : '#e0e0e0' }}>
                                 {selectedPlayer ? selectedPlayer.bYear : '----'}
                             </div>
                         </div>
@@ -110,15 +111,15 @@ export const Search = () => {
                 </div>
             </div>
 
-                
+
             <div style={{
                 display: 'flex',
                 padding: '8px 32px',
-                background: '#e0e6ed',
+                background: '#e2e8f0',
                 fontWeight: 600,
                 fontSize: '0.85rem',
-                color: '#555',
-                borderBottom: '1px solid #ccc'
+                color: '#475569',
+                borderBottom: '1px solid #cbd5e1'
             }}>
                 <div
                     style={{ flex: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
@@ -142,7 +143,7 @@ export const Search = () => {
                 </div>
             </div>
 
-            
+
             <div className="card" style={{
                 flex: 1,
                 overflowY: 'auto',

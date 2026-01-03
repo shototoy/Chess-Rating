@@ -49,7 +49,7 @@ function App() {
                 Philippines Chess Rating
             </header>
 
-            <main style={{ paddingBottom: 80 }}>
+            <main style={{ paddingBottom: 100 }}>
                 {renderContent()}
             </main>
 

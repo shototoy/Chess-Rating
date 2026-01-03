@@ -5,24 +5,24 @@ import { searchPlayers, updatePlayer, addPlayer, addNews, loginUser } from '../s
 import { useAuth } from '../context/AuthContext';
 
 export const Dashboard = () => {
-        const [toast, setToast] = useState({ show: false, message: '', color: undefined });
+    const [toast, setToast] = useState({ show: false, message: '', color: undefined });
     const { user, login, isAuthenticated } = useAuth();
-    
+
     const [password, setPassword] = useState('');
 
-    
+
     const [activeModal, setActiveModal] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [dropdownResults, setDropdownResults] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
 
-    
+
     const [formData, setFormData] = useState({});
     const [focusedField, setFocusedField] = useState(null);
     const [newsData, setNewsData] = useState({ title: '', subtitle: '', category: 'Tournament', body: '' });
     const editorRef = useRef(null);
 
-    
+
     useEffect(() => {
         if (editorRef.current && document.activeElement !== editorRef.current) {
             editorRef.current.innerHTML = newsData.body;
@@ -40,11 +40,11 @@ export const Dashboard = () => {
         const blockValue = document.queryCommandValue('formatBlock');
         if (blockValue && blockValue.toLowerCase() === 'h3') formats.push('H3');
 
-        
+
         const sizeValue = document.queryCommandValue('fontSize');
         if (sizeValue === '1') formats.push('small');
 
-        
+
         if (!blockValue || blockValue.toLowerCase() === 'div') formats.push('normal');
 
         setActiveFormats(formats);
@@ -71,7 +71,7 @@ export const Dashboard = () => {
         const val = e.target.value;
         setSearchQuery(val);
         if (val.length > 0) {
-            
+
             const results = await searchPlayers(val, 1, 15);
             setDropdownResults(results);
         } else {
@@ -143,8 +143,8 @@ export const Dashboard = () => {
                 alignItems: 'center',
                 padding: 16
             }}>
-                <div className="card" style={{ textAlign: 'center', padding: '40px 20px' }}>
-                    <div style={{ background: '#eef2f7', width: 80, height: 80, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                <div className="card" style={{ textAlign: 'center', padding: '40px 20px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-lg)' }}>
+                    <div style={{ background: '#eff6ff', width: 80, height: 80, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
                         <LogIn size={40} color="var(--primary-color)" />
                     </div>
                     <h2 style={{ marginBottom: 8 }}>Admin Access</h2>
@@ -167,7 +167,7 @@ export const Dashboard = () => {
         );
     }
 
-    
+
     if (activeModal === 'addUser') {
         return (
             <div style={{
@@ -185,8 +185,8 @@ export const Dashboard = () => {
                     margin: 0,
                     padding: 16
                 }}>
-                    
-                    <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 12, borderBottom: '2px solid #eee', flexShrink: 0 }}>
+
+                    <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 12, borderBottom: '1px solid var(--border-color)', flexShrink: 0 }}>
                         <button
                             onClick={() => setActiveModal(null)}
                             style={{
@@ -205,22 +205,22 @@ export const Dashboard = () => {
                         <h2 style={{ margin: 0, flex: 1, fontSize: '1.2rem' }}>Add New Player</h2>
                     </div>
 
-                    
+
                     <form onSubmit={submitNewPlayer} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', paddingTop: 16 }}>
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 12, overflow: 'hidden' }}>
-                            
+
                             <div style={{ display: 'flex', gap: 8 }}>
                                 <div style={{ flex: 1 }}>
-                                    <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>FIRST NAME</label>
+                                    <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>FIRST NAME</label>
                                     <input className="input-field" placeholder="First" name="firstName" onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} required style={{ padding: '8px' }} />
                                 </div>
                                 <div style={{ flex: 1 }}>
-                                    <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>LAST NAME</label>
+                                    <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>LAST NAME</label>
                                     <input className="input-field" placeholder="Last" name="lastName" onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} required style={{ padding: '8px' }} />
                                 </div>
                             </div>
 
-                            
+
                             <div>
                                 <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>TITLE</label>
                                 <select className="input-field" name="title" onChange={(e) => setFormData({ ...formData, title: e.target.value })} style={{ padding: '8px' }}>
@@ -232,14 +232,14 @@ export const Dashboard = () => {
                                 </select>
                             </div>
 
-                            
+
                             <div style={{ display: 'flex', gap: 8 }}>
                                 <div style={{ flex: 1 }}>
-                                    <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>RAPID RATING</label>
+                                    <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>RAPID RATING</label>
                                     <input className="input-field" type="number" placeholder="Rating" name="rapid" onChange={(e) => setFormData({ ...formData, rapid: e.target.value })} required style={{ padding: '8px' }} />
                                 </div>
                                 <div style={{ flex: 1 }}>
-                                    <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>BORN</label>
+                                    <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>BORN</label>
                                     <input className="input-field" type="number" placeholder="Year" name="bYear" onChange={(e) => setFormData({ ...formData, bYear: e.target.value })} required style={{ padding: '8px' }} />
                                 </div>
                             </div>
@@ -270,8 +270,8 @@ export const Dashboard = () => {
                     margin: 0,
                     padding: 16
                 }}>
-                    
-                    <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 12, borderBottom: '2px solid #eee', flexShrink: 0 }}>
+
+                    <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 12, borderBottom: '1px solid var(--border-color)', flexShrink: 0 }}>
                         <button
                             onClick={() => setActiveModal(null)}
                             style={{
@@ -290,19 +290,19 @@ export const Dashboard = () => {
                         <h2 style={{ margin: 0, flex: 1, fontSize: '1.2rem' }}>Post Announcement</h2>
                     </div>
 
-                    
+
                     <form onSubmit={submitNews} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', paddingTop: 16 }}>
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 12, overflow: 'hidden' }}>
                             <div>
-                                <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>HEADLINE</label>
+                                <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>HEADLINE</label>
                                 <input className="input-field" placeholder="Enter headline" value={newsData.title} onChange={e => setNewsData({ ...newsData, title: e.target.value })} required style={{ padding: '8px' }} />
                             </div>
                             <div>
-                                <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>SUBTITLE</label>
+                                <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>SUBTITLE</label>
                                 <input className="input-field" placeholder="Enter subtitle" value={newsData.subtitle} onChange={e => setNewsData({ ...newsData, subtitle: e.target.value })} required style={{ padding: '8px' }} />
                             </div>
                             <div>
-                                <label style={{ fontSize: '0.7rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 4 }}>CATEGORY</label>
+                                <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>CATEGORY</label>
                                 <select className="input-field" value={newsData.category} onChange={e => setNewsData({ ...newsData, category: e.target.value })} style={{ padding: '8px' }}>
                                     <option>Tournament</option>
                                     <option>App Changelog</option>
@@ -310,7 +310,7 @@ export const Dashboard = () => {
                                 </select>
                             </div>
 
-                            
+
                             <div style={{
                                 flex: 1,
                                 display: 'flex',
@@ -339,7 +339,7 @@ export const Dashboard = () => {
                                     )}
                                 </div>
 
-                                
+
                                 <div style={{
                                     display: 'flex',
                                     gap: 4,
@@ -368,7 +368,7 @@ export const Dashboard = () => {
                                         <Italic size={16} />
                                     </button>
 
-                                    
+
                                     <button
                                         type="button"
                                         onMouseDown={(e) => handleCommand(e, 'formatBlock', 'H3')}
@@ -403,7 +403,7 @@ export const Dashboard = () => {
                                     </button>
                                 </div>
 
-                                
+
                                 <div style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
                                     <div
                                         className="input-field"
@@ -444,7 +444,7 @@ export const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" className="btn-primary" style={{ marginTop: 16, padding: 14, fontSize: '1rem', flexShrink: 0 }}>Post Announcement</button>
+                        <button type="submit" className="btn-primary" style={{ marginTop: 16, padding: 14, fontSize: '1rem', flexShrink: 0, background: 'linear-gradient(135deg, #7c3aed, #6d28d9)', boxShadow: '0 4px 6px rgba(124, 58, 237, 0.2)' }}>Post Announcement</button>
                     </form>
                 </div>
             </div>
@@ -468,334 +468,334 @@ export const Dashboard = () => {
                 overflow: 'hidden'
             }}>
 
-            
-            <div style={{
-                height: '30%',
-                display: 'flex',
-                gap: 16,
-                paddingBottom: 16,
-                flexShrink: 0
-            }}>
-                <div
-                    className="card"
-                    onClick={() => { setActiveModal('addUser'); setFormData({}); }}
-                    style={{
-                        flex: 1,
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        background: 'var(--primary-color)',
-                        color: 'white',
-                        margin: 0,
-                        padding: 0
-                    }}
-                >
-                    <UserPlus size={28} style={{ marginBottom: 8 }} />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Add User</span>
-                </div>
 
-                <div
-                    className="card"
-                    onClick={() => { setActiveModal('addNews'); }}
-                    style={{
-                        flex: 1,
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        background: '#6610f2',
-                        color: 'white',
-                        margin: 0,
-                        padding: 0
-                    }}
-                >
-                    <Megaphone size={28} style={{ marginBottom: 8 }} />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Add News</span>
-                </div>
-            </div>
-
-            
-            <div style={{
-                height: '15%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'relative',
-                zIndex: 20,
-                paddingBottom: 16,
-                flexShrink: 0
-            }}>
-                <div style={{ width: '100%', position: 'relative' }}>
-                    <SearchIcon style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#999' }} size={20} />
-                    <input
-                        type="text"
-                        className="input-field"
-                        style={{ paddingLeft: 40, height: 48 }}
-                        placeholder="Search to edit..."
-                        value={searchQuery}
-                        onChange={handleSearch}
-                    />
-
-                    {dropdownResults.length > 0 && (
-                        <div className="card" style={{
-                            position: 'absolute',
-                            top: '100%', left: 0, right: 0,
-                            marginTop: 4,
-                            maxHeight: 200,
-                            overflowY: 'auto',
-                            padding: 0,
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                            zIndex: 30
-                        }}>
-                            {dropdownResults.map(p => (
-                                <div
-                                    key={p.id}
-                                    onClick={() => selectPlayer(p)}
-                                    style={{ padding: '12px 16px', borderBottom: '1px solid #eee', cursor: 'pointer', background: 'white' }}
-                                >
-                                    <div style={{ fontWeight: 600 }}>{p.lastName}, {p.firstName}</div>
-                                    <div style={{ fontSize: '0.8rem', color: '#666' }}>{p.title} • ID: {p.id}</div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            
-            <div className="card" style={{
-                flex: 1,
-                margin: 0,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                padding: '12px',
-                opacity: selectedPlayer ? 1 : 0.6,
-                pointerEvents: selectedPlayer ? 'auto' : 'none',
-                overflow: 'hidden',
-                border: '1px solid #eee',
-                boxSizing: 'border-box'
-            }}>
-                {!selectedPlayer ? (
-                    <div style={{ textAlign: 'center', color: '#999' }}>
-                        <SearchIcon size={32} style={{ marginBottom: 8, opacity: 0.3 }} />
-                        <p style={{ fontSize: '0.9rem', margin: 0 }}>Select a player to edit</p>
-                    </div>
-                ) : (
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateRows: '34fr 22fr 22fr 22fr',
-                        gridTemplateColumns: '70px 1fr',
-                        height: '100%',
-                        gap: '8px'
-                    }}>
-                        
-                        <div style={{
-                            width: 70, height: 70,
-                            background: '#f8f9fa',
-                            borderRadius: 12,
+                <div style={{
+                    height: '30%',
+                    display: 'flex',
+                    gap: 16,
+                    paddingBottom: 16,
+                    flexShrink: 0
+                }}>
+                    <div
+                        className="card"
+                        onClick={() => { setActiveModal('addUser'); setFormData({}); }}
+                        style={{
+                            flex: 1,
+                            height: '100%',
                             display: 'flex',
+                            flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            border: '1px solid #dee2e6',
-                            alignSelf: 'center'
-                        }}>
-                            <User size={32} color="##6c757d" />
-                        </div>
+                            cursor: 'pointer',
+                            background: 'var(--primary-color)',
+                            color: 'white',
+                            margin: 0,
+                            padding: 0
+                        }}
+                    >
+                        <UserPlus size={28} style={{ marginBottom: 8 }} />
+                        <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Add User</span>
+                    </div>
 
-                        
-                        <div style={{ minWidth: 0, alignSelf: 'center' }}>
-                            <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
+                    <div
+                        className="card"
+                        onClick={() => { setActiveModal('addNews'); }}
+                        style={{
+                            flex: 1,
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            background: '#6610f2',
+                            color: 'white',
+                            margin: 0,
+                            padding: 0
+                        }}
+                    >
+                        <Megaphone size={28} style={{ marginBottom: 8 }} />
+                        <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Add News</span>
+                    </div>
+                </div>
+
+
+                <div style={{
+                    height: '15%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    zIndex: 20,
+                    paddingBottom: 16,
+                    flexShrink: 0
+                }}>
+                    <div style={{ width: '100%', position: 'relative' }}>
+                        <SearchIcon style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#999' }} size={20} />
+                        <input
+                            type="text"
+                            className="input-field"
+                            style={{ paddingLeft: 40, height: 48 }}
+                            placeholder="Search to edit..."
+                            value={searchQuery}
+                            onChange={handleSearch}
+                        />
+
+                        {dropdownResults.length > 0 && (
+                            <div className="card" style={{
+                                position: 'absolute',
+                                top: '100%', left: 0, right: 0,
+                                marginTop: 4,
+                                maxHeight: 200,
+                                overflowY: 'auto',
+                                padding: 0,
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                zIndex: 30
+                            }}>
+                                {dropdownResults.map(p => (
+                                    <div
+                                        key={p.id}
+                                        onClick={() => selectPlayer(p)}
+                                        style={{ padding: '12px 16px', borderBottom: '1px solid #eee', cursor: 'pointer', background: 'white' }}
+                                    >
+                                        <div style={{ fontWeight: 600 }}>{p.lastName}, {p.firstName}</div>
+                                        <div style={{ fontSize: '0.8rem', color: '#666' }}>{p.title} • ID: {p.id}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+
+                <div className="card" style={{
+                    flex: 1,
+                    margin: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    padding: '12px',
+                    opacity: selectedPlayer ? 1 : 0.6,
+                    pointerEvents: selectedPlayer ? 'auto' : 'none',
+                    overflow: 'hidden',
+                    border: '1px solid #eee',
+                    boxSizing: 'border-box'
+                }}>
+                    {!selectedPlayer ? (
+                        <div style={{ textAlign: 'center', color: '#999' }}>
+                            <SearchIcon size={32} style={{ marginBottom: 8, opacity: 0.3 }} />
+                            <p style={{ fontSize: '0.9rem', margin: 0 }}>Select a player to edit</p>
+                        </div>
+                    ) : (
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateRows: '34fr 22fr 22fr 22fr',
+                            gridTemplateColumns: '70px 1fr',
+                            height: '100%',
+                            gap: '8px'
+                        }}>
+
+                            <div style={{
+                                width: 70, height: 70,
+                                background: '#f8f9fa',
+                                borderRadius: 12,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                border: '1px solid #dee2e6',
+                                alignSelf: 'center'
+                            }}>
+                                <User size={32} color="##6c757d" />
+                            </div>
+
+
+                            <div style={{ minWidth: 0, alignSelf: 'center' }}>
+                                <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
+                                    <input
+                                        name="lastName"
+                                        value={formData.lastName || ''}
+                                        onChange={handleEditChange}
+                                        onFocus={() => setFocusedField('lastName')}
+                                        onBlur={() => setFocusedField(null)}
+                                        placeholder="Last"
+                                        style={{
+                                            flex: 1,
+                                            minWidth: 0,
+                                            fontSize: '1.1rem',
+                                            fontWeight: 700,
+                                            background: 'white',
+                                            border: `1px solid ${focusedField === 'lastName' ? 'var(--primary-color)' : '#ccc'}`,
+                                            borderRadius: 6,
+                                            padding: '8px',
+                                            color: focusedField === 'lastName' ? 'var(--primary-color)' : '#555',
+                                            outline: 'none',
+                                            boxSizing: 'border-box',
+                                            transition: 'border-color 0.2s, color 0.2s'
+                                        }}
+                                    />
+                                    <input
+                                        name="firstName"
+                                        value={formData.firstName || ''}
+                                        onChange={handleEditChange}
+                                        onFocus={() => setFocusedField('firstName')}
+                                        onBlur={() => setFocusedField(null)}
+                                        placeholder="First"
+                                        style={{
+                                            flex: 1,
+                                            minWidth: 0,
+                                            fontSize: '1.1rem',
+                                            fontWeight: 700,
+                                            background: 'white',
+                                            border: `1px solid ${focusedField === 'firstName' ? 'var(--primary-color)' : '#ccc'}`,
+                                            borderRadius: 6,
+                                            padding: '8px',
+                                            color: focusedField === 'firstName' ? 'var(--primary-color)' : '#555',
+                                            outline: 'none',
+                                            boxSizing: 'border-box',
+                                            transition: 'border-color 0.2s, color 0.2s'
+                                        }}
+                                    />
+                                </div>
                                 <input
-                                    name="lastName"
-                                    value={formData.lastName || ''}
+                                    name="title"
+                                    value={formData.title || ''}
                                     onChange={handleEditChange}
-                                    onFocus={() => setFocusedField('lastName')}
-                                    onBlur={() => setFocusedField(null)}
-                                    placeholder="Last"
+                                    placeholder="Title"
                                     style={{
-                                        flex: 1,
-                                        minWidth: 0,
-                                        fontSize: '1.1rem',
-                                        fontWeight: 700,
-                                        background: 'white',
-                                        border: `1px solid ${focusedField === 'lastName' ? 'var(--primary-color)' : '#ccc'}`,
-                                        borderRadius: 6,
-                                        padding: '8px',
-                                        color: focusedField === 'lastName' ? 'var(--primary-color)' : '#555',
-                                        outline: 'none',
-                                        boxSizing: 'border-box',
-                                        transition: 'border-color 0.2s, color 0.2s'
-                                    }}
-                                />
-                                <input
-                                    name="firstName"
-                                    value={formData.firstName || ''}
-                                    onChange={handleEditChange}
-                                    onFocus={() => setFocusedField('firstName')}
-                                    onBlur={() => setFocusedField(null)}
-                                    placeholder="First"
-                                    style={{
-                                        flex: 1,
-                                        minWidth: 0,
-                                        fontSize: '1.1rem',
-                                        fontWeight: 700,
-                                        background: 'white',
-                                        border: `1px solid ${focusedField === 'firstName' ? 'var(--primary-color)' : '#ccc'}`,
-                                        borderRadius: 6,
-                                        padding: '8px',
-                                        color: focusedField === 'firstName' ? 'var(--primary-color)' : '#555',
-                                        outline: 'none',
-                                        boxSizing: 'border-box',
-                                        transition: 'border-color 0.2s, color 0.2s'
+                                        width: 50,
+                                        fontSize: '0.75rem',
+                                        fontWeight: 600,
+                                        textAlign: 'center',
+                                        border: 'none',
+                                        background: '#e9ecef',
+                                        padding: '2px 4px',
+                                        borderRadius: 4,
+                                        outline: 'none'
                                     }}
                                 />
                             </div>
-                            <input
-                                name="title"
-                                value={formData.title || ''}
-                                onChange={handleEditChange}
-                                placeholder="Title"
-                                style={{
-                                    width: 50,
-                                    fontSize: '0.75rem',
-                                    fontWeight: 600,
-                                    textAlign: 'center',
-                                    border: 'none',
-                                    background: '#e9ecef',
-                                    padding: '2px 4px',
-                                    borderRadius: 4,
-                                    outline: 'none'
-                                }}
-                            />
-                        </div>
 
-                        
-                        <div style={{ gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, alignItems: 'center' }}>
-                            <div>
-                                <div style={{ fontSize: '0.65rem', color: '#999', fontWeight: 600, marginBottom: 4 }}>FIDE ID</div>
-                                <div style={{
-                                    background: '#f8f9fa',
-                                    border: '1px solid #eee',
-                                    borderRadius: 6,
-                                    padding: '8px',
-                                    fontSize: '0.9rem',
-                                    fontWeight: 600
-                                }}>
-                                    {formData.id}
+
+                            <div style={{ gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, alignItems: 'center' }}>
+                                <div>
+                                    <div style={{ fontSize: '0.65rem', color: '#999', fontWeight: 600, marginBottom: 4 }}>FIDE ID</div>
+                                    <div style={{
+                                        background: '#f8f9fa',
+                                        border: '1px solid #eee',
+                                        borderRadius: 6,
+                                        padding: '8px',
+                                        fontSize: '0.9rem',
+                                        fontWeight: 600
+                                    }}>
+                                        {formData.id}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style={{
+                                        fontSize: '0.65rem',
+                                        color: focusedField === 'bYear' ? 'var(--primary-color)' : '#999',
+                                        fontWeight: 600,
+                                        marginBottom: 4,
+                                        transition: 'color 0.2s'
+                                    }}>BORN</div>
+                                    <input
+                                        type="number"
+                                        name="bYear"
+                                        value={formData.bYear || ''}
+                                        onChange={handleEditChange}
+                                        onFocus={() => setFocusedField('bYear')}
+                                        onBlur={() => setFocusedField(null)}
+                                        style={{
+                                            width: '100%',
+                                            background: 'white',
+                                            border: `1px solid ${focusedField === 'bYear' ? 'var(--primary-color)' : '#ccc'}`,
+                                            borderRadius: 6,
+                                            padding: '8px',
+                                            fontSize: '0.9rem',
+                                            fontWeight: 600,
+                                            color: focusedField === 'bYear' ? 'var(--primary-color)' : '#555',
+                                            outline: 'none',
+                                            boxSizing: 'border-box',
+                                            transition: 'border-color 0.2s, color 0.2s'
+                                        }}
+                                    />
                                 </div>
                             </div>
-                            <div>
+
+
+                            <div style={{ gridColumn: '1 / -1' }}>
                                 <div style={{
                                     fontSize: '0.65rem',
-                                    color: focusedField === 'bYear' ? 'var(--primary-color)' : '#999',
-                                    fontWeight: 600,
+                                    color: focusedField === 'rapid' ? 'var(--primary-color)' : '#999',
+                                    fontWeight: 700,
                                     marginBottom: 4,
                                     transition: 'color 0.2s'
-                                }}>BORN</div>
+                                }}>RAPID RATING</div>
                                 <input
                                     type="number"
-                                    name="bYear"
-                                    value={formData.bYear || ''}
+                                    name="rapid"
+                                    value={formData.rapid || ''}
                                     onChange={handleEditChange}
-                                    onFocus={() => setFocusedField('bYear')}
+                                    onFocus={() => setFocusedField('rapid')}
                                     onBlur={() => setFocusedField(null)}
                                     style={{
                                         width: '100%',
                                         background: 'white',
-                                        border: `1px solid ${focusedField === 'bYear' ? 'var(--primary-color)' : '#ccc'}`,
-                                        borderRadius: 6,
-                                        padding: '8px',
-                                        fontSize: '0.9rem',
-                                        fontWeight: 600,
-                                        color: focusedField === 'bYear' ? 'var(--primary-color)' : '#555',
+                                        border: `2px solid ${focusedField === 'rapid' ? 'var(--primary-color)' : '#ddd'}`,
+                                        borderRadius: 8,
+                                        padding: '10px',
+                                        fontSize: '1.3rem',
+                                        fontWeight: 800,
+                                        color: focusedField === 'rapid' ? 'var(--primary-color)' : '#555',
+                                        textAlign: 'center',
                                         outline: 'none',
                                         boxSizing: 'border-box',
                                         transition: 'border-color 0.2s, color 0.2s'
                                     }}
                                 />
                             </div>
-                        </div>
 
-                        
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <div style={{
-                                fontSize: '0.65rem',
-                                color: focusedField === 'rapid' ? 'var(--primary-color)' : '#999',
-                                fontWeight: 700,
-                                marginBottom: 4,
-                                transition: 'color 0.2s'
-                            }}>RAPID RATING</div>
-                            <input
-                                type="number"
-                                name="rapid"
-                                value={formData.rapid || ''}
-                                onChange={handleEditChange}
-                                onFocus={() => setFocusedField('rapid')}
-                                onBlur={() => setFocusedField(null)}
-                                style={{
-                                    width: '100%',
-                                    background: 'white',
-                                    border: `2px solid ${focusedField === 'rapid' ? 'var(--primary-color)' : '#ddd'}`,
-                                    borderRadius: 8,
-                                    padding: '10px',
-                                    fontSize: '1.3rem',
-                                    fontWeight: 800,
-                                    color: focusedField === 'rapid' ? 'var(--primary-color)' : '#555',
-                                    textAlign: 'center',
-                                    outline: 'none',
-                                    boxSizing: 'border-box',
-                                    transition: 'border-color 0.2s, color 0.2s'
-                                }}
-                            />
-                        </div>
 
-                        
-                        <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 8 }}>
-                            <button
-                                onClick={() => setSelectedPlayer(null)}
-                                style={{
-                                    flex: 1,
-                                    height: 40,
-                                    border: 'none',
-                                    background: '#e9ecef',
-                                    borderRadius: 8,
-                                    fontSize: '0.9rem',
-                                    fontWeight: 600,
-                                    color: '#555',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={savePlayerChanges}
-                                className="btn-primary"
-                                style={{
-                                    flex: 2,
-                                    height: 40,
-                                    borderRadius: 8,
-                                    fontSize: '0.9rem',
-                                    fontWeight: 600
-                                }}
-                            >
-                                Save Changes
-                            </button>
+                            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 8 }}>
+                                <button
+                                    onClick={() => setSelectedPlayer(null)}
+                                    style={{
+                                        flex: 1,
+                                        height: 40,
+                                        border: 'none',
+                                        background: '#e9ecef',
+                                        borderRadius: 8,
+                                        fontSize: '0.9rem',
+                                        fontWeight: 600,
+                                        color: '#555',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={savePlayerChanges}
+                                    className="btn-primary"
+                                    style={{
+                                        flex: 2,
+                                        height: 40,
+                                        borderRadius: 8,
+                                        fontSize: '0.9rem',
+                                        fontWeight: 600
+                                    }}
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
             </div>
         </>
     );
 };
 
- 
+
 const style = document.createElement('style');
 style.textContent = `
     .rich-text-btn {
