@@ -143,7 +143,7 @@ export const PlayerProvider = ({ children }) => {
         // Debounce search requests
         debounceTimeoutRef.current = setTimeout(() => {
             loadPlayers(1, true, { query: newQuery });
-        }, 300);
+        }, 150);
     };
 
     const handleSort = (key) => {
