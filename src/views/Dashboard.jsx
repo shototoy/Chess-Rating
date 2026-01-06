@@ -96,7 +96,7 @@ export const Dashboard = () => {
         const updated = {
             ...formData,
             rapid: parseInt(formData.rapid),
-            bYear: parseInt(formData.bYear)
+            bYear: formData.bYear ? parseInt(formData.bYear) : null
         };
         await updatePlayer(updated);
         setSelectedPlayer(null); // Reset profile editor
@@ -111,7 +111,7 @@ export const Dashboard = () => {
             firstName: formData.firstName,
             title: formData.title,
             rapid: parseInt(formData.rapid),
-            bYear: parseInt(formData.bYear)
+            bYear: formData.bYear ? parseInt(formData.bYear) : null
         };
         await addPlayer(newPlayer);
         setActiveModal(null);
@@ -239,8 +239,8 @@ export const Dashboard = () => {
                                     <input className="input-field" type="number" placeholder="Rating" name="rapid" onChange={(e) => setFormData({ ...formData, rapid: e.target.value })} required style={{ padding: '8px' }} />
                                 </div>
                                 <div style={{ flex: 1 }}>
-                                    <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>BORN</label>
-                                    <input className="input-field" type="number" placeholder="Year" name="bYear" onChange={(e) => setFormData({ ...formData, bYear: e.target.value })} required style={{ padding: '8px' }} />
+                                    <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: 4 }}>BORN (Optional)</label>
+                                    <input className="input-field" type="number" placeholder="Year" name="bYear" onChange={(e) => setFormData({ ...formData, bYear: e.target.value })} style={{ padding: '8px' }} />
                                 </div>
                             </div>
                         </div>
@@ -470,7 +470,7 @@ export const Dashboard = () => {
 
 
                 <div style={{
-                    height: '30%',
+                    height: '15%',
                     display: 'flex',
                     gap: 16,
                     paddingBottom: 16,
@@ -493,8 +493,8 @@ export const Dashboard = () => {
                             padding: 0
                         }}
                     >
-                        <UserPlus size={28} style={{ marginBottom: 8 }} />
-                        <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Add User</span>
+                        <UserPlus size={28} style={{ marginBottom: 4 }} />
+                        <span style={{ fontSize: '1rem', fontWeight: 600 }}>Add User</span>
                     </div>
 
                     <div
@@ -508,20 +508,20 @@ export const Dashboard = () => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             cursor: 'pointer',
-                            background: '#6610f2',
+                            background: 'var(--primary-color)',
                             color: 'white',
                             margin: 0,
                             padding: 0
                         }}
                     >
-                        <Megaphone size={28} style={{ marginBottom: 8 }} />
-                        <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Add News</span>
+                        <Megaphone size={28} style={{ marginBottom: 4 }} />
+                        <span style={{ fontSize: '1rem', fontWeight: 600 }}>Add News</span>
                     </div>
                 </div>
 
 
                 <div style={{
-                    height: '15%',
+                    height: '10%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -556,10 +556,10 @@ export const Dashboard = () => {
                                     <div
                                         key={p.id}
                                         onClick={() => selectPlayer(p)}
-                                        style={{ padding: '12px 16px', borderBottom: '1px solid #eee', cursor: 'pointer', background: 'white' }}
+                                        style={{ padding: '6px 12px', borderBottom: '1px solid #eee', cursor: 'pointer', background: 'white', minHeight: '32px' }}
                                     >
-                                        <div style={{ fontWeight: 600 }}>{p.lastName}, {p.firstName}</div>
-                                        <div style={{ fontSize: '0.8rem', color: '#666' }}>{p.title} • ID: {p.id}</div>
+                                        <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{p.lastName}, {p.firstName}</div>
+                                        <div style={{ fontSize: '0.75rem', color: '#666' }}>{p.title} • ID: {p.id}</div>
                                     </div>
                                 ))}
                             </div>
@@ -588,184 +588,167 @@ export const Dashboard = () => {
                         </div>
                     ) : (
                         <div style={{
-                            display: 'grid',
-                            gridTemplateRows: '34fr 22fr 22fr 22fr',
-                            gridTemplateColumns: '70px 1fr',
+                            display: 'flex',
+                            flexDirection: 'column',
                             height: '100%',
-                            gap: '8px'
+                            justifyContent: 'space-between',
+                            padding: '8px'
                         }}>
 
-                            <div style={{
-                                width: 70, height: 70,
-                                background: '#f8f9fa',
-                                borderRadius: 12,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                border: '1px solid #dee2e6',
-                                alignSelf: 'center'
-                            }}>
-                                <User size={32} color="##6c757d" />
-                            </div>
+                            {/* Header: Avatar + Names */}
+                            <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+                                <div style={{
+                                    width: 110, height: 110,
+                                    background: '#f8f9fa',
+                                    borderRadius: 16,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    border: '1px solid #dee2e6',
+                                    flexShrink: 0,
+                                    position: 'relative' // For absolute title positioning
+                                }}>
+                                    <User size={48} color="#6c757d" style={{ marginBottom: 16 }} />
 
-
-                            <div style={{ minWidth: 0, alignSelf: 'center' }}>
-                                <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
+                                    {/* Title Input inside Avatar Box */}
                                     <input
-                                        name="lastName"
-                                        value={formData.lastName || ''}
+                                        name="title"
+                                        value={formData.title || ''}
                                         onChange={handleEditChange}
-                                        onFocus={() => setFocusedField('lastName')}
-                                        onBlur={() => setFocusedField(null)}
-                                        placeholder="Last"
+                                        placeholder="Title"
                                         style={{
-                                            flex: 1,
-                                            minWidth: 0,
-                                            fontSize: '1.1rem',
+                                            position: 'absolute',
+                                            bottom: 8,
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            width: 80,
+                                            height: 24,
+                                            fontSize: '0.8rem',
                                             fontWeight: 700,
-                                            background: 'white',
-                                            border: `1px solid ${focusedField === 'lastName' ? 'var(--primary-color)' : '#ccc'}`,
-                                            borderRadius: 6,
-                                            padding: '8px',
-                                            color: focusedField === 'lastName' ? 'var(--primary-color)' : '#555',
+                                            textAlign: 'center',
+                                            border: 'none',
+                                            background: '#e9ecef',
+                                            borderRadius: 4,
                                             outline: 'none',
-                                            boxSizing: 'border-box',
-                                            transition: 'border-color 0.2s, color 0.2s'
+                                            color: '#495057'
                                         }}
                                     />
+                                </div>
+
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10, justifyContent: 'center' }}>
                                     <input
                                         name="firstName"
                                         value={formData.firstName || ''}
                                         onChange={handleEditChange}
-                                        onFocus={() => setFocusedField('firstName')}
-                                        onBlur={() => setFocusedField(null)}
-                                        placeholder="First"
+                                        placeholder="First Name"
                                         style={{
-                                            flex: 1,
-                                            minWidth: 0,
+                                            width: '100%',
+                                            height: 48,
                                             fontSize: '1.1rem',
                                             fontWeight: 700,
-                                            background: 'white',
-                                            border: `1px solid ${focusedField === 'firstName' ? 'var(--primary-color)' : '#ccc'}`,
-                                            borderRadius: 6,
-                                            padding: '8px',
-                                            color: focusedField === 'firstName' ? 'var(--primary-color)' : '#555',
+                                            border: '1px solid #ccc',
+                                            borderRadius: 8,
+                                            padding: '0 12px',
                                             outline: 'none',
-                                            boxSizing: 'border-box',
-                                            transition: 'border-color 0.2s, color 0.2s'
+                                            color: '#333'
+                                        }}
+                                    />
+                                    <input
+                                        name="lastName"
+                                        value={formData.lastName || ''}
+                                        onChange={handleEditChange}
+                                        placeholder="Last Name"
+                                        style={{
+                                            width: '100%',
+                                            height: 48,
+                                            fontSize: '1.1rem',
+                                            fontWeight: 700,
+                                            border: '1px solid #ccc',
+                                            borderRadius: 8,
+                                            padding: '0 12px',
+                                            outline: 'none',
+                                            color: '#333'
                                         }}
                                     />
                                 </div>
-                                <input
-                                    name="title"
-                                    value={formData.title || ''}
-                                    onChange={handleEditChange}
-                                    placeholder="Title"
-                                    style={{
-                                        width: 50,
-                                        fontSize: '0.75rem',
-                                        fontWeight: 600,
-                                        textAlign: 'center',
-                                        border: 'none',
-                                        background: '#e9ecef',
-                                        padding: '2px 4px',
-                                        borderRadius: 4,
-                                        outline: 'none'
-                                    }}
-                                />
                             </div>
 
-
-                            <div style={{ gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, alignItems: 'center' }}>
-                                <div>
-                                    <div style={{ fontSize: '0.65rem', color: '#999', fontWeight: 600, marginBottom: 4 }}>FIDE ID</div>
+                            {/* Details: ID & Born */}
+                            <div style={{ display: 'flex', gap: 24 }}>
+                                <div style={{ flex: 1 }}>
+                                    <label style={{ fontSize: '0.75rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 6 }}>FIDE ID</label>
                                     <div style={{
+                                        height: 48,
+                                        display: 'flex',
+                                        alignItems: 'center',
                                         background: '#f8f9fa',
                                         border: '1px solid #eee',
-                                        borderRadius: 6,
-                                        padding: '8px',
-                                        fontSize: '0.9rem',
-                                        fontWeight: 600
+                                        borderRadius: 8,
+                                        padding: '0 12px',
+                                        fontSize: '1.1rem',
+                                        fontWeight: 600,
+                                        color: '#333'
                                     }}>
                                         {formData.id}
                                     </div>
                                 </div>
-                                <div>
-                                    <div style={{
-                                        fontSize: '0.65rem',
-                                        color: focusedField === 'bYear' ? 'var(--primary-color)' : '#999',
-                                        fontWeight: 600,
-                                        marginBottom: 4,
-                                        transition: 'color 0.2s'
-                                    }}>BORN</div>
+                                <div style={{ flex: 1 }}>
+                                    <label style={{ fontSize: '0.75rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 6 }}>BORN</label>
                                     <input
                                         type="number"
                                         name="bYear"
                                         value={formData.bYear || ''}
                                         onChange={handleEditChange}
-                                        onFocus={() => setFocusedField('bYear')}
-                                        onBlur={() => setFocusedField(null)}
+                                        placeholder="Year"
                                         style={{
                                             width: '100%',
-                                            background: 'white',
-                                            border: `1px solid ${focusedField === 'bYear' ? 'var(--primary-color)' : '#ccc'}`,
-                                            borderRadius: 6,
-                                            padding: '8px',
-                                            fontSize: '0.9rem',
+                                            height: 48,
+                                            border: '1px solid #ccc',
+                                            borderRadius: 8,
+                                            padding: '0 12px',
+                                            fontSize: '1.1rem',
                                             fontWeight: 600,
-                                            color: focusedField === 'bYear' ? 'var(--primary-color)' : '#555',
                                             outline: 'none',
-                                            boxSizing: 'border-box',
-                                            transition: 'border-color 0.2s, color 0.2s'
+                                            color: '#333'
                                         }}
                                     />
                                 </div>
                             </div>
 
-
-                            <div style={{ gridColumn: '1 / -1' }}>
-                                <div style={{
-                                    fontSize: '0.65rem',
-                                    color: focusedField === 'rapid' ? 'var(--primary-color)' : '#999',
-                                    fontWeight: 700,
-                                    marginBottom: 4,
-                                    transition: 'color 0.2s'
-                                }}>RAPID RATING</div>
+                            {/* Rating */}
+                            <div>
+                                <label style={{ fontSize: '0.75rem', color: '#999', fontWeight: 600, display: 'block', marginBottom: 6 }}>RAPID RATING</label>
                                 <input
                                     type="number"
                                     name="rapid"
                                     value={formData.rapid || ''}
                                     onChange={handleEditChange}
-                                    onFocus={() => setFocusedField('rapid')}
-                                    onBlur={() => setFocusedField(null)}
                                     style={{
                                         width: '100%',
-                                        background: 'white',
-                                        border: `2px solid ${focusedField === 'rapid' ? 'var(--primary-color)' : '#ddd'}`,
+                                        height: 56,
+                                        border: '1px solid #ccc',
                                         borderRadius: 8,
-                                        padding: '10px',
-                                        fontSize: '1.3rem',
+                                        padding: '0 12px',
+                                        fontSize: '1.5rem',
                                         fontWeight: 800,
-                                        color: focusedField === 'rapid' ? 'var(--primary-color)' : '#555',
                                         textAlign: 'center',
                                         outline: 'none',
-                                        boxSizing: 'border-box',
-                                        transition: 'border-color 0.2s, color 0.2s'
+                                        color: 'var(--primary-color)'
                                     }}
                                 />
                             </div>
 
-
-                            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 8 }}>
+                            {/* Action Buttons */}
+                            <div style={{ display: 'flex', gap: 16 }}>
                                 <button
                                     onClick={() => setSelectedPlayer(null)}
                                     style={{
                                         flex: 1,
-                                        height: 40,
+                                        height: 48,
                                         border: 'none',
                                         background: '#e9ecef',
                                         borderRadius: 8,
-                                        fontSize: '0.9rem',
+                                        fontSize: '1rem',
                                         fontWeight: 600,
                                         color: '#555',
                                         cursor: 'pointer'
@@ -778,9 +761,9 @@ export const Dashboard = () => {
                                     className="btn-primary"
                                     style={{
                                         flex: 2,
-                                        height: 40,
+                                        height: 48,
                                         borderRadius: 8,
-                                        fontSize: '0.9rem',
+                                        fontSize: '1rem',
                                         fontWeight: 600
                                     }}
                                 >

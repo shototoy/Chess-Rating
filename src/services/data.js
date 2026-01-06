@@ -35,7 +35,7 @@ const mapPlayerPayload = (p) => ({
 });
 
 
-export const getPlayers = async ({ page = 1, limit = 50, sortBy = 'rapid_rating', order = 'desc' } = {}) => {
+export const getPlayers = async ({ page = 1, limit = 50, sortBy = 'rapid_rating', order = 'desc', signal } = {}) => {
     try {
         const params = new URLSearchParams({
             page,
@@ -43,16 +43,17 @@ export const getPlayers = async ({ page = 1, limit = 50, sortBy = 'rapid_rating'
             sortBy,
             order
         });
-        const response = await fetch(`${API_URL}/players?${params}`, { headers: getHeaders() });
+        const response = await fetch(`${API_URL}/players?${params}`, { headers: getHeaders(), signal });
         const list = await handleResponse(response);
         return list.map(mapPlayer);
     } catch (error) {
+        if (error.name === 'AbortError') throw error;
         console.error('getPlayers error:', error);
         return [];
     }
 };
 
-export const searchPlayers = async (query, page = 1, limit = 50, sortBy = 'rapid_rating', order = 'desc') => {
+export const searchPlayers = async (query, page = 1, limit = 50, sortBy = 'rapid_rating', order = 'desc', signal) => {
     try {
         const params = new URLSearchParams({
             q: query,
@@ -61,10 +62,11 @@ export const searchPlayers = async (query, page = 1, limit = 50, sortBy = 'rapid
             sortBy,
             order
         });
-        const response = await fetch(`${API_URL}/players/search?${params}`, { headers: getHeaders() });
+        const response = await fetch(`${API_URL}/players/search?${params}`, { headers: getHeaders(), signal });
         const list = await handleResponse(response);
         return list.map(mapPlayer);
     } catch (error) {
+        if (error.name === 'AbortError') throw error;
         console.error('searchPlayers error:', error);
         return [];
     }

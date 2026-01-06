@@ -13,6 +13,8 @@ export const PlayerProvider = ({ children }) => {
     const [query, setQuery] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: 'rapid', direction: 'desc' });
 
+    const abortControllerRef = useRef(null);
+    const debounceTimeoutRef = useRef(null);
     const CACHE_KEY = 'leaderboard_cache';
     const CACHE_LIMIT_BYTES = 4500000;
 
@@ -24,26 +26,27 @@ export const PlayerProvider = ({ children }) => {
                 if (Array.isArray(parsed) && parsed.length > 0) {
                     console.log('Using cached leaderboard:', parsed.length, 'items');
                     setPlayers(parsed);
-                    
                 }
             }
         } catch (e) {
             console.error('Cache load failed:', e);
         }
 
-        
         loadPlayers(1, true);
+
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
     }, []);
 
-    
     useEffect(() => {
         if (!query && sortConfig.key === 'rapid' && sortConfig.direction === 'desc' && players.length > 0) {
             try {
                 const json = JSON.stringify(players);
                 if (json.length < CACHE_LIMIT_BYTES) {
                     localStorage.setItem(CACHE_KEY, json);
-                } else {
-                    console.warn('Cache quota exceeded, stopping cache updates');
                 }
             } catch (e) {
                 console.warn('LocalStorage error:', e);
@@ -51,86 +54,96 @@ export const PlayerProvider = ({ children }) => {
         }
     }, [players, query, sortConfig]);
 
-    const loadPlayers = async (pageNum, replace = false) => {
-        if (loading) return;
+    const loadPlayers = async (pageNum, replace = false, options = {}) => {
+        const fetchQuery = options.query !== undefined ? options.query : query;
+        const fetchSortKey = options.sortKey || sortConfig.key;
+        const fetchSortDir = options.sortDir || sortConfig.direction;
+
+        // If appending (loadMore) and currently loading, ignore.
+        if (!replace && loading) return;
+
+        // If replacing, abort previous request.
+        if (replace) {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+            abortControllerRef.current = new AbortController();
+        } else if (!abortControllerRef.current) {
+            abortControllerRef.current = new AbortController();
+        }
+
+        const signal = abortControllerRef.current.signal;
         setLoading(true);
 
         try {
             let newData = [];
-            // Map sort key to backend expected columns
             let sortBy = 'rapid_rating';
-            if (sortConfig.key === 'name') sortBy = 'last_name';
-            else if (sortConfig.key === 'rapid') sortBy = 'rapid_rating';
+            if (fetchSortKey === 'name') sortBy = 'last_name';
+            else if (fetchSortKey === 'rapid') sortBy = 'rapid_rating';
 
-            if (query) {
-                // Search Mode (RAM only, Limit 15 enforced by UI or logic, here we fetch what is asked)
-                newData = await searchPlayers(query, pageNum, 50, sortBy, sortConfig.direction);
+            // Backend search supports 'name' (multicolumn) and 'last_name'
+            if (fetchSortKey === 'name') sortBy = 'name';
+
+            if (fetchQuery) {
+                newData = await searchPlayers(fetchQuery, pageNum, 150, sortBy, fetchSortDir, signal);
             } else {
-                // Default Mode
                 newData = await getPlayers({
                     page: pageNum,
-                    limit: 50,
+                    limit: 150,
                     sortBy,
-                    order: sortConfig.direction
+                    order: fetchSortDir,
+                    signal
                 });
             }
+
+            if (signal.aborted) return;
 
             if (replace) {
                 setPlayers(newData);
             } else {
                 setPlayers(prev => {
-                    
                     const existingIds = new Set(prev.map(p => p.id));
                     const uniqueNew = newData.filter(p => !existingIds.has(p.id));
                     return [...prev, ...uniqueNew];
                 });
             }
 
-            
-            setHasMore(newData.length === 50);
+            setHasMore(newData.length === 150);
             setPage(pageNum);
         } catch (error) {
-            console.error("Failed to load players", error);
+            if (error.name !== 'AbortError') {
+                console.error("Failed to load players", error);
+            }
         } finally {
-            setLoading(false);
+            if (!signal.aborted) {
+                setLoading(false);
+            }
         }
     };
 
-    const handleSearch = async (newQuery) => {
+    const handleSearch = (newQuery) => {
         setQuery(newQuery);
-        setPage(1);
-        setHasMore(true);
-        
+
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current);
+        }
+
         if (!newQuery) {
-            
             try {
                 const cached = localStorage.getItem(CACHE_KEY);
                 if (cached) {
                     setPlayers(JSON.parse(cached));
-                    
-                    loadPlayers(1, true);
-                    return;
                 }
             } catch (e) { }
+            // Run fetch immediately for empty query
+            loadPlayers(1, true, { query: newQuery });
+            return;
         }
 
-        
-        setPlayers([]);
-        setLoading(true);
-        try {
-            
-            let sortBy = 'rapid_rating';
-            if (sortConfig.key === 'name') sortBy = 'name';
-
-            const data = newQuery
-                ? await searchPlayers(newQuery, 1, 50, sortBy, sortConfig.direction)
-                : await getPlayers({ page: 1, limit: 50, sortBy, order: sortConfig.direction });
-
-            setPlayers(data);
-            setHasMore(data.length === 50);
-        } finally {
-            setLoading(false);
-        }
+        // Debounce search requests
+        debounceTimeoutRef.current = setTimeout(() => {
+            loadPlayers(1, true, { query: newQuery });
+        }, 300);
     };
 
     const handleSort = (key) => {
@@ -141,44 +154,13 @@ export const PlayerProvider = ({ children }) => {
         const newConfig = { key, direction };
         setSortConfig(newConfig);
 
-        
-        setPage(1);
-        setPlayers([]);
-        setHasMore(true);
-
-        
-        setLoading(true);
-        (async () => {
-            try {
-                let sortBy = 'rapid_rating';
-                if (key === 'name') sortBy = 'name';
-                else if (key === 'rapid') sortBy = 'rapid_rating';
-
-                let data = [];
-                if (query) {
-                    
-                    data = await searchPlayers(query, 1, 50, sortBy, direction);
-                } else {
-                    
-                    data = await getPlayers({
-                        page: 1,
-                        limit: 50,
-                        sortBy,
-                        order: direction
-                    });
-                }
-
-                setPlayers(data);
-                setHasMore(data.length === 50);
-            } finally {
-                setLoading(false);
-            }
-        })();
+        // Pass new config explicitly
+        loadPlayers(1, true, { sortKey: key, sortDir: direction });
     };
 
     const loadMore = () => {
         if (!loading && hasMore) {
-            loadPlayers(page + 1);
+            loadPlayers(page + 1, false); // Uses current state query/sort
         }
     };
 

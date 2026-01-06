@@ -159,66 +159,40 @@ export const Search = () => {
                 ) : (
                     <div>
                         {players.map((player, index) => {
-                            if (players.length === index + 1) {
-                                return (
-                                    <div
-                                        ref={lastPlayerElementRef}
-                                        key={player.id}
-                                        onClick={() => handlePlayerClick(player)}
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            padding: '10px 16px',
-                                            borderBottom: '1px solid #f0f0f0',
-                                            cursor: 'pointer',
-                                            background: 'white'
-                                        }}
-                                    >
-                                        <div className="player-info" style={{ flex: 1 }}>
-                                            <h3 style={{ fontSize: '0.95rem', margin: 0 }}>{player.lastName}, {player.firstName}</h3>
-                                        </div>
-                                        <div style={{
-                                            width: 60,
-                                            textAlign: 'right',
-                                            fontWeight: 'bold',
-                                            color: 'var(--primary-color)',
-                                            fontSize: '0.9rem'
-                                        }}>
-                                            {player.rapid}
-                                        </div>
+                            const isLast = players.length === index + 1;
+                            const props = {
+                                key: player.id,
+                                onClick: () => handlePlayerClick(player),
+                                style: {
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    padding: '6px 12px',
+                                    borderBottom: '1px solid #f0f0f0',
+                                    cursor: 'pointer',
+                                    background: 'white',
+                                    minHeight: 32
+                                }
+                            };
+
+                            if (isLast) props.ref = lastPlayerElementRef;
+
+                            return (
+                                <div {...props}>
+                                    <div className="player-info" style={{ flex: 1 }}>
+                                        <h3 style={{ fontSize: '0.85rem', margin: 0, fontWeight: 500 }}>{player.lastName}, {player.firstName}</h3>
                                     </div>
-                                );
-                            } else {
-                                return (
-                                    <div
-                                        key={player.id}
-                                        onClick={() => handlePlayerClick(player)}
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            padding: '10px 16px',
-                                            borderBottom: '1px solid #f0f0f0',
-                                            cursor: 'pointer',
-                                            background: 'white'
-                                        }}
-                                    >
-                                        <div className="player-info" style={{ flex: 1 }}>
-                                            <h3 style={{ fontSize: '0.95rem', margin: 0 }}>{player.lastName}, {player.firstName}</h3>
-                                        </div>
-                                        <div style={{
-                                            width: 60,
-                                            textAlign: 'right',
-                                            fontWeight: 'bold',
-                                            color: 'var(--primary-color)',
-                                            fontSize: '0.9rem'
-                                        }}>
-                                            {player.rapid}
-                                        </div>
+                                    <div style={{
+                                        width: 60,
+                                        textAlign: 'right',
+                                        fontWeight: 'bold',
+                                        color: 'var(--primary-color)',
+                                        fontSize: '0.85rem'
+                                    }}>
+                                        {player.rapid}
                                     </div>
-                                );
-                            }
+                                </div>
+                            );
                         })}
                         {loading && (
                             <div style={{ padding: 16, textAlign: 'center', color: '#999' }}>Loading...</div>
