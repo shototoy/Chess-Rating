@@ -19,7 +19,16 @@ export const Search = () => {
     const lastPlayerElementRef = useRef();
 
     useEffect(() => {
+        // Cleanup function to disconnect previous observer
+        return () => {
+            if (observer.current) observer.current.disconnect();
+        };
+    }, []);
+
+    useEffect(() => {
         if (loading) return;
+
+        // Disconnect existing observer before creating new one
         if (observer.current) observer.current.disconnect();
 
         observer.current = new IntersectionObserver(entries => {

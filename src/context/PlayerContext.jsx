@@ -68,8 +68,11 @@ export const PlayerProvider = ({ children }) => {
                 abortControllerRef.current.abort();
             }
             abortControllerRef.current = new AbortController();
-        } else if (!abortControllerRef.current) {
-            abortControllerRef.current = new AbortController();
+        } else {
+            // If not replacing, ensure we have a valid (non-aborted) controller
+            if (!abortControllerRef.current || abortControllerRef.current.signal.aborted) {
+                abortControllerRef.current = new AbortController();
+            }
         }
 
         const signal = abortControllerRef.current.signal;
@@ -115,6 +118,7 @@ export const PlayerProvider = ({ children }) => {
                 console.error("Failed to load players", error);
             }
         } finally {
+            // Only turn off loading if THIS signal is still valid (not replaced)
             if (!signal.aborted) {
                 setLoading(false);
             }
