@@ -45,9 +45,7 @@ function App() {
                 color={toast.color}
                 onClose={() => setToast(t => ({ ...t, show: false }))}
             />
-            <header className="app-header" style={{ paddingTop: '1.5rem' }}>
-                Philippines Chess Rating
-            </header>
+
 
             <main style={{ paddingBottom: 100 }}>
                 {renderContent()}

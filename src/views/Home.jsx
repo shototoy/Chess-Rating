@@ -202,6 +202,7 @@ export const Home = () => {
                         }}>
                             {index + 1}
                         </div>
+                        <div style={{ flex: 1 }}>
 
 
                             <div style={{
@@ -246,105 +247,105 @@ export const Home = () => {
                         </div>
                     </div>
                 ))}
-        </div>
+            </div>
 
 
             {
-        selectedNews && (() => {
+                selectedNews && (() => {
 
-            let gradient;
-            if (selectedNews.category === 'Tournament') {
-                gradient = 'linear-gradient(135deg, #007bff, #0056b3)';
-            } else if (selectedNews.category === 'App Changelog') {
-                gradient = 'linear-gradient(135deg, #6c757d, #495057)';
-            } else {
-                gradient = 'linear-gradient(135deg, #28a745, #1e7e34)';
+                    let gradient;
+                    if (selectedNews.category === 'Tournament') {
+                        gradient = 'linear-gradient(135deg, #007bff, #0056b3)';
+                    } else if (selectedNews.category === 'App Changelog') {
+                        gradient = 'linear-gradient(135deg, #6c757d, #495057)';
+                    } else {
+                        gradient = 'linear-gradient(135deg, #28a745, #1e7e34)';
+                    }
+
+                    return (
+                        <div style={{
+                            position: 'fixed',
+                            top: 0, left: 0, right: 0, bottom: 0,
+                            zIndex: 1000,
+                            background: '#fff',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            animation: 'slideUp 0.3s ease-out'
+                        }}>
+
+                            <div style={{
+                                height: '240px',
+                                background: gradient,
+                                color: 'white',
+                                position: 'relative',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-end',
+                                padding: 20
+                            }}>
+                                <button
+                                    onClick={closeNews}
+                                    style={{
+                                        position: 'absolute', top: 16, right: 16,
+                                        background: 'rgba(0,0,0,0.3)',
+                                        border: 'none',
+                                        color: 'white',
+                                        borderRadius: '50%',
+                                        width: 36, height: 36,
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        cursor: 'pointer',
+                                        backdropFilter: 'blur(4px)'
+                                    }}
+                                >
+                                    <X size={20} />
+                                </button>
+
+                                <span style={{
+                                    fontSize: '0.8rem',
+                                    background: 'rgba(255,255,255,0.2)',
+                                    padding: '4px 10px',
+                                    borderRadius: 20,
+                                    alignSelf: 'flex-start',
+                                    marginBottom: 10,
+                                    backdropFilter: 'blur(4px)'
+                                }}>
+                                    {selectedNews.category}
+                                </span>
+                                <h1 style={{ margin: 0, fontSize: '1.8rem', lineHeight: 1.2 }}>
+                                    {selectedNews.title}
+                                </h1>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 6,
+                                    color: 'rgba(255,255,255,0.8)',
+                                    fontSize: '0.85rem',
+                                    marginTop: 8
+                                }}>
+                                    <Clock size={14} />
+                                    <span>{selectedNews.date}</span>
+                                </div>
+                            </div>
+
+
+                            <div style={{ flex: 1, overflowY: 'auto', padding: '32px 48px', width: '100%' }}>
+
+
+                                <h3 style={{ margin: '0 0 24px', fontWeight: 600, color: 'var(--text-secondary)', fontSize: '1.2rem', lineHeight: 1.4 }}>
+                                    {selectedNews.subtitle}
+                                </h3>
+
+                                <div
+                                    style={{ lineHeight: 1.3, color: 'var(--text-primary)', fontSize: '1.05rem' }}
+                                    dangerouslySetInnerHTML={{ __html: selectedNews.body }}
+                                />
+                            </div>
+                        </div>
+                    );
+                })()
             }
 
-            return (
-                <div style={{
-                    position: 'fixed',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    zIndex: 1000,
-                    background: '#fff',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    animation: 'slideUp 0.3s ease-out'
-                }}>
-
-                    <div style={{
-                        height: '240px',
-                        background: gradient,
-                        color: 'white',
-                        position: 'relative',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-end',
-                        padding: 20
-                    }}>
-                        <button
-                            onClick={closeNews}
-                            style={{
-                                position: 'absolute', top: 16, right: 16,
-                                background: 'rgba(0,0,0,0.3)',
-                                border: 'none',
-                                color: 'white',
-                                borderRadius: '50%',
-                                width: 36, height: 36,
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                cursor: 'pointer',
-                                backdropFilter: 'blur(4px)'
-                            }}
-                        >
-                            <X size={20} />
-                        </button>
-
-                        <span style={{
-                            fontSize: '0.8rem',
-                            background: 'rgba(255,255,255,0.2)',
-                            padding: '4px 10px',
-                            borderRadius: 20,
-                            alignSelf: 'flex-start',
-                            marginBottom: 10,
-                            backdropFilter: 'blur(4px)'
-                        }}>
-                            {selectedNews.category}
-                        </span>
-                        <h1 style={{ margin: 0, fontSize: '1.8rem', lineHeight: 1.2 }}>
-                            {selectedNews.title}
-                        </h1>
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 6,
-                            color: 'rgba(255,255,255,0.8)',
-                            fontSize: '0.85rem',
-                            marginTop: 8
-                        }}>
-                            <Clock size={14} />
-                            <span>{selectedNews.date}</span>
-                        </div>
-                    </div>
-
-
-                    <div style={{ flex: 1, overflowY: 'auto', padding: '32px 48px', width: '100%' }}>
-
-
-                        <h3 style={{ margin: '0 0 24px', fontWeight: 600, color: 'var(--text-secondary)', fontSize: '1.2rem', lineHeight: 1.4 }}>
-                            {selectedNews.subtitle}
-                        </h3>
-
-                        <div
-                            style={{ lineHeight: 1.3, color: 'var(--text-primary)', fontSize: '1.05rem' }}
-                            dangerouslySetInnerHTML={{ __html: selectedNews.body }}
-                        />
-                    </div>
-                </div>
-            );
-        })()
-    }
-
-    < style > {`
+            <style>{`
         @keyframes slideUp {
           from { transform: translateY(100%); }
           to { transform: translateY(0); }
