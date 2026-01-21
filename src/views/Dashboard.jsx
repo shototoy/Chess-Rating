@@ -253,7 +253,7 @@ export const Dashboard = () => {
                                     }}
                                 >
                                     <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>{p.lastName}, {p.firstName}</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{p.title || 'UR'} • ID: {p.id}</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{p.title ? p.title : ''} • ID: {p.id}</div>
                                 </div>
                             ))
                         )}
@@ -295,11 +295,21 @@ export const Dashboard = () => {
                                     </select>
                                 </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
                                     <div>
-                                        <label className="input-label">RAPID RATING</label>
+                                        <label className="input-label">STANDARD</label>
+                                        <input className="input-field" type="number" placeholder="Rating" name="standard" disabled style={{ opacity: 0.6 }} />
+                                    </div>
+                                    <div>
+                                        <label className="input-label">RAPID</label>
                                         <input className="input-field" type="number" placeholder="Rating" name="rapid" onChange={(e) => setFormData({ ...formData, rapid: e.target.value })} required />
                                     </div>
+                                    <div>
+                                        <label className="input-label">BLITZ</label>
+                                        <input className="input-field" type="number" placeholder="Rating" name="blitz" disabled style={{ opacity: 0.6 }} />
+                                    </div>
+                                </div>
+                                <div style={{ marginBottom: 24 }}>
                                     <div>
                                         <label className="input-label">BIRTH YEAR</label>
                                         <input className="input-field" type="number" placeholder="Year (Optional)" name="bYear" onChange={(e) => setFormData({ ...formData, bYear: e.target.value })} />
@@ -455,9 +465,13 @@ export const Dashboard = () => {
                                     </div>
                                 </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
                                     <div>
-                                        <label className="input-label">RAPID RATING</label>
+                                        <label className="input-label">STANDARD</label>
+                                        <input className="input-field" type="number" placeholder="Rating" name="standard" disabled style={{ opacity: 0.6 }} />
+                                    </div>
+                                    <div>
+                                        <label className="input-label">RAPID</label>
                                         <input
                                             className="input-field"
                                             type="number"
@@ -467,6 +481,12 @@ export const Dashboard = () => {
                                             style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}
                                         />
                                     </div>
+                                    <div>
+                                        <label className="input-label">BLITZ</label>
+                                        <input className="input-field" type="number" placeholder="Rating" name="blitz" disabled style={{ opacity: 0.6 }} />
+                                    </div>
+                                </div>
+                                <div style={{ marginBottom: 24 }}>
                                     <div>
                                         <label className="input-label">BIRTH YEAR</label>
                                         <input

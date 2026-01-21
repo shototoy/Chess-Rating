@@ -65,20 +65,35 @@ export const Search = () => {
                         </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginTop: 24 }}>
-                        <div style={{ background: 'var(--bg-color)', padding: '12px 8px', borderRadius: 10, textAlign: 'center' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginTop: 24 }}>
+                        <div style={{ background: 'var(--bg-color)', padding: '12px 4px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0', opacity: 0.7 }}>
+                            <small style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', display: 'block', marginBottom: 4, fontWeight: 700 }}>STANDARD</small>
+                            <div style={{ fontWeight: 800, fontSize: '1rem', color: selectedPlayer ? 'var(--text-primary)' : '#e0e0e0' }}>
+                                ----
+                            </div>
+                        </div>
+                        <div style={{ background: 'var(--bg-color)', padding: '12px 4px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            <small style={{ color: 'var(--primary-color)', fontSize: '0.65rem', display: 'block', marginBottom: 4, fontWeight: 700 }}>RAPID</small>
+                            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: selectedPlayer ? 'var(--primary-color)' : '#e0e0e0' }}>
+                                {selectedPlayer ? selectedPlayer.rapid : '----'}
+                            </div>
+                        </div>
+                        <div style={{ background: 'var(--bg-color)', padding: '12px 4px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0', opacity: 0.7 }}>
+                            <small style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', display: 'block', marginBottom: 4, fontWeight: 700 }}>BLITZ</small>
+                            <div style={{ fontWeight: 800, fontSize: '1rem', color: selectedPlayer ? 'var(--text-primary)' : '#e0e0e0' }}>
+                                ----
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 12 }}>
+                        <div style={{ background: 'var(--bg-color)', padding: '8px', borderRadius: 10, textAlign: 'center' }}>
                             <small style={{ color: 'var(--text-secondary)', fontSize: '0.7rem', display: 'block', marginBottom: 4 }}>FIDE ID</small>
                             <div style={{ fontWeight: 700, fontSize: '0.9rem', color: selectedPlayer ? 'var(--text-primary)' : '#e0e0e0' }}>
                                 {selectedPlayer ? selectedPlayer.id : '----'}
                             </div>
                         </div>
-                        <div style={{ background: 'var(--bg-color)', padding: '12px 8px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0' }}>
-                            <small style={{ color: 'var(--primary-color)', fontSize: '0.7rem', display: 'block', marginBottom: 4, fontWeight: 700 }}>RATING</small>
-                            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: selectedPlayer ? 'var(--primary-color)' : '#e0e0e0' }}>
-                                {selectedPlayer ? selectedPlayer.rapid : '----'}
-                            </div>
-                        </div>
-                        <div style={{ background: 'var(--bg-color)', padding: '12px 8px', borderRadius: 10, textAlign: 'center' }}>
+                        <div style={{ background: 'var(--bg-color)', padding: '8px', borderRadius: 10, textAlign: 'center' }}>
                             <small style={{ color: 'var(--text-secondary)', fontSize: '0.7rem', display: 'block', marginBottom: 4 }}>BORN</small>
                             <div style={{ fontWeight: 700, fontSize: '0.9rem', color: selectedPlayer ? 'var(--text-primary)' : '#e0e0e0' }}>
                                 {selectedPlayer ? selectedPlayer.bYear : '----'}
@@ -128,6 +143,16 @@ export const Search = () => {
                         }} />
                     </div>
                     <div
+                        style={{ width: 90, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', cursor: 'pointer' }}
+                        onClick={() => handleSort('standard')}
+                    >
+                        Standard <ArrowUpDown size={14} style={{
+                            marginLeft: 4,
+                            opacity: sortConfig.key === 'standard' ? 1 : 0.3,
+                            color: sortConfig.key === 'standard' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
+                        }} />
+                    </div>
+                    <div
                         style={{ width: 80, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', cursor: 'pointer' }}
                         onClick={() => handleSort('rapid')}
                     >
@@ -135,6 +160,16 @@ export const Search = () => {
                             marginLeft: 4,
                             opacity: sortConfig.key === 'rapid' ? 1 : 0.3,
                             color: sortConfig.key === 'rapid' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
+                        }} />
+                    </div>
+                    <div
+                        style={{ width: 80, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', cursor: 'pointer' }}
+                        onClick={() => handleSort('blitz')}
+                    >
+                        Blitz <ArrowUpDown size={14} style={{
+                            marginLeft: 4,
+                            opacity: sortConfig.key === 'blitz' ? 1 : 0.3,
+                            color: sortConfig.key === 'blitz' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
                         }} />
                     </div>
                 </div>
@@ -177,6 +212,18 @@ export const Search = () => {
                                         </div>
                                     </div>
                                     <div style={{
+                                        width: 90,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'flex-end',
+                                        color: 'var(--text-secondary)',
+                                        fontWeight: 600,
+                                        fontSize: '0.95rem',
+                                        opacity: 0.5
+                                    }}>
+                                        -
+                                    </div>
+                                    <div style={{
                                         width: 80,
                                         display: 'flex',
                                         alignItems: 'center',
@@ -187,6 +234,18 @@ export const Search = () => {
                                     }}>
                                         <Trophy size={14} style={{ marginRight: 4, opacity: 0.5 }} />
                                         {player.rapid}
+                                    </div>
+                                    <div style={{
+                                        width: 80,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'flex-end',
+                                        color: 'var(--text-secondary)',
+                                        fontWeight: 600,
+                                        fontSize: '0.95rem',
+                                        opacity: 0.5
+                                    }}>
+                                        -
                                     </div>
                                 </div>
                             ))}

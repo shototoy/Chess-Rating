@@ -238,7 +238,7 @@ export const Home = () => {
                                         alignItems: 'center',
                                         gap: 6
                                     }}>
-                                        <span style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4 }}>{player.title || 'UR'}</span>
+                                        {player.title && <span style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4 }}>{player.title}</span>}
                                         <span>ID: {player.id}</span>
                                     </div>
                                 </div>
@@ -346,13 +346,13 @@ export const Home = () => {
                         </div>
 
 
-                        <div style={{ flex: 1, overflowY: 'auto', padding: '24px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+                        <div style={{ flex: 1, overflowY: 'auto', padding: '32px 48px', width: '100%' }}>
                             <h3 style={{ margin: '0 0 24px', fontWeight: 600, color: 'var(--text-secondary)', fontSize: '1.2rem', lineHeight: 1.4 }}>
                                 {selectedNews.subtitle}
                             </h3>
 
                             <div
-                                style={{ lineHeight: 1.8, color: 'var(--text-primary)', fontSize: '1.05rem' }}
+                                style={{ lineHeight: 1.3, color: 'var(--text-primary)', fontSize: '1.05rem' }}
                                 dangerouslySetInnerHTML={{ __html: selectedNews.body }}
                             />
                         </div>
