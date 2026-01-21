@@ -4,7 +4,7 @@ import './index.css';
 import { Home } from './views/Home';
 import { Search } from './views/Search';
 import { Dashboard } from './views/Dashboard';
-import { BottomNav } from './components/BottomNav';
+import { Navbar } from './components/Navbar';
 import { LoadingScreen } from './components/LoadingScreen';
 
 function App() {
@@ -45,15 +45,12 @@ function App() {
                 color={toast.color}
                 onClose={() => setToast(t => ({ ...t, show: false }))}
             />
-            <header className="app-header" style={{ paddingTop: '1.5rem' }}>
-                Philippines Chess Rating
-            </header>
 
-            <main style={{ paddingBottom: 100 }}>
+            <Navbar currentTab={currentTab} onTabChange={handleTabChange} />
+
+            <main style={{ paddingTop: '80px', paddingBottom: '20px', minHeight: '100vh', maxWidth: '1200px', margin: '0 auto' }}>
                 {renderContent()}
             </main>
-
-            <BottomNav currentTab={currentTab} onTabChange={handleTabChange} style={{ paddingBottom: '1.5rem' }} />
         </div>
     );
 }

@@ -82,7 +82,7 @@ export const BottomNav = ({ currentTab, onTabChange, style }) => {
                             width: 56,
                             height: 56,
                             borderRadius: '50%',
-                            background: isHome && !isActive ? '#f8f9fa' : 'transparent',
+                            background: isHome && !isActive ? 'var(--bg-color)' : 'transparent',
                             border: isHome ? '4px solid #fff' : 'none',
                             boxShadow: isHome ? '0 -4px 12px rgba(0,0,0,0.1)' : 'none',
                             transition: 'all 0.3s ease',
@@ -90,7 +90,7 @@ export const BottomNav = ({ currentTab, onTabChange, style }) => {
                         }}>
                             <Icon
                                 size={isHome ? 30 : 28}
-                                color={isActive ? 'white' : '#94a3b8'}
+                                color={isActive ? 'white' : 'var(--text-secondary)'}
                                 strokeWidth={isActive ? 2.5 : 2}
                                 style={{
                                     transition: 'color 0.3s ease',

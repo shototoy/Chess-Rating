@@ -8,11 +8,13 @@ export const usePlayerContext = () => useContext(PlayerContext);
 export const PlayerProvider = ({ children }) => {
     const [players, setPlayers] = useState([]);
     const [page, setPage] = useState(1);
+    const [totalPlayers, setTotalPlayers] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
     const [query, setQuery] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: 'rapid', direction: 'desc' });
 
+    const LIMIT = 150;
     const abortControllerRef = useRef(null);
     const debounceTimeoutRef = useRef(null);
     const CACHE_KEY = 'leaderboard_cache';
@@ -79,20 +81,23 @@ export const PlayerProvider = ({ children }) => {
         setLoading(true);
 
         try {
-            let newData = [];
+            let result = { players: [], total: 0 };
             let sortBy = 'rapid_rating';
+
+            // Map frontend sort keys to backend columns
             if (fetchSortKey === 'name') sortBy = 'last_name';
             else if (fetchSortKey === 'rapid') sortBy = 'rapid_rating';
 
             // Backend search supports 'name' (multicolumn) and 'last_name'
-            if (fetchSortKey === 'name') sortBy = 'name';
+            // User requested sorting by last name for player details
+            if (fetchSortKey === 'name') sortBy = 'last_name';
 
             if (fetchQuery) {
-                newData = await searchPlayers(fetchQuery, pageNum, 150, sortBy, fetchSortDir, signal);
+                result = await searchPlayers(fetchQuery, pageNum, LIMIT, sortBy, fetchSortDir, signal);
             } else {
-                newData = await getPlayers({
+                result = await getPlayers({
                     page: pageNum,
-                    limit: 150,
+                    limit: LIMIT,
                     sortBy,
                     order: fetchSortDir,
                     signal
@@ -101,17 +106,23 @@ export const PlayerProvider = ({ children }) => {
 
             if (signal.aborted) return;
 
+            const newData = result.players;
+            const total = result.total;
+
             if (replace) {
                 setPlayers(newData);
+                setTotalPlayers(total);
             } else {
                 setPlayers(prev => {
                     const existingIds = new Set(prev.map(p => p.id));
                     const uniqueNew = newData.filter(p => !existingIds.has(p.id));
                     return [...prev, ...uniqueNew];
                 });
+                // Update total in case it changed
+                setTotalPlayers(total);
             }
 
-            setHasMore(newData.length === 150);
+            setHasMore(newData.length === LIMIT);
             setPage(pageNum);
         } catch (error) {
             if (error.name !== 'AbortError') {
@@ -152,9 +163,11 @@ export const PlayerProvider = ({ children }) => {
 
     const handleSort = (key) => {
         let direction = 'desc';
-        if (sortConfig.key === key && sortConfig.direction === 'desc') {
-            direction = 'asc';
+        // Toggle direction if clicking same key
+        if (sortConfig.key === key) {
+            direction = sortConfig.direction === 'desc' ? 'asc' : 'desc';
         }
+
         const newConfig = { key, direction };
         setSortConfig(newConfig);
 
@@ -168,6 +181,12 @@ export const PlayerProvider = ({ children }) => {
         }
     };
 
+    const goToPage = (pageNum) => {
+        loadPlayers(pageNum, true);
+    };
+
+    const totalPages = Math.ceil(totalPlayers / LIMIT);
+
     return (
         <PlayerContext.Provider value={{
             players,
@@ -175,9 +194,12 @@ export const PlayerProvider = ({ children }) => {
             hasMore,
             query,
             sortConfig,
+            page,
+            totalPages,
             handleSearch,
             handleSort,
-            loadMore
+            loadMore,
+            goToPage
         }}>
             {children}
         </PlayerContext.Provider>

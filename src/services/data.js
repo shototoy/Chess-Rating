@@ -13,9 +13,10 @@ const handleResponse = async (response) => {
     if (!response.ok) {
         throw new Error(data.error || 'API request failed');
     }
-    return data.data;
+    return data;
 };
 
+// Data Mappers
 const mapPlayer = (p) => ({
     id: p.id,
     firstName: p.first_name,
@@ -34,6 +35,23 @@ const mapPlayerPayload = (p) => ({
     bYear: p.bYear
 });
 
+const mapNews = (n) => ({
+    id: n.id,
+    title: n.title,
+    subtitle: n.subtitle,
+    category: n.category,
+    body: n.body,
+    date: new Date(n.created_at).toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    })
+});
+
+// API Functions
 
 export const getPlayers = async ({ page = 1, limit = 50, sortBy = 'rapid_rating', order = 'desc', signal } = {}) => {
     try {
@@ -44,12 +62,15 @@ export const getPlayers = async ({ page = 1, limit = 50, sortBy = 'rapid_rating'
             order
         });
         const response = await fetch(`${API_URL}/players?${params}`, { headers: getHeaders(), signal });
-        const list = await handleResponse(response);
-        return list.map(mapPlayer);
+        const body = await handleResponse(response);
+        return {
+            players: (body.data || []).map(mapPlayer),
+            total: body.total || 0
+        };
     } catch (error) {
         if (error.name === 'AbortError') throw error;
         console.error('getPlayers error:', error);
-        return [];
+        return { players: [], total: 0 };
     }
 };
 
@@ -63,12 +84,15 @@ export const searchPlayers = async (query, page = 1, limit = 50, sortBy = 'rapid
             order
         });
         const response = await fetch(`${API_URL}/players/search?${params}`, { headers: getHeaders(), signal });
-        const list = await handleResponse(response);
-        return list.map(mapPlayer);
+        const body = await handleResponse(response);
+        return {
+            players: (body.data || []).map(mapPlayer),
+            total: body.total || 0
+        };
     } catch (error) {
         if (error.name === 'AbortError') throw error;
         console.error('searchPlayers error:', error);
-        return [];
+        return { players: [], total: 0 };
     }
 };
 
@@ -101,28 +125,12 @@ export const deletePlayer = async (id) => {
     return getPlayers();
 };
 
-
-const mapNews = (n) => ({
-    id: n.id,
-    title: n.title,
-    subtitle: n.subtitle,
-    category: n.category,
-    body: n.body,
-    date: new Date(n.created_at).toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-    })
-});
-
-
 export const getNews = async () => {
     try {
         const response = await fetch(`${API_URL}/news`, { headers: getHeaders() });
-        const list = await handleResponse(response);
+        const body = await handleResponse(response);
+        // Handle both simple array response and { data: [...] } response structure
+        const list = Array.isArray(body) ? body : (body.data || []);
         return list.map(mapNews);
     } catch (error) {
         console.error('getNews error:', error);
@@ -152,7 +160,8 @@ export const deleteNews = async (id) => {
 export const getLogs = async () => {
     try {
         const response = await fetch(`${API_URL}/logs`, { headers: getHeaders() });
-        return handleResponse(response);
+        const body = await handleResponse(response);
+        return body.data || body;
     } catch (error) {
         console.error('getLogs error:', error);
         return [];
