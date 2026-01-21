@@ -47,6 +47,19 @@ function App() {
             />
 
 
+            {/* Fixed Header Banner */}
+            <div style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 100,
+                height: '13vh',
+                marginBottom: '8px',
+                overflow: 'hidden',
+                background: 'white'
+            }}>
+                <img src="/banner1.jpg" alt="One Chess Movement" style={{ width: '100%', height: '100%', objectFit: 'fill' }} />
+            </div>
+
             <main style={{ paddingBottom: 100 }}>
                 {renderContent()}
             </main>

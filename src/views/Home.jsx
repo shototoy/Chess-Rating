@@ -85,34 +85,17 @@ export const Home = () => {
         <div className="container" style={{ position: 'relative' }}>
 
             {/* Banner Section */}
-            <div style={{
-                height: '180px',
-                marginBottom: '24px',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                position: 'relative',
-                boxShadow: '0 4px 20px rgba(197, 90, 32, 0.4)'
-            }}>
-                <img src="/banner1.jpg" alt="One Chess Movement" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <div style={{
-                    position: 'absolute',
-                    bottom: 0, left: 0, right: 0,
-                    height: '80px',
-                    background: 'linear-gradient(to top, rgba(197, 90, 32, 0.8) 0%, rgba(255, 255, 255, 0) 100%)',
-                    pointerEvents: 'none'
-                }}>
-                </div>
-            </div>
 
-            <h3 style={{ margin: '0px 0px 10px 0px', display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-secondary)' }}>
+
+            <h3 style={{ margin: '0px 0px 6px 0px', display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-secondary)' }}>
                 <Newspaper size={20} /> Latest News
             </h3>
             <div style={{
                 display: 'flex',
                 overflowX: 'auto',
                 gap: 16,
-                paddingBottom: 16,
-                marginBottom: 30,
+                paddingBottom: 8,
+                marginBottom: 16,
                 scrollSnapType: 'x mandatory',
                 WebkitOverflowScrolling: 'touch',
                 touchAction: 'pan-x'
@@ -136,7 +119,7 @@ export const Home = () => {
                             style={{
                                 minWidth: '280px',
                                 margin: 0,
-                                height: '200px',
+                                height: '150px',
                                 background: gradient,
                                 color: 'white',
                                 display: 'flex',
@@ -174,7 +157,7 @@ export const Home = () => {
             </div>
 
 
-            <h3 style={{ margin: '0 0 10px', display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-secondary)' }}>
+            <h3 style={{ margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-secondary)' }}>
                 <TrendingUp size={20} /> Top Rated Players
             </h3>
             <div className="card" style={{ padding: 0 }}>
@@ -182,7 +165,7 @@ export const Home = () => {
                     <div key={player.id} style={{
                         display: 'flex',
                         alignItems: 'center',
-                        padding: '12px 16px',
+                        padding: '8px 12px',
                         borderBottom: index < topPlayers.length - 1 ? '1px solid #f0f0f0' : 'none'
                     }}>
 

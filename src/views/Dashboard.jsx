@@ -65,7 +65,7 @@ export const Dashboard = () => {
         setSearchQuery(val);
         if (val.length > 0) {
             const result = await searchPlayers(val, 1, 50);
-            setSearchResults(result.players);
+            setSearchResults(result);
         } else {
             setSearchResults([]);
         }
@@ -131,7 +131,7 @@ export const Dashboard = () => {
     if (!isAuthenticated) {
         return (
             <div style={{
-                height: 'calc(100vh - 100px)',
+                height: 'calc(100vh - 13vh - 110px)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -164,7 +164,14 @@ export const Dashboard = () => {
 
     // Main Dashboard View
     return (
-        <div className="search-layout">
+
+        <div style={{
+            height: 'calc(100vh - 13vh - 100px)',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '0 16px',
+            overflow: 'hidden'
+        }}>
             <Toast
                 message={toast.message}
                 show={toast.show}
@@ -172,400 +179,371 @@ export const Dashboard = () => {
                 onClose={() => setToast(t => ({ ...t, show: false }))}
             />
 
-            {/* Sidebar: Actions & Search */}
-            <div className="search-sidebar">
-                {/* Admin Actions */}
-                <div className="card" style={{ marginBottom: 16, padding: 16 }}>
-                    <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 12 }}>Quick Actions</h3>
-                    <div style={{ display: 'flex', gap: 10, flexDirection: 'column' }}>
-                        <button
-                            className="btn"
-                            onClick={() => { setActiveView('addUser'); setSelectedPlayer(null); setFormData({}); }}
-                            style={{
-                                background: activeView === 'addUser' ? 'var(--primary-color)' : '#f1f5f9',
-                                color: activeView === 'addUser' ? 'white' : 'var(--text-primary)',
-                                border: 'none',
-                                padding: '10px 16px',
-                                borderRadius: 8,
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 10,
-                                cursor: 'pointer',
-                                fontWeight: 600
-                            }}
-                        >
-                            <UserPlus size={18} /> Add New Player
-                        </button>
-                        <button
-                            className="btn"
-                            onClick={() => { setActiveView('addNews'); setSelectedPlayer(null); setNewsData({ title: '', subtitle: '', category: 'Tournament', body: '' }); }}
-                            style={{
-                                background: activeView === 'addNews' ? 'var(--primary-color)' : '#f1f5f9',
-                                color: activeView === 'addNews' ? 'white' : 'var(--text-primary)',
-                                border: 'none',
-                                padding: '10px 16px',
-                                borderRadius: 8,
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 10,
-                                cursor: 'pointer',
-                                fontWeight: 600
-                            }}
-                        >
-                            <Megaphone size={18} /> Post News
-                        </button>
-                    </div>
-                </div>
-
-                {/* Player Search & List */}
-                <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0 }}>
-                    <div style={{ padding: 12, borderBottom: '1px solid var(--border-color)', background: 'white' }}>
-                        <div className="input-group" style={{ position: 'relative', marginBottom: 0 }}>
-                            <SearchIcon style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#999' }} size={16} />
-                            <input
-                                type="text"
-                                className="input-field"
-                                style={{ paddingLeft: 36, height: 40, fontSize: '0.9rem' }}
-                                placeholder="Find player to edit..."
-                                value={searchQuery}
-                                onChange={handleSearch}
-                            />
-                        </div>
-                    </div>
-
-                    <div style={{ flex: 1, overflowY: 'auto' }}>
-                        {searchResults.length === 0 ? (
-                            <div style={{ padding: 20, textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
-                                {searchQuery ? 'No players found.' : 'Search for a player to edit.'}
-                            </div>
-                        ) : (
-                            searchResults.map(p => (
-                                <div
-                                    key={p.id}
-                                    onClick={() => selectPlayer(p)}
-                                    style={{
-                                        padding: '10px 16px',
-                                        borderBottom: '1px solid #f1f5f9',
-                                        cursor: 'pointer',
-                                        background: selectedPlayer?.id === p.id ? '#f0f9ff' : 'white',
-                                        borderLeft: selectedPlayer?.id === p.id ? '3px solid var(--primary-color)' : '3px solid transparent',
-                                        transition: 'all 0.2s'
-                                    }}
-                                >
-                                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>{p.lastName}, {p.firstName}</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{p.title ? p.title : ''} • ID: {p.id}</div>
-                                </div>
-                            ))
-                        )}
-                    </div>
+            {/* Quick Actions */}
+            <div className="card" style={{ padding: '10px', marginBottom: 10, flexShrink: 0 }}>
+                <h3 style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 8, fontWeight: 700 }}>Quick Actions</h3>
+                <div style={{ display: 'flex', gap: 8 }}>
+                    <button
+                        className="btn"
+                        onClick={() => { setActiveView('addUser'); setSelectedPlayer(null); setFormData({}); }}
+                        style={{
+                            flex: 1,
+                            background: activeView === 'addUser' ? 'var(--primary-color)' : '#f1f5f9',
+                            color: activeView === 'addUser' ? 'white' : 'var(--text-primary)',
+                            border: 'none',
+                            padding: '8px 12px',
+                            borderRadius: 6,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 6,
+                            cursor: 'pointer',
+                            fontWeight: 600,
+                            fontSize: '0.85rem'
+                        }}
+                    >
+                        <UserPlus size={16} /> Add Player
+                    </button>
+                    <button
+                        className="btn"
+                        onClick={() => { setActiveView('addNews'); setSelectedPlayer(null); setNewsData({ title: '', subtitle: '', category: 'Tournament', body: '' }); }}
+                        style={{
+                            flex: 1,
+                            background: activeView === 'addNews' ? 'var(--primary-color)' : '#f1f5f9',
+                            color: activeView === 'addNews' ? 'white' : 'var(--text-primary)',
+                            border: 'none',
+                            padding: '8px 12px',
+                            borderRadius: 6,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 6,
+                            cursor: 'pointer',
+                            fontWeight: 600,
+                            fontSize: '0.85rem'
+                        }}
+                    >
+                        <Megaphone size={16} /> Post News
+                    </button>
                 </div>
             </div>
 
-            {/* Main Area: Workspace */}
-            <div className="search-main" style={{ padding: 0, background: 'transparent', border: 'none', boxShadow: 'none' }}>
-                <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column', margin: 0, overflow: 'hidden' }}>
-
-                    {/* VIEW: ADD USER */}
-                    {activeView === 'addUser' && (
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 8 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 16, borderBottom: '1px solid var(--border-color)', marginBottom: 20 }}>
-                                <UserPlus size={24} color="var(--primary-color)" style={{ marginRight: 12 }} />
-                                <h2 style={{ margin: 0 }}>Add New Player</h2>
-                            </div>
-                            <form onSubmit={submitNewPlayer} style={{ flex: 1, overflowY: 'auto', padding: 4 }}>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-                                    <div>
-                                        <label className="input-label">FIRST NAME</label>
-                                        <input className="input-field" placeholder="First" name="firstName" onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} required />
-                                    </div>
-                                    <div>
-                                        <label className="input-label">LAST NAME</label>
-                                        <input className="input-field" placeholder="Last" name="lastName" onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} required />
-                                    </div>
+            {/* Search Input with Dropdown Overlay */}
+            <div className="card" style={{ padding: '10px', marginBottom: 10, flexShrink: 0, overflow: 'visible', zIndex: 50 }}>
+                <div className="input-group" style={{ position: 'relative', marginBottom: 0 }}>
+                    <SearchIcon style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#999' }} size={16} />
+                    <input
+                        type="text"
+                        className="input-field"
+                        style={{ paddingLeft: 36, height: 36, fontSize: '0.9rem' }}
+                        placeholder="Find player to edit..."
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        onFocus={() => { if (searchQuery) handleSearch({ target: { value: searchQuery } }) }}
+                    />
+                    {/* Dropdown Results */}
+                    {searchQuery && searchResults.length > 0 && (
+                        <div style={{
+                            position: 'absolute',
+                            top: '110%',
+                            left: 0,
+                            right: 0,
+                            background: 'white',
+                            borderRadius: 8,
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                            border: '1px solid #e2e8f0',
+                            maxHeight: '200px',
+                            overflowY: 'auto',
+                            zIndex: 100
+                        }}>
+                            {searchResults.map(p => (
+                                <div
+                                    key={p.id}
+                                    onClick={() => {
+                                        selectPlayer(p);
+                                        setSearchQuery('');
+                                        setSearchResults([]);
+                                    }}
+                                    style={{
+                                        padding: '8px 12px',
+                                        borderBottom: '1px solid #f1f5f9',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        fontSize: '0.85rem'
+                                    }}
+                                    onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
+                                    onMouseLeave={e => e.currentTarget.style.background = 'white'}
+                                >
+                                    <span style={{ fontWeight: 600 }}>{p.lastName}, {p.firstName}</span>
+                                    <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>{p.id}</span>
                                 </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
 
-                                <div style={{ marginBottom: 16 }}>
-                                    <label className="input-label">TITLE</label>
-                                    <select className="input-field" name="title" onChange={(e) => setFormData({ ...formData, title: e.target.value })}>
-                                        <option value="">No Title</option>
-                                        <option value="GM">GM</option>
-                                        <option value="IM">IM</option>
-                                        <option value="FM">FM</option>
-                                        <option value="CM">CM</option>
+            {/* Main Workspace (Fills remaining space) */}
+            <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0, marginBottom: 0 }}>
+                {!activeView && !selectedPlayer && (
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', opacity: 0.5 }}>
+                        <SearchIcon size={32} color="#94a3b8" style={{ marginBottom: 12 }} />
+                        <p style={{ maxWidth: 200, color: '#94a3b8', fontSize: '0.9rem', margin: 0 }}>Select an action or search a player to begin.</p>
+                    </div>
+                )}
+
+                {/* VIEW: ADD USER */}
+                {activeView === 'addUser' && (
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '12px 16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
+                            <UserPlus size={20} color="var(--primary-color)" style={{ marginRight: 10 }} />
+                            <h2 style={{ margin: 0, fontSize: '1.2rem' }}>Add New Player</h2>
+                        </div>
+                        <form onSubmit={submitNewPlayer} style={{ flex: 1, overflowY: 'auto', paddingRight: 4 }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+                                <div>
+                                    <label className="input-label">FIRST NAME</label>
+                                    <input className="input-field" placeholder="First" name="firstName" onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} required style={{ padding: '8px 12px' }} />
+                                </div>
+                                <div>
+                                    <label className="input-label">LAST NAME</label>
+                                    <input className="input-field" placeholder="Last" name="lastName" onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} required style={{ padding: '8px 12px' }} />
+                                </div>
+                            </div>
+
+                            <div style={{ marginBottom: 12 }}>
+                                <label className="input-label">TITLE</label>
+                                <select className="input-field" name="title" onChange={(e) => setFormData({ ...formData, title: e.target.value })} style={{ padding: '8px 12px' }}>
+                                    <option value="">No Title</option>
+                                    <option value="GM">GM</option>
+                                    <option value="IM">IM</option>
+                                    <option value="FM">FM</option>
+                                    <option value="CM">CM</option>
+                                </select>
+                            </div>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 16 }}>
+                                <div>
+                                    <label className="input-label">STANDARD</label>
+                                    <input className="input-field" type="number" placeholder="-" name="standard" disabled style={{ opacity: 0.6, padding: '8px' }} />
+                                </div>
+                                <div>
+                                    <label className="input-label">RAPID</label>
+                                    <input className="input-field" type="number" placeholder="Rtng" name="rapid" onChange={(e) => setFormData({ ...formData, rapid: e.target.value })} required style={{ padding: '8px' }} />
+                                </div>
+                                <div>
+                                    <label className="input-label">BLITZ</label>
+                                    <input className="input-field" type="number" placeholder="-" name="blitz" disabled style={{ opacity: 0.6, padding: '8px' }} />
+                                </div>
+                            </div>
+
+                            <div style={{ marginBottom: 20 }}>
+                                <label className="input-label">BIRTH YEAR</label>
+                                <input className="input-field" type="number" placeholder="Year" name="bYear" onChange={(e) => setFormData({ ...formData, bYear: e.target.value })} style={{ padding: '8px 12px' }} />
+                            </div>
+
+                            <button type="submit" className="btn-primary" style={{ padding: '12px', width: '100%' }}>Create Player</button>
+                        </form>
+                    </div>
+                )}
+
+                {/* VIEW: ADD NEWS */}
+                {activeView === 'addNews' && (
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '12px 16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
+                            <Megaphone size={20} color="var(--primary-color)" style={{ marginRight: 10 }} />
+                            <h2 style={{ margin: 0, fontSize: '1.2rem' }}>Post News</h2>
+                        </div>
+                        <form onSubmit={submitNews} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                            <div style={{ overflowY: 'auto', flex: 1, paddingRight: 4 }}>
+                                <div style={{ marginBottom: 12 }}>
+                                    <label className="input-label">HEADLINE</label>
+                                    <input className="input-field" placeholder="Enter headline" value={newsData.title} onChange={e => setNewsData({ ...newsData, title: e.target.value })} required style={{ padding: '8px 12px' }} />
+                                </div>
+                                <div style={{ marginBottom: 12 }}>
+                                    <label className="input-label">SUBTITLE</label>
+                                    <input className="input-field" placeholder="Enter subtitle" value={newsData.subtitle} onChange={e => setNewsData({ ...newsData, subtitle: e.target.value })} required style={{ padding: '8px 12px' }} />
+                                </div>
+                                <div style={{ marginBottom: 12 }}>
+                                    <label className="input-label">CATEGORY</label>
+                                    <select className="input-field" value={newsData.category} onChange={e => setNewsData({ ...newsData, category: e.target.value })} style={{ padding: '8px 12px' }}>
+                                        <option>Tournament</option>
+                                        <option>App Changelog</option>
+                                        <option>Community</option>
                                     </select>
                                 </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
-                                    <div>
-                                        <label className="input-label">STANDARD</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="standard" disabled style={{ opacity: 0.6 }} />
-                                    </div>
-                                    <div>
-                                        <label className="input-label">RAPID</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="rapid" onChange={(e) => setFormData({ ...formData, rapid: e.target.value })} required />
-                                    </div>
-                                    <div>
-                                        <label className="input-label">BLITZ</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="blitz" disabled style={{ opacity: 0.6 }} />
-                                    </div>
-                                </div>
-                                <div style={{ marginBottom: 24 }}>
-                                    <div>
-                                        <label className="input-label">BIRTH YEAR</label>
-                                        <input className="input-field" type="number" placeholder="Year (Optional)" name="bYear" onChange={(e) => setFormData({ ...formData, bYear: e.target.value })} />
-                                    </div>
-                                </div>
-
-                                <button type="submit" className="btn-primary" style={{ padding: 16 }}>Create Player</button>
-                            </form>
-                        </div>
-                    )}
-
-                    {/* VIEW: ADD NEWS */}
-                    {activeView === 'addNews' && (
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 8 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', paddingBottom: 16, borderBottom: '1px solid var(--border-color)', marginBottom: 20 }}>
-                                <Megaphone size={24} color="var(--primary-color)" style={{ marginRight: 12 }} />
-                                <h2 style={{ margin: 0 }}>Post Announcement</h2>
-                            </div>
-                            <form onSubmit={submitNews} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                                <div style={{ overflowY: 'auto', flex: 1, paddingRight: 4 }}>
-                                    <div style={{ marginBottom: 16 }}>
-                                        <label className="input-label">HEADLINE</label>
-                                        <input className="input-field" placeholder="Enter headline" value={newsData.title} onChange={e => setNewsData({ ...newsData, title: e.target.value })} required />
-                                    </div>
-                                    <div style={{ marginBottom: 16 }}>
-                                        <label className="input-label">SUBTITLE</label>
-                                        <input className="input-field" placeholder="Enter subtitle" value={newsData.subtitle} onChange={e => setNewsData({ ...newsData, subtitle: e.target.value })} required />
-                                    </div>
-                                    <div style={{ marginBottom: 16 }}>
-                                        <label className="input-label">CATEGORY</label>
-                                        <select className="input-field" value={newsData.category} onChange={e => setNewsData({ ...newsData, category: e.target.value })}>
-                                            <option>Tournament</option>
-                                            <option>App Changelog</option>
-                                            <option>Community</option>
-                                        </select>
-                                    </div>
-
-                                    <div style={{ marginBottom: 16, display: 'flex', flexDirection: 'column', flex: 1, minHeight: 300 }}>
-                                        <label className="input-label">BODY TEXT</label>
-                                        <div style={{
-                                            display: 'flex',
-                                            gap: 4,
-                                            marginBottom: 8,
-                                            background: '#f8fafc',
-                                            padding: '4px',
-                                            borderRadius: 8,
-                                            border: '1px solid #e2e8f0',
-                                            alignItems: 'center',
-                                            flexWrap: 'wrap'
-                                        }}>
-                                            <button type="button" onMouseDown={(e) => handleCommand(e, 'bold')} className={`rich-text-btn ${activeFormats.includes('bold') ? 'active' : ''}`}><Bold size={16} /></button>
-                                            <button type="button" onMouseDown={(e) => handleCommand(e, 'italic')} className={`rich-text-btn ${activeFormats.includes('italic') ? 'active' : ''}`}><Italic size={16} /></button>
-                                            <button type="button" onMouseDown={(e) => handleCommand(e, 'formatBlock', 'H3')} className={`rich-text-btn ${activeFormats.includes('H3') ? 'active' : ''}`}><Heading size={16} /></button>
-                                            <button type="button" onMouseDown={(e) => { handleCommand(e, 'removeFormat'); handleCommand(e, 'formatBlock', 'div'); }} className="rich-text-btn"><Type size={16} /></button>
-                                            <button type="button" onMouseDown={(e) => handleCommand(e, 'fontSize', '1')} className={`rich-text-btn ${activeFormats.includes('small') ? 'active' : ''}`}><CaseLower size={16} /></button>
-                                            <div style={{ flex: 1 }}></div>
-                                            <button type="button" onMouseDown={(e) => handleCommand(e, 'removeFormat')} className="rich-text-btn danger"><Eraser size={16} /></button>
-                                        </div>
-
-                                        <div
-                                            className="input-field"
-                                            contentEditable
-                                            ref={editorRef}
-                                            suppressContentEditableWarning
-                                            onInput={(e) => setNewsData({ ...newsData, body: e.currentTarget.innerHTML })}
-                                            onKeyUp={checkFormats}
-                                            onMouseUp={checkFormats}
-                                            style={{
-                                                flex: 1,
-                                                resize: 'none',
-                                                padding: '12px',
-                                                overflowY: 'auto',
-                                                minHeight: '200px',
-                                                fontFamily: 'inherit',
-                                                lineHeight: 1.6,
-                                                outline: 'none',
-                                                display: 'block'
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <button type="submit" className="btn-primary" style={{ marginTop: 16, padding: 14 }}>Post Announcement</button>
-                            </form>
-                        </div>
-                    )}
-
-                    {/* VIEW: EDIT PLAYER */}
-                    {!activeView && selectedPlayer && (
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 8 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 16, borderBottom: '1px solid var(--border-color)', marginBottom: 20 }}>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <User size={24} color="var(--primary-color)" style={{ marginRight: 12 }} />
-                                    <h2 style={{ margin: 0 }}>Edit Player Profile</h2>
-                                </div>
-                                <span style={{ background: '#f1f5f9', padding: '4px 8px', borderRadius: 4, fontSize: '0.8rem', color: '#666' }}>ID: {formData.id}</span>
-                            </div>
-
-                            <div style={{ flex: 1, overflowY: 'auto', padding: 4 }}>
-                                {/* Avatar & Title */}
-                                <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', marginBottom: 24 }}>
+                                <div style={{ marginBottom: 12, display: 'flex', flexDirection: 'column', flex: 1 }}>
+                                    <label className="input-label">BODY TEXT</label>
                                     <div style={{
-                                        width: '25%',
-                                        aspectRatio: '1 / 1',
-                                        background: 'var(--bg-color)',
-                                        borderRadius: 16,
                                         display: 'flex',
-                                        flexDirection: 'column',
+                                        gap: 4,
+                                        marginBottom: 8,
+                                        background: '#f8fafc',
+                                        padding: '4px',
+                                        borderRadius: 8,
+                                        border: '1px solid #e2e8f0',
                                         alignItems: 'center',
-                                        justifyContent: 'center',
-                                        border: '1px solid #dee2e6',
-                                        flexShrink: 0,
-                                        minWidth: 120, // ensure it doesn't get too small on mobile
-                                        maxWidth: 250
+                                        flexWrap: 'wrap'
                                     }}>
-                                        <User size={80} color="#6c757d" style={{ marginBottom: 12, opacity: 0.5 }} />
-                                        <input
-                                            name="title"
-                                            value={formData.title || ''}
-                                            onChange={handleEditChange}
-                                            placeholder="Title"
-                                            style={{
-                                                width: '60%',
-                                                fontSize: '0.9rem',
-                                                fontWeight: 700,
-                                                textAlign: 'center',
-                                                border: '1px solid #ddd',
-                                                background: 'white',
-                                                borderRadius: 6,
-                                                padding: '4px 2px'
-                                            }}
-                                        />
+                                        <button type="button" onMouseDown={(e) => handleCommand(e, 'bold')} className={`rich-text-btn ${activeFormats.includes('bold') ? 'active' : ''}`}><Bold size={14} /></button>
+                                        <button type="button" onMouseDown={(e) => handleCommand(e, 'italic')} className={`rich-text-btn ${activeFormats.includes('italic') ? 'active' : ''}`}><Italic size={14} /></button>
+                                        <button type="button" onMouseDown={(e) => handleCommand(e, 'formatBlock', 'H3')} className={`rich-text-btn ${activeFormats.includes('H3') ? 'active' : ''}`}><Heading size={14} /></button>
+                                        <button type="button" onMouseDown={(e) => { handleCommand(e, 'removeFormat'); handleCommand(e, 'formatBlock', 'div'); }} className="rich-text-btn"><Type size={14} /></button>
                                     </div>
+                                    <div
+                                        className="input-field"
+                                        contentEditable
+                                        ref={editorRef}
+                                        suppressContentEditableWarning
+                                        onInput={(e) => setNewsData({ ...newsData, body: e.currentTarget.innerHTML })}
+                                        onKeyUp={checkFormats}
+                                        onMouseUp={checkFormats}
+                                        style={{
+                                            flex: 1,
+                                            resize: 'none',
+                                            padding: '12px',
+                                            overflowY: 'auto',
+                                            minHeight: '150px',
+                                            maxHeight: '300px',
+                                            fontFamily: 'inherit',
+                                            lineHeight: 1.5,
+                                            outline: 'none',
+                                            display: 'block'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <button type="submit" className="btn-primary" style={{ marginTop: 12, padding: 12 }}>Post Announcement</button>
+                        </form>
+                    </div>
+                )}
 
-                                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
-                                        <div>
-                                            <label className="input-label">FIRST NAME</label>
-                                            <input
-                                                className="input-field"
-                                                name="firstName"
-                                                value={formData.firstName || ''}
-                                                onChange={handleEditChange}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="input-label">LAST NAME</label>
-                                            <input
-                                                className="input-field"
-                                                name="lastName"
-                                                value={formData.lastName || ''}
-                                                onChange={handleEditChange}
-                                            />
-                                        </div>
-                                    </div>
+                {/* VIEW: EDIT PLAYER */}
+                {!activeView && selectedPlayer && (
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '12px 16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <User size={20} color="var(--primary-color)" style={{ marginRight: 10 }} />
+                                <h2 style={{ margin: 0, fontSize: '1.2rem' }}>Edit Player</h2>
+                            </div>
+                            <span style={{ background: '#f1f5f9', padding: '2px 8px', borderRadius: 4, fontSize: '0.75rem', color: '#666' }}>ID: {formData.id}</span>
+                        </div>
+
+                        <div style={{ flex: 1, overflowY: 'auto', paddingRight: 4 }}>
+                            {/* Avatar & Title */}
+                            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 20 }}>
+                                <div style={{
+                                    width: 80,
+                                    height: 80,
+                                    background: 'var(--bg-color)',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    border: '1px solid #dee2e6',
+                                    flexShrink: 0
+                                }}>
+                                    <User size={32} color="#6c757d" style={{ marginBottom: 4, opacity: 0.5 }} />
+                                    <input
+                                        name="title"
+                                        value={formData.title || ''}
+                                        onChange={handleEditChange}
+                                        placeholder="Title"
+                                        style={{
+                                            width: '80%',
+                                            fontSize: '0.8rem',
+                                            fontWeight: 700,
+                                            textAlign: 'center',
+                                            border: 'none',
+                                            background: 'transparent',
+                                            padding: 0
+                                        }}
+                                    />
                                 </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
                                     <div>
-                                        <label className="input-label">STANDARD</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="standard" disabled style={{ opacity: 0.6 }} />
-                                    </div>
-                                    <div>
-                                        <label className="input-label">RAPID</label>
+                                        <label className="input-label" style={{ fontSize: '0.65rem' }}>FIRST NAME</label>
                                         <input
                                             className="input-field"
-                                            type="number"
-                                            name="rapid"
-                                            value={formData.rapid || ''}
+                                            name="firstName"
+                                            value={formData.firstName || ''}
                                             onChange={handleEditChange}
-                                            style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}
+                                            style={{ padding: '8px' }}
                                         />
                                     </div>
                                     <div>
-                                        <label className="input-label">BLITZ</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="blitz" disabled style={{ opacity: 0.6 }} />
-                                    </div>
-                                </div>
-                                <div style={{ marginBottom: 24 }}>
-                                    <div>
-                                        <label className="input-label">BIRTH YEAR</label>
+                                        <label className="input-label" style={{ fontSize: '0.65rem' }}>LAST NAME</label>
                                         <input
                                             className="input-field"
-                                            type="number"
-                                            name="bYear"
-                                            value={formData.bYear || ''}
+                                            name="lastName"
+                                            value={formData.lastName || ''}
                                             onChange={handleEditChange}
+                                            style={{ padding: '8px' }}
                                         />
                                     </div>
                                 </div>
                             </div>
 
-                            <div style={{ display: 'flex', gap: 16, paddingTop: 16, borderTop: '1px solid var(--border-color)' }}>
-                                <button
-                                    onClick={() => setSelectedPlayer(null)}
-                                    className="btn"
-                                    style={{ flex: 1, background: '#e2e8f0', color: '#333' }}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={savePlayerChanges}
-                                    className="btn-primary"
-                                    style={{ flex: 2 }}
-                                >
-                                    <Save size={18} style={{ marginRight: 8 }} /> Save Changes
-                                </button>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 20 }}>
+                                <div>
+                                    <label className="input-label">STANDARD</label>
+                                    <input className="input-field" type="number" placeholder="-" name="standard" disabled style={{ opacity: 0.6, padding: '8px' }} />
+                                </div>
+                                <div>
+                                    <label className="input-label">RAPID</label>
+                                    <input
+                                        className="input-field"
+                                        type="number"
+                                        name="rapid"
+                                        value={formData.rapid || ''}
+                                        onChange={handleEditChange}
+                                        style={{ fontWeight: 'bold', color: 'var(--primary-color)', padding: '8px' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="input-label">BLITZ</label>
+                                    <input className="input-field" type="number" placeholder="-" name="blitz" disabled style={{ opacity: 0.6, padding: '8px' }} />
+                                </div>
+                            </div>
+                            <div style={{ marginBottom: 20 }}>
+                                <div>
+                                    <label className="input-label">BIRTH YEAR</label>
+                                    <input
+                                        className="input-field"
+                                        type="number"
+                                        name="bYear"
+                                        value={formData.bYear || ''}
+                                        onChange={handleEditChange}
+                                        style={{ padding: '8px' }}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    )}
 
-                    {/* VIEW: EMPTY STATE */}
-                    {!activeView && !selectedPlayer && (
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', opacity: 0.5 }}>
-                            <div style={{ width: 120, height: 120, background: '#f1f5f9', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
-                                <SearchIcon size={48} color="#94a3b8" />
-                            </div>
-                            <h2 style={{ color: '#64748b', marginBottom: 8 }}>Ready to Edit</h2>
-                            <p style={{ maxWidth: 300, color: '#94a3b8' }}>Select an action from the sidebar or search for a player to modify their details.</p>
+                        <div style={{ display: 'flex', gap: 12, paddingTop: 12, borderTop: '1px solid var(--border-color)' }}>
+                            <button
+                                onClick={() => setSelectedPlayer(null)}
+                                className="btn"
+                                style={{ flex: 1, background: '#e2e8f0', color: '#333' }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={savePlayerChanges}
+                                className="btn-primary"
+                                style={{ flex: 2 }}
+                            >
+                                <Save size={16} style={{ marginRight: 8 }} /> Save
+                            </button>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
-
-            <style>{`
-                .rich-text-btn {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 32px;
-                    height: 32px;
-                    border: 1px solid #e2e8f0;
-                    background: white;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    color: #64748b;
-                    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-                    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-                }
-            
-                .rich-text-btn:hover {
-                    background: #f1f5f9;
-                }
-                
-                .rich-text-btn.active {
-                    background: #e2e8f0;
-                    color: #333;
-                    border-color: #cbd5e1;
-                }
-                
-                .rich-text-btn.danger {
-                    color: #ef4444;
-                }
-                .rich-text-btn.danger:hover {
-                    background: #fef2f2;
-                    border-color: #fecaca;
-                }
-            `}</style>
         </div>
     );
 };

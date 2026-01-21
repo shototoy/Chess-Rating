@@ -25,7 +25,7 @@ export const LoadingScreen = ({ onComplete }) => {
                     if (maintenanceMode) {
                         setProgress(30);
                         setStatus('High Server Traffic: Unable to establish connection');
-                        return; 
+                        return;
                     }
                 }
                 setStatus('Connecting to server...');
@@ -96,7 +96,7 @@ export const LoadingScreen = ({ onComplete }) => {
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+            background: '#c55a20',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
