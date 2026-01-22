@@ -66,10 +66,10 @@ export const Search = () => {
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginTop: 24 }}>
-                        <div style={{ background: 'var(--bg-color)', padding: '12px 4px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0', opacity: 0.7 }}>
-                            <small style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', display: 'block', marginBottom: 4, fontWeight: 700 }}>STANDARD</small>
-                            <div style={{ fontWeight: 800, fontSize: '1rem', color: selectedPlayer ? 'var(--text-primary)' : '#e0e0e0' }}>
-                                ----
+                        <div style={{ background: 'var(--bg-color)', padding: '12px 4px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            <small style={{ color: 'var(--primary-color)', fontSize: '0.65rem', display: 'block', marginBottom: 4, fontWeight: 700 }}>STANDARD</small>
+                            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: selectedPlayer ? 'var(--primary-color)' : '#e0e0e0' }}>
+                                {selectedPlayer ? (selectedPlayer.standard || '-') : '----'}
                             </div>
                         </div>
                         <div style={{ background: 'var(--bg-color)', padding: '12px 4px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0' }}>
@@ -78,10 +78,10 @@ export const Search = () => {
                                 {selectedPlayer ? selectedPlayer.rapid : '----'}
                             </div>
                         </div>
-                        <div style={{ background: 'var(--bg-color)', padding: '12px 4px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0', opacity: 0.7 }}>
-                            <small style={{ color: 'var(--text-secondary)', fontSize: '0.65rem', display: 'block', marginBottom: 4, fontWeight: 700 }}>BLITZ</small>
-                            <div style={{ fontWeight: 800, fontSize: '1rem', color: selectedPlayer ? 'var(--text-primary)' : '#e0e0e0' }}>
-                                ----
+                        <div style={{ background: 'var(--bg-color)', padding: '12px 4px', borderRadius: 10, textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            <small style={{ color: 'var(--primary-color)', fontSize: '0.65rem', display: 'block', marginBottom: 4, fontWeight: 700 }}>BLITZ</small>
+                            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: selectedPlayer ? 'var(--primary-color)' : '#e0e0e0' }}>
+                                {selectedPlayer ? (selectedPlayer.blitz || '-') : '----'}
                             </div>
                         </div>
                     </div>
@@ -216,12 +216,12 @@ export const Search = () => {
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'flex-end',
-                                        color: 'var(--text-secondary)',
-                                        fontWeight: 600,
-                                        fontSize: '0.95rem',
-                                        opacity: 0.5
+                                        color: 'var(--primary-color)',
+                                        fontWeight: 700,
+                                        fontSize: '0.95rem'
                                     }}>
-                                        -
+                                        <Trophy size={14} style={{ marginRight: 4, opacity: 0.5 }} />
+                                        {player.standard || '-'}
                                     </div>
                                     <div style={{
                                         width: 80,
@@ -240,12 +240,12 @@ export const Search = () => {
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'flex-end',
-                                        color: 'var(--text-secondary)',
-                                        fontWeight: 600,
-                                        fontSize: '0.95rem',
-                                        opacity: 0.5
+                                        color: 'var(--primary-color)',
+                                        fontWeight: 700,
+                                        fontSize: '0.95rem'
                                     }}>
-                                        -
+                                        <Trophy size={14} style={{ marginRight: 4, opacity: 0.5 }} />
+                                        {player.blitz || '-'}
                                     </div>
                                 </div>
                             ))}

@@ -87,7 +87,9 @@ export const Dashboard = () => {
         if (!selectedPlayer) return;
         const updated = {
             ...formData,
+            standard: formData.standard ? parseInt(formData.standard) : 0,
             rapid: parseInt(formData.rapid),
+            blitz: formData.blitz ? parseInt(formData.blitz) : 0,
             bYear: formData.bYear ? parseInt(formData.bYear) : null
         };
         await updatePlayer(updated);
@@ -104,7 +106,9 @@ export const Dashboard = () => {
             lastName: formData.lastName,
             firstName: formData.firstName,
             title: formData.title,
+            standard: formData.standard ? parseInt(formData.standard) : 0,
             rapid: parseInt(formData.rapid),
+            blitz: formData.blitz ? parseInt(formData.blitz) : 0,
             bYear: formData.bYear ? parseInt(formData.bYear) : null
         };
         await addPlayer(newPlayer);
@@ -298,7 +302,7 @@ export const Dashboard = () => {
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
                                     <div>
                                         <label className="input-label">STANDARD</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="standard" disabled style={{ opacity: 0.6 }} />
+                                        <input className="input-field" type="number" placeholder="Rating" name="standard" onChange={(e) => setFormData({ ...formData, standard: e.target.value })} />
                                     </div>
                                     <div>
                                         <label className="input-label">RAPID</label>
@@ -306,7 +310,7 @@ export const Dashboard = () => {
                                     </div>
                                     <div>
                                         <label className="input-label">BLITZ</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="blitz" disabled style={{ opacity: 0.6 }} />
+                                        <input className="input-field" type="number" placeholder="Rating" name="blitz" onChange={(e) => setFormData({ ...formData, blitz: e.target.value })} />
                                     </div>
                                 </div>
                                 <div style={{ marginBottom: 24 }}>
@@ -468,7 +472,7 @@ export const Dashboard = () => {
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
                                     <div>
                                         <label className="input-label">STANDARD</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="standard" disabled style={{ opacity: 0.6 }} />
+                                        <input className="input-field" type="number" placeholder="Rating" name="standard" value={formData.standard || ''} onChange={handleEditChange} />
                                     </div>
                                     <div>
                                         <label className="input-label">RAPID</label>
@@ -483,7 +487,7 @@ export const Dashboard = () => {
                                     </div>
                                     <div>
                                         <label className="input-label">BLITZ</label>
-                                        <input className="input-field" type="number" placeholder="Rating" name="blitz" disabled style={{ opacity: 0.6 }} />
+                                        <input className="input-field" type="number" placeholder="Rating" name="blitz" value={formData.blitz || ''} onChange={handleEditChange} />
                                     </div>
                                 </div>
                                 <div style={{ marginBottom: 24 }}>
