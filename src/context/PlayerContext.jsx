@@ -81,11 +81,10 @@ export const PlayerProvider = ({ children }) => {
         try {
             let newData = [];
             let sortBy = 'rapid_rating';
-            if (fetchSortKey === 'name') sortBy = 'last_name';
-            else if (fetchSortKey === 'rapid') sortBy = 'rapid_rating';
-
-            // Backend search supports 'name' (multicolumn) and 'last_name'
             if (fetchSortKey === 'name') sortBy = 'name';
+            else if (fetchSortKey === 'rapid') sortBy = 'rapid_rating';
+            else if (fetchSortKey === 'standard') sortBy = 'standard_rating';
+            else if (fetchSortKey === 'blitz') sortBy = 'blitz_rating';
 
             if (fetchQuery) {
                 newData = await searchPlayers(fetchQuery, pageNum, 150, sortBy, fetchSortDir, signal);

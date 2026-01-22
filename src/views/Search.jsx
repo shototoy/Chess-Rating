@@ -73,8 +73,8 @@ export const Search = () => {
                 {/* Ratings - Compact Grid */}
                 <div style={{ display: 'flex', gap: 12 }}>
                     <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', fontWeight: 700, marginBottom: 2 }}>STD</div>
-                        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: selectedPlayer ? 'var(--text-primary)' : '#e2e8f0' }}>---</div>
+                        <div style={{ fontSize: '0.6rem', color: 'var(--primary-color)', fontWeight: 700, marginBottom: 2 }}>STD</div>
+                        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: selectedPlayer ? 'var(--primary-color)' : '#e2e8f0' }}>{selectedPlayer ? (selectedPlayer.standard || '---') : '---'}</div>
                     </div>
                     <div style={{ textAlign: 'center' }}>
                         <div style={{ fontSize: '0.6rem', color: 'var(--primary-color)', fontWeight: 700, marginBottom: 2 }}>RAPID</div>
@@ -83,8 +83,8 @@ export const Search = () => {
                         </div>
                     </div>
                     <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', fontWeight: 700, marginBottom: 2 }}>BLTZ</div>
-                        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: selectedPlayer ? 'var(--text-primary)' : '#e2e8f0' }}>---</div>
+                        <div style={{ fontSize: '0.6rem', color: 'var(--primary-color)', fontWeight: 700, marginBottom: 2 }}>BLTZ</div>
+                        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: selectedPlayer ? 'var(--primary-color)' : '#e2e8f0' }}>{selectedPlayer ? (selectedPlayer.blitz || '---') : '---'}</div>
                     </div>
                 </div>
             </div>
@@ -120,25 +120,41 @@ export const Search = () => {
                     style={{ flex: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
                     onClick={() => handleSort('name')}
                 >
-                    Player <ArrowUpDown size={12} style={{ marginLeft: 4, opacity: sortConfig.key === 'name' ? 1 : 0.3 }} />
+                    Player <ArrowUpDown size={12} style={{
+                        marginLeft: 4,
+                        opacity: sortConfig.key === 'name' ? 1 : 0.3,
+                        color: sortConfig.key === 'name' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
+                    }} />
                 </div>
                 <div
                     style={{ width: 60, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', cursor: 'pointer' }}
                     onClick={() => handleSort('standard')}
                 >
-                    Std <ArrowUpDown size={12} style={{ marginLeft: 4, opacity: sortConfig.key === 'standard' ? 1 : 0.3 }} />
+                    Std <ArrowUpDown size={12} style={{
+                        marginLeft: 4,
+                        opacity: sortConfig.key === 'standard' ? 1 : 0.3,
+                        color: sortConfig.key === 'standard' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
+                    }} />
                 </div>
                 <div
                     style={{ width: 60, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', cursor: 'pointer' }}
                     onClick={() => handleSort('rapid')}
                 >
-                    Rapid <ArrowUpDown size={12} style={{ marginLeft: 4, opacity: sortConfig.key === 'rapid' ? 1 : 0.3 }} />
+                    Rapid <ArrowUpDown size={12} style={{
+                        marginLeft: 4,
+                        opacity: sortConfig.key === 'rapid' ? 1 : 0.3,
+                        color: sortConfig.key === 'rapid' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
+                    }} />
                 </div>
                 <div
                     style={{ width: 60, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', cursor: 'pointer' }}
                     onClick={() => handleSort('blitz')}
                 >
-                    Blitz <ArrowUpDown size={12} style={{ marginLeft: 4, opacity: sortConfig.key === 'blitz' ? 1 : 0.3 }} />
+                    Blitz <ArrowUpDown size={12} style={{
+                        marginLeft: 4,
+                        opacity: sortConfig.key === 'blitz' ? 1 : 0.3,
+                        color: sortConfig.key === 'blitz' ? (sortConfig.direction === 'asc' ? '#22c55e' : '#ef4444') : 'inherit'
+                    }} />
                 </div>
             </div>
 
@@ -177,9 +193,9 @@ export const Search = () => {
                                     <span style={{ fontFamily: 'monospace' }}>{player.id}</span>
                                 </div>
                             </div>
-                            <div style={{ width: 60, textAlign: 'right', fontSize: '0.9rem', color: '#cbd5e1', fontWeight: 600 }}>-</div>
+                            <div style={{ width: 60, textAlign: 'right', fontSize: '0.9rem', color: 'var(--primary-color)', fontWeight: 700 }}>{player.standard || '-'}</div>
                             <div style={{ width: 60, textAlign: 'right', fontSize: '0.9rem', color: 'var(--primary-color)', fontWeight: 700 }}>{player.rapid}</div>
-                            <div style={{ width: 60, textAlign: 'right', fontSize: '0.9rem', color: '#cbd5e1', fontWeight: 600 }}>-</div>
+                            <div style={{ width: 60, textAlign: 'right', fontSize: '0.9rem', color: 'var(--primary-color)', fontWeight: 700 }}>{player.blitz || '-'}</div>
                         </div>
                     ))
                 )}

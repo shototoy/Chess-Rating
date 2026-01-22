@@ -21,7 +21,9 @@ const mapPlayer = (p) => ({
     firstName: p.first_name,
     lastName: p.last_name,
     title: p.title,
+    standard: p.standard_rating,
     rapid: p.rapid_rating,
+    blitz: p.blitz_rating,
     bYear: p.birth_year
 });
 
@@ -30,7 +32,9 @@ const mapPlayerPayload = (p) => ({
     firstName: p.firstName,
     lastName: p.lastName,
     title: p.title,
+    standardRating: p.standard,
     rapidRating: p.rapid,
+    blitzRating: p.blitz,
     bYear: p.bYear
 });
 
