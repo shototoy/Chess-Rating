@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Chess Movement</title>
+    <meta name="description"
+        content="Your comprehensive platform for tracking chess ratings and staying connected with the Philippine chess community.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #c55a20;
+            --primary-dark: #7c3519;
+            --primary-light: #7c3519;
+            --accent-color: #d97706;
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-primary: #7c3519;
+            --text-secondary: #eaa47e;
+            --border-color: #e2e8f0;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(to bottom right, #f8fafc, #f1f5f9);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            text-align: center;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 3rem;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            font-weight: 600;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+            filter: brightness(110%);
+        }
+
+        .download-btn svg {
+            margin-right: 0.5rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 768px) {
+            .hero h2 {
+                font-size: 3.5rem;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding: 4rem 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
+            }
+
+            .header h1 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>One Chess Movement</h1>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Track Chess Ratings.<br>Stay Connected.</h2>
+            <p>Your comprehensive platform for the Philippine chess community</p>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-number">34K+</div>
+                <div class="stat-label">Registered Players</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Live</div>
+                <div class="stat-label">Real-time Updates</div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <h3>Find Any Player</h3>
+                <p>Search through our complete database of registered chess players. Look up ratings, titles, and player
+                    information instantly.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Track Ratings</h3>
+                <p>View rapid chess ratings for all players. See who's climbing the ranks and follow your favorite
+                    players' progress.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Stay Updated</h3>
+                <p>Get the latest news about tournaments, rating updates, and important announcements from the chess
+                    community.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Easy to Use</h3>
+                <p>Clean, modern interface designed for both mobile and desktop. Find what you need quickly with our
+                    intuitive search.</p>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <a href="Release/BiyaherongArbiter.apk" class="download-btn" id="downloadBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download App
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 One Chess Movement. All rights reserved.</p>
+    </footer>
+    </style>
+    </head>
+
+    <body>
+        <header class="header">
+            <h1>Philippines Chess Rating</h1>
+        </header>
+
+        <main class="container">
+            <section class="hero">
+                <h2>Track Chess Ratings.<br>Stay Connected.</h2>
+                <p>Your comprehensive platform for the Philippine chess community</p>
+            </section>
+
+            <section class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">34K+</div>
+                    <div class="stat-label">Registered Players</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">Live</div>
+                    <div class="stat-label">Real-time Updates</div>
+                </div>
+            </section>
+
+            <section class="features">
+                <div class="feature-card">
+                    <h3>Find Any Player</h3>
+                    <p>Search through our complete database of registered chess players. Look up ratings, titles, and
+                        player
+                        information instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Track Ratings</h3>
+                    <p>View rapid chess ratings for all players. See who's climbing the ranks and follow your favorite
+                        players' progress.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Stay Updated</h3>
+                    <p>Get the latest news about tournaments, rating updates, and important announcements from the chess
+                        community.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Easy to Use</h3>
+                    <p>Clean, modern interface designed for both mobile and desktop. Find what you need quickly with our
+                        intuitive search.</p>
+                </div>
+            </section>
+
+            <section class="cta-section">
+                <a href="Release/BiyaherongArbiter.apk" class="download-btn" id="downloadBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download App
+                </a>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Philippines Chess Rating System. All rights reserved.</p>
+        </footer>
+
+        <script>
+            document.getElementById('downloadBtn').addEventListener('click', function (e) {
+                e.preventDefault();
+                alert('Download link will be available soon!\n\nFor now, you can access the web version at:\nhttps://chess-rating-api.onrender.com');
+            });
+        </script>
+    </body>
+
+</html>

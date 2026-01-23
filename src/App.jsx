@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Toast } from './components/Toast';
 import './index.css';
 import { Home } from './views/Home';
@@ -11,6 +11,20 @@ function App() {
     const [currentTab, setCurrentTab] = useState('home');
     const [isLoading, setIsLoading] = useState(true);
     const [toast, setToast] = useState({ show: false, message: '', color: undefined });
+
+    useEffect(() => {
+        const checkMobile = () => {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+            if (isMobile) {
+                window.location.href = '/landing-page.html';
+            }
+        };
+
+        checkMobile();
+
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const handleTabChange = (tab) => {
         setCurrentTab(tab);
