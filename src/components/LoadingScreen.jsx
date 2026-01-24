@@ -155,16 +155,7 @@ export const LoadingScreen = ({ onComplete }) => {
             }}>
                 {status}
             </p>
-            <p style={{
-                fontSize: '0.95rem',
-                margin: '0 0 2px 0',
-                color: 'white',
-                opacity: 0.85,
-                textAlign: 'center',
-                fontWeight: 600
-            }}>
-                Powered By: Biyaherong Arbiter
-            </p>
+
 
             <div style={{ position: 'absolute', bottom: 18, left: 0, right: 0, textAlign: 'center' }}>
                 <span style={{ fontSize: '0.75rem', color: '#4ade80', fontWeight: 600, opacity: 0.8 }}>
